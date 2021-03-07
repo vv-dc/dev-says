@@ -4,12 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint .",
-    "test": "npm run lint"
-  },
-  "repository": {
-    "type": "git",
-    "url": "dev-says"
+    "lint": "eslint src/",
+    "lint:write": "eslint --fix src/",
+    "test": "yarn lint"
   },
   "keywords": [
     "node",
