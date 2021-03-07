@@ -1,0 +1,39 @@
+version: '3.9'
+
+services: 
+
+  db:
+    image: postgres:13.2-alpine
+    environment: 
+      POSTGRES_USER: ${DBMS_USER}
+      POSTGRES_PASSWORD: ${DBMS_PASSWORD}
+      POSTGRES_DB: ${DBMS_DB}
+    volumes: 
+      - pg_data:/var/lib/postgresql/data
+    networks: 
+      - backend
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    environment: 
+      HOST: ${BACKEND_HOST}
+      PORT: ${BACKEND_PORT}
+    ports: 
+      - "8080:${BACKEND_PORT}"
+    networks: 
+      - backend
+    depends_on: 
+      - db
+
+  frontend:
+    build: ./frontend
+    ports:
+      - 3000:80
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  pg_data:
