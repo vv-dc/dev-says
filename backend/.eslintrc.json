@@ -1,0 +1,16 @@
+{
+    "root": true,
+    "env": {
+        "node": true
+    },
+    "plugins": ["prettier"],
+    "extends": [
+        "metarhia",
+        "prettier"
+    ],
+    "rules": {
+        "quotes": ["error", "single"],
+        "semi": ["error", "always"],
+        "prettier/prettier": "error"
+    }
+}
