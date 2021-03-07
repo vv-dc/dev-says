@@ -6,7 +6,9 @@
   "scripts": {
     "lint": "eslint src/",
     "lint:write": "eslint --fix src/",
-    "test": "yarn lint"
+    "test": "yarn lint",
+    "format": "prettier --write ./src",
+    "pre-commit": "yarn format && yarn lint:write"
   },
   "keywords": [
     "node",
