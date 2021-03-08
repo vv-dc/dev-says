@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "husky": "^5.1.3",
+    "husky": "v4",
     "lint-staged": "^10.5.4"
   },
   "husky": {
@@ -10,12 +10,10 @@
   },
   "lint-staged": {
     "frontend/**/*.js": [
-      "yarn pre-commit:frontend",
-      "git add"
+      "yarn pre-commit:frontend"
     ], 
     "backend/**/*.js": [
-      "yarn pre-commit:backend",
-      "git add"
+      "yarn pre-commit:backend"
     ]
   },
   "scripts": {
