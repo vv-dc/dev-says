@@ -17,7 +17,7 @@ env:
   BACKEND_PORT: ${{ secrets.BACKEND_PORT }}
   
 jobs: 
-  build&test:
+  build-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
