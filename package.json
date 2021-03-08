@@ -1,4 +1,12 @@
 {
+  "name": "dev-says",
+  "description": "Social network for developers",
+  "version": "0.1.0",
+  "author": "",
+  "license": "GPL-3.0",
+  "main": "",
+  "repository": "git@github.com:dev-says/dev-says.git",
+  "dependencies": {},
   "devDependencies": {
     "husky": "v4",
     "lint-staged": "^10.5.4"
@@ -9,7 +17,7 @@
     }
   },
   "lint-staged": {
-    "frontend/**/*.js": [
+    "frontend/**/*.{js, jsx}": [
       "yarn pre-commit:frontend"
     ], 
     "backend/**/*.js": [
