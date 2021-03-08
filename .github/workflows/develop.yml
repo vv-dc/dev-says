@@ -1,4 +1,4 @@
-name: Test dockerized Node.js app
+name: Build dockerized Node.js app
 
 on:
   pull_request:
@@ -17,13 +17,9 @@ env:
   BACKEND_PORT: ${{ secrets.BACKEND_PORT }}
   
 jobs: 
-  build-test:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Build the docker-compose stack
         run: docker-compose up -d --build
-      - name: Test backend
-        run: docker-compose exec -T backend yarn test
-      - name: Test frontend
-        run: docker-compose exec -T frontend yarn test 
