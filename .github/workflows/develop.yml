@@ -1,0 +1,29 @@
+name: Test dockerized Node.js app
+
+on:
+  pull_request:
+    branches: 
+      - master
+      - develop
+  push:
+    branches: 
+      - develop
+      
+env:
+  DBMS_USER: ${{ secrets.DBMS_USER }}
+  DBMS_PASSWORD: ${{ secrets.DBMS_PASSWORD }}
+  DBMS_DB: ${{ secrets.DBMS_DB }}
+  BACKEND_HOST: ${{ secrets.BACKEND_HOST }}
+  BACKEND_PORT: ${{ secrets.BACKEND_PORT }}
+  
+jobs: 
+  build&test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the docker-compose stack
+        run: docker-compose up -d --build
+      - name: Test backend
+        run: docker-compose exec backend yarn test
+      - name: Test frontend
+        run: docker-compose exec frontend yarn test 
