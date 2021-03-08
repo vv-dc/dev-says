@@ -24,6 +24,6 @@ jobs:
       - name: Build the docker-compose stack
         run: docker-compose up -d --build
       - name: Test backend
-        run: docker-compose exec backend yarn test
+        run: docker-compose exec -T backend yarn test
       - name: Test frontend
-        run: docker-compose exec frontend yarn test 
+        run: docker-compose exec -T frontend yarn test 
