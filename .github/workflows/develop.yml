@@ -20,13 +20,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: whoan/docker-build-with-cache-action@v5
-      - name: Use docker cache
+      - uses: actions/checkout@v2
+      - name: Build the docker-compose stack using cache
+        uses: whoan/docker-build-with-cache-action@v5
         with:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
           compose_file: docker-compose.yml
-      - uses: actions/checkout@v2
-      - name: Build the docker-compose stack
+      - name: Up and build the docker-compose stack
         run: docker-compose up -d --build
