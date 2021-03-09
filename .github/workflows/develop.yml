@@ -1,0 +1,46 @@
+name: Build dockerized Node.js app
+
+on:
+  pull_request:
+    branches: 
+      - master
+      - develop
+  push:
+    branches: 
+      - develop
+      
+env:
+  DBMS_USER: ${{ secrets.DBMS_USER }}
+  DBMS_PASSWORD: ${{ secrets.DBMS_PASSWORD }}
+  DBMS_DB: ${{ secrets.DBMS_DB }}
+  BACKEND_HOST: ${{ secrets.BACKEND_HOST }}
+  BACKEND_PORT: ${{ secrets.BACKEND_PORT }}
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the backend
+        uses: whoan/docker-build-with-cache-action@v5
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          context: backend
+          image_name: ds-backend
+          image_tag: latest
+  
+  build-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the frontend
+        uses: whoan/docker-build-with-cache-action@v5
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          context: frontend
+          image_name: ds-frontend
+          image_tag: latest
