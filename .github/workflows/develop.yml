@@ -15,11 +15,18 @@ env:
   DBMS_DB: ${{ secrets.DBMS_DB }}
   BACKEND_HOST: ${{ secrets.BACKEND_HOST }}
   BACKEND_PORT: ${{ secrets.BACKEND_PORT }}
-  
-jobs: 
+
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - uses: whoan/docker-build-with-cache-action@v5
+      - name: Use docker cache
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          compose_file: docker-compose.yml
       - uses: actions/checkout@v2
       - name: Build the docker-compose stack
         run: docker-compose up -d --build
