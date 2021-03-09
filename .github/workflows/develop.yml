@@ -17,16 +17,30 @@ env:
   BACKEND_PORT: ${{ secrets.BACKEND_PORT }}
 
 jobs:
-  build:
+  build-backend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Build the docker-compose stack using cache
+      - name: Build the backend
         uses: whoan/docker-build-with-cache-action@v5
         with:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
-          compose_file: docker-compose.yml
-      - name: Up and build the docker-compose stack
-        run: docker-compose up -d --build
+          context: backend
+          image_name: ds-backend
+          image_tag: latest
+  
+  build-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the frontend
+        uses: whoan/docker-build-with-cache-action@v5
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          context: frontend
+          image_name: ds-frontend
+          image_tag: latest
