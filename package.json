@@ -13,7 +13,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn test"
     }
   },
   "lint-staged": {
@@ -26,6 +27,9 @@
   },
   "scripts": {
     "pre-commit:frontend": "cd frontend && yarn pre-commit",
-    "pre-commit:backend": "cd backend && yarn pre-commit"
+    "pre-commit:backend": "cd backend && yarn pre-commit",
+    "test:frontend": "cd frontend && yarn test",
+    "test:backend": "cd backend && yarn test",
+    "test": "yarn test:backend && yarn test:frontend"
   }
 }
