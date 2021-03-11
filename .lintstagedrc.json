@@ -1,0 +1,4 @@
+{
+  "frontend/**/*.{js, jsx}": "yarn test:frontend",
+  "backend/**/*.js": "yarn test:backend"
+}

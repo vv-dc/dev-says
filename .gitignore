@@ -30,3 +30,6 @@ logs
 
 # compiled output
 build
+
+# .husky
+.husky/_

@@ -22,8 +22,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject",
-    "format": "prettier --write ./src",
-    "pre-commit": "yarn format && yarn lint:write"
+    "format:check": "prettier --check ./src",
+    "format:write": "prettier --write ./src"
   },
   "eslintConfig": {
     "extends": [
