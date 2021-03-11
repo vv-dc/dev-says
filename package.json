@@ -12,7 +12,7 @@
     "lint-staged": "^10.5.4"
   },
   "scripts": {
-    "test:frontend": "cd frontend && yarn lint && yarn test",
-    "test:backend": "cd backend && yarn lint && yarn test"
+    "lint:frontend": "cd frontend && yarn lint",
+    "lint:backend": "cd backend && yarn lint"
   }
 }
