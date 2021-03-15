@@ -3,14 +3,14 @@
     "env": {
         "node": true
     },
-    "plugins": ["prettier"],
-    "extends": [
-        "metarhia",
+    "plugins": [
         "prettier"
     ],
+    "extends": [
+        "metarhia",
+        "plugin:prettier/recommended"
+    ],
     "rules": {
-        "quotes": ["error", "single"],
-        "semi": ["error", "always"],
         "prettier/prettier": "error"
     }
 }
