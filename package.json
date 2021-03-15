@@ -8,28 +8,11 @@
   "repository": "git@github.com:dev-says/dev-says.git",
   "dependencies": {},
   "devDependencies": {
-    "husky": "v4",
+    "husky": "^5.1.3",
     "lint-staged": "^10.5.4"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "yarn test"
-    }
-  },
-  "lint-staged": {
-    "frontend/**/*.{js, jsx}": [
-      "yarn pre-commit:frontend"
-    ], 
-    "backend/**/*.js": [
-      "yarn pre-commit:backend"
-    ]
-  },
   "scripts": {
-    "pre-commit:frontend": "cd frontend && yarn pre-commit",
-    "pre-commit:backend": "cd backend && yarn pre-commit",
-    "test:frontend": "cd frontend && yarn test",
-    "test:backend": "cd backend && yarn test",
-    "test": "yarn test:backend && yarn test:frontend"
+    "lint:frontend": "cd frontend && yarn lint",
+    "lint:backend": "cd backend && yarn lint"
   }
 }

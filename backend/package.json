@@ -7,8 +7,8 @@
     "lint": "eslint src/",
     "lint:write": "eslint --fix src/",
     "test": "yarn lint",
-    "format": "prettier --write ./src",
-    "pre-commit": "yarn format && yarn lint:write"
+    "format:check": "prettier --check ./src",
+    "format:write": "prettier --write ./src"
   },
   "keywords": [
     "node",
