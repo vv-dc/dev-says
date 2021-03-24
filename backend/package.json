@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint src/",
     "lint:write": "eslint --fix src/",
-    "test": "yarn lint",
+    "test": "ls",
     "format:check": "prettier --check src",
     "format:write": "prettier --write src"
   },

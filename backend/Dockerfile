@@ -1,13 +1,25 @@
-FROM node:15-alpine
-
+FROM node:15-stretch-slim AS build
 WORKDIR /usr/src/app
 
-COPY package.json yarn.lock ./
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=yarn.lock,target=yarn.lock \
+    yarn --frozen-lockfile
 
-RUN yarn install --frozen-lockfile
+FROM build AS lint
+RUN --mount=type=bind,source=src,target=src \
+    --mount=type=bind,source=.eslintrc.json,target=.eslintrc.json \
+    --mount=type=bind,source=.prettierrc,target=.prettierrc \
+    --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=/usr/src/app/node_modules,target=node_modules,from=build \
+    yarn lint:check && yarn format:check
 
-COPY . .
+FROM build AS test
+RUN --mount=type=bind,source=src,target=src \
+    --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=/usr/src/app/node_modules,target=node_modules,from=build \
+    yarn test
 
-EXPOSE 8080
-
+FROM build AS production
+COPY ./src ./src
+RUN --mount=type=bind,source=/usr/src/app/node_modules,target=node_modules,from=build
 CMD ["node", "src/index.js"]

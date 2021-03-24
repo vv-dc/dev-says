@@ -2,5 +2,6 @@
 . "$(dirname "$0")/_/husky.sh"
 
 yarn lint-staged
+
 cd frontend && yarn test
 cd ../backend && yarn test
