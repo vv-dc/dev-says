@@ -20,6 +20,7 @@ RUN --mount=type=bind,source=src,target=src \
     yarn test
 
 FROM build AS production
+COPY package.json package.json
 COPY ./src ./src
 RUN --mount=type=bind,source=/usr/src/app/node_modules,target=node_modules,from=build
-CMD ["node", "src/index.js"]
+CMD ["yarn", "start"]

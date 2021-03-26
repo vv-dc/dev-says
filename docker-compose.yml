@@ -17,8 +17,8 @@ services:
   backend:
     build: ./backend
     environment: 
-      HOST: ${BACKEND_HOST}
-      PORT: ${BACKEND_PORT}
+      FASTIFY_ADDRESS: ${BACKEND_HOST}
+      FASTIFY_PORT: ${BACKEND_PORT}
     ports: 
       - "8080:${BACKEND_PORT}"
     networks: 

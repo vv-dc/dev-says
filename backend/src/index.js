@@ -1,11 +1,15 @@
 'use strict';
 
-const http = require('http');
-const { HOST, PORT } = process.env;
+const AutoLoad = require('fastify-autoload');
+const path = require('path');
 
-const server = http.createServer((req, res) => {
-  res.end('Hello from DevSays\n');
-});
-server.listen(PORT, HOST, () => {
-  console.dir(`Server is running on http://${HOST}:${PORT}/`);
-});
+module.exports = async function (fastify, opts) {
+  fastify.register(AutoLoad, {
+    dir: path.join(__dirname, 'plugins'),
+    options: Object.assign({}, opts),
+  });
+  fastify.register(AutoLoad, {
+    dir: path.join(__dirname, 'services'),
+    options: Object.assign({}, opts),
+  });
+};
