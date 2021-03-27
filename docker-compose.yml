@@ -1,7 +1,6 @@
 version: '3.9'
 
 services: 
-
   db:
     image: postgres:13.2-alpine
     environment: 
@@ -11,8 +10,8 @@ services:
     volumes: 
       - pg_data:/var/lib/postgresql/data
     networks: 
-      - backend
-    restart: unless-stopped
+      - internal
+    restart: always
 
   backend:
     build: ./backend
@@ -22,18 +21,42 @@ services:
     ports: 
       - "8080:${BACKEND_PORT}"
     networks: 
-      - backend
+      - internal
     depends_on: 
       - db
+    restart: always
 
   frontend:
     build: ./frontend
     ports:
       - 3000:80
+    labels:
+      - traefik.docker.network=traefik-public
+      - traefik.enable=true
 
-networks:
-  backend:
-    driver: bridge
+      - traefik.http.services.app.loadbalancer.server.port=80
+
+      - traefik.http.routers.app-http.rule=Host(`localhost`)
+      - traefik.http.routers.app-http.entrypoints=web
+
+      - traefik.http.routers.app-https.rule=Host(`localhost`)
+      - traefik.http.routers.app-https.entrypoints=websecure
+
+      - traefik.http.routers.app-https.tls=true
+      - traefik.http.routers.app-https.tls.certresolver=le
+
+      - traefik.http.routers.app-http.middlewares=https-redirect
+    networks: 
+      - traefik-public
+      - internal
+    restart: always
 
 volumes:
   pg_data:
+
+networks:
+  traefik-public:
+    external: true
+  internal:
+    external: false
+    
