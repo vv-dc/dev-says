@@ -2,12 +2,18 @@
 
 const fastify = require('fastify');
 const fp = require('fastify-plugin');
-const App = require('../index');
+const App = require('../app');
 
-function build(t, opts = {}) {
+function build() {
   const app = fastify();
-  app.register(fp(App), { testing: true, ...opts });
-  t.tearDown(app.close.bind(app));
+
+  beforeAll(async () => {
+    app.register(fp(App));
+    await app.ready();
+  });
+  afterAll(async () => {
+    await app.close();
+  });
   return app;
 }
 
