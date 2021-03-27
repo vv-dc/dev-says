@@ -10,7 +10,7 @@
     "start": "fastify start src/index.js",
     "lint": "eslint src/",
     "lint:write": "eslint --fix src/",
-    "test": "tap src/test/**/*.test.js",
+    "test": "tap src/test/**/*.test.js --no-coverage",
     "format:check": "prettier --check src",
     "format:write": "prettier --write src"
   },
