@@ -2,7 +2,7 @@ name: Build dockerized Node.js app
 
 on:
   pull_request:
-    branches: 
+    branches:
       - master
       - develop
       
@@ -17,27 +17,59 @@ jobs:
   build-backend:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Build the backend
-        uses: whoan/docker-build-with-cache-action@v5
+      -
+        name: Set up checkout
+        uses: actions/checkout@v2
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Cache Docker layers
+        uses: actions/cache@v2
         with:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-backend-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-buildx-backend-
+      -
+        name: Build backend image
+        uses: docker/build-push-action@v2
+        with:
           context: backend
-          image_name: ds-backend
-          image_tag: latest
+          push: false
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
+      -
+        name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
   
   build-frontend:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Build the frontend
-        uses: whoan/docker-build-with-cache-action@v5
+      -
+        name: Set up checkout
+        uses: actions/checkout@v2
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Cache Docker layers
+        uses: actions/cache@v2
         with:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-frontend-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-buildx-frontend-
+      -
+        name: Build frontend image
+        uses: docker/build-push-action@v2
+        with:
           context: frontend
-          image_name: ds-frontend
-          image_tag: latest
+          push: false
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
+      -
+        name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
