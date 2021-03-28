@@ -18,30 +18,30 @@ services:
 
       - traefik.http.routers.dashboard.rule=Host(`dashboard.localhost`)
       - traefik.http.routers.dashboard.entrypoints=websecure
-
       - traefik.http.routers.dashboard.tls=true
       - traefik.http.routers.dashboard.tls.certresolver=le
 
-      - traefik.http.middlewares.auth.basicauth.users=${USERNAME}:${PASSWORD}
+      - traefik.http.middlewares.auth.basicauth.users=${AUTH_USERNAME}:${AUTH_PASSWORD}
       - traefik.http.routers.dashboard.middlewares=auth
-
-      - traefik.http.middlewares.https-redirect.redirectscheme.scheme=https
-      - traefik.http.middlewares.https-redirect.redirectscheme.permanent=true
     command: 
       - --providers.docker
       - --providers.docker.exposedbydefault=false
       
       - --entrypoints.web.address=:80
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
       - --entrypoints.websecure.address=:443
 
       - --certificatesresolvers.le.acme.tlschallenge=true
-      - --certificatesresolvers.le.acme.email=${EMAIL}
+      - --certificatesresolvers.le.acme.email=${LE_EMAIL}
       - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
 
-      - --accesslog=true
       - --api.insecure=true
       - --api.dashboard=true
       - --log.level=DEBUG
+      - --log.filePath=/var/log/traefik/system.log
+      - --accesslog=true
+      - --accesslog.filePath=/var/log/traefik/access.log
     networks: 
       - traefik-public
     restart: always
