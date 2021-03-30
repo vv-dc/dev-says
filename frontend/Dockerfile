@@ -28,6 +28,8 @@ RUN --mount=type=bind,src=src,target=src \
     yarn build
 
 FROM nginx:1.19-alpine AS production
-COPY --from=build /usr/src/app/build /usr/share/nginx/html
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
-CMD ["nginx", "-g", "daemon off;"]
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /usr/src/app/build /var/www/devsays.tk
+RUN chmod -R 755 /var/www
+CMD ["nginx"]
