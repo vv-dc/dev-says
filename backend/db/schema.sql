@@ -1,33 +1,27 @@
-CREATE TABLE users_info(
-	info_id serial PRIMARY KEY,
+CREATE TABLE users (
+	user_id serial PRIMARY KEY,
+	username varchar(120) NOT NULL UNIQUE,
+	email varchar(255) NOT NULL UNIQUE,
+	password varchar(120) NOT NULL,
 	full_name varchar(255),
-	bio text,
 	avatar_path varchar(255),
 	location varchar(80),
 	company varchar(120),
 	website varchar(255),
+	bio text,
+	is_admin boolean DEFAULT FALSE,
 	created_at timestamp DEFAULT CURRENT_TIMESTAMP,
 	updated_at timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE users (
-	user_id serial PRIMARY KEY,
-    info_id int NOT NULL REFERENCES users_info,
-	username varchar(120) NOT NULL UNIQUE,
-	email varchar(255) NOT NULL UNIQUE,
-	password varchar(120) NOT NULL,
-	is_admin boolean DEFAULT FALSE
-);
-
 CREATE TABLE refresh_tokens (
-    token_id bigserial PRIMARY KEY,
-    user_id int NOT NULL REFERENCES users ON DELETE CASCADE,
-    refresh_token uuid NOT NULL,
-    ua varchar(255) NOT NULL,
-    fingerprint varchar(200) NOT NULL,
-    ip varchar(45) NOT NULL,
-    expires_in bigint NOT NULL,
-    created_at timestamp with time zone NOT NULL DEFAULT now()
+	token_id bigserial PRIMARY KEY,
+	user_id int NOT NULL REFERENCES users ON DELETE CASCADE,
+	refresh_token uuid NOT NULL,
+	user_agent varchar(255) NOT NULL,
+	fingerprint varchar(200) NOT NULL,
+	expires_in bigint NOT NULL,
+	created_at timestamp with time zone NOT NULL DEFAULT now()
 );
 
 CREATE TABLE tags (
@@ -73,7 +67,7 @@ CREATE TABLE comments (
 	comment_id bigserial PRIMARY KEY,
 	post_id bigint NOT NULL REFERENCES posts,
 	author_id int NOT NULL REFERENCES users,
-    parent_comment_id bigint REFERENCES comments,
+	parent_comment_id bigint REFERENCES comments,
 	content json NOT NULL,
 	sent_at timestamp DEFAULT CURRENT_TIMESTAMP,
 	updated_at timestamp DEFAULT CURRENT_TIMESTAMP
