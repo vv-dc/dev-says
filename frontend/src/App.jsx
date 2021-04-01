@@ -1,11 +1,18 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import Authentication from './components/auth/authentication';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import IndexPage from './pages/index/index';
+import LoginPage from './pages/login';
+import RegisterPage from './pages/register';
+import ResetPasswordPage from './pages/reset-password';
 
 const App = () => (
   <Router>
-    <h1>DevSays homepage</h1>
-    <Authentication />
+    <Switch>
+      <Route exact path="/" component={IndexPage} />
+      <Route exact path="/register" component={RegisterPage} />
+      <Route exact path="/login" component={LoginPage} />
+      <Route exact path="/reset-password" component={ResetPasswordPage} />
+    </Switch>
   </Router>
 );
 
