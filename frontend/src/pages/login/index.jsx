@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import { LoginBody, LoginForm } from './styles';
 import { Input, Button, ErrorBlock } from '../../components/styled/auth';
+import { useTokenStorage } from '../../providers/tokenProvider';
+import { loginUser } from '../../services/auth.service';
 
 const LoginPage = () => {
+  const tokenStorage = useTokenStorage();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleInput = event => {
+  const handleInput = async event => {
     event.preventDefault();
-    setError('');
+    try {
+      const { accessToken } = await loginUser(login, password);
+      tokenStorage.setAccessToken(accessToken);
+    } catch (e) {
+      setError('Something went wrong');
+    }
   };
 
   const isValidForm = () => {
@@ -22,11 +30,13 @@ const LoginPage = () => {
       <LoginForm onSubmit={handleInput}>
         <Input
           type="text"
+          value={login}
           placeholder="Username or email address"
           onChange={e => setLogin(e.target.value)}
         />
         <Input
           type="password"
+          value={password}
           placeholder="Password"
           onChange={e => setPassword(e.target.value)}
         />
@@ -37,6 +47,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-
-const LoginBody = styled.div``;
-const LoginForm = styled.form``;
