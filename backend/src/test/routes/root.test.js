@@ -4,7 +4,7 @@ const { build } = require('../helper');
 
 const app = build();
 
-test('GET `/` route', async () => {
+test('GET `/api` route', async () => {
   const res = await app.inject({
     method: 'GET',
     url: '/api',
