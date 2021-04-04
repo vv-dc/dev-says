@@ -1,37 +1,55 @@
 'use strict';
 
-const accessToken = {
+const register = {
+  body: {
+    type: 'object',
+    properties: {
+      username: { type: 'string' },
+      email: { type: 'string' },
+      password: { type: 'string' },
+    },
+    required: ['username', 'email', 'password'],
+  },
+};
+
+const login = {
   response: {
     200: {
       type: 'object',
       properties: {
         accessToken: { type: 'string' },
-        refreshToken: { type: 'string' },
       },
     },
   },
   body: {
     type: 'object',
     properties: {
-      login: { type: 'string', minLength: 1 },
-      password: { type: 'string', minLength: 1 },
+      fingerprint: { type: 'string' },
+      login: { type: 'string' },
+      password: { type: 'string' },
     },
-    required: ['login', 'password'],
+    required: ['fingerprint', 'login', 'password'],
   },
 };
 
-const refreshToken = {
-  response: accessToken.response,
+const refresh = {
+  response: login.response,
   body: {
-    type: 'string',
+    type: 'object',
     properties: {
-      refreshToken: { type: 'string', minLength: 1 },
+      fingerprint: { type: 'string' },
     },
-    required: ['refreshToken'],
+    required: ['fingerprint'],
   },
+};
+
+const logout = {
+  body: refresh.body,
 };
 
 module.exports = {
-  accessToken,
-  refreshToken,
+  register,
+  login,
+  refresh,
+  logout,
 };
