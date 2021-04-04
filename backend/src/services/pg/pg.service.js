@@ -2,20 +2,26 @@
 
 const { Pool } = require('pg');
 const fs = require('fs');
-
 require('dotenv').config();
-
 class PgApi {
   constructor() {
     this.pool = new Pool();
   }
 
-  where(where, start = 0) {
+  where(where, index = 0) {
     const whereClause = where
       ? ' WHERE ' +
-        Object.keys(where)
-          .map((key, index) => `"${key}"=$${index + start + 1}`)
-          .join(' AND ')
+        Object.entries(where)
+          .map(([key, value]) => {
+            let sql = `"${key}"`;
+            if (Array.isArray(value)) {
+              sql += ' IN (' + value.map(() => `$${++index}`).join(',') + ')';
+            } else {
+              sql += `=$${++index}`;
+            }
+            return sql;
+          })
+          .join(` AND `)
       : '';
     return whereClause;
   }
@@ -54,16 +60,24 @@ class PgApi {
     return this.execute(query, params);
   }
 
-  async find({ fields, table, where, limit }) {
+  async find({ fields, table, where, order, limit }) {
     const keys = fields ? fields.map(key => `"${key}"`).join(',') : '*';
 
     const whereClause = this.where(where);
+    const orderClause = order
+      ? ' ORDER BY (' +
+        order.by.map(key => `"${key}"`).join(',') +
+        ') ' +
+        (order.desc ? 'DESC' : '')
+      : '';
+
     const query =
       `SELECT ${keys} FROM "${table}"` +
       whereClause +
+      orderClause +
       (limit ? ` LIMIT ${limit}` : '');
 
-    const params = where ? Object.values(where) : [];
+    const params = where ? Object.values(where).flat() : [];
     return this.execute(query, params);
   }
 

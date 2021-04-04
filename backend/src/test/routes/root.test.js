@@ -4,10 +4,10 @@ const { build } = require('../helper');
 
 const app = build();
 
-test('GET `/api` route', async () => {
+test('GET `/` route', async () => {
   const res = await app.inject({
     method: 'GET',
-    url: '/api',
+    url: '/',
   });
   expect(res.json()).toEqual({ message: 'Hello from DevSays' });
 });

@@ -17,7 +17,7 @@ CREATE TABLE "Users" (
 CREATE TABLE "RefreshSessions" (
 	"tokenId" bigserial PRIMARY KEY,
 	"userId" int NOT NULL REFERENCES "Users" ON DELETE CASCADE,
-	"refreshToken" uuid NOT NULL,
+	"refreshToken" uuid NOT NULL UNIQUE,
 	"userAgent" varchar(255) NOT NULL,
 	"fingerprint" varchar(200) NOT NULL,
 	"expiresIn" bigint NOT NULL,
