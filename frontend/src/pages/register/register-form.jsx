@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
+import styled from 'styled-components';
 import { AuthService } from '../../services/auth.service';
-import { Input, Button, ErrorBlock } from '../../components/styled/auth';
+import {
+  AuthForm,
+  AuthInput,
+  AuthSignUpButton,
+  AuthErrorBlock,
+} from '../../components/styled/auth';
 
 const RegisterForm = () => {
   const [email, setEmail] = useState('');
@@ -21,42 +26,66 @@ const RegisterForm = () => {
     }
   };
 
-  const isValidForm = () => {
-    return email.length && username.length && password.length;
-  };
-
   return (
     <FormWrapper>
-      {error ? <ErrorBlock>{error}</ErrorBlock> : null}
-      <Form onSubmit={handleInput}>
-        <Input
-          type="email"
-          required
-          placeholder="Email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-        />
-        <Input
+      {error ? (
+        <AuthErrorBlock onClick={() => setError('')}>{error}</AuthErrorBlock>
+      ) : null}
+      <AuthForm onSubmit={handleInput}>
+        <label htmlFor="register__username">Username</label>
+        <AuthInput
+          id="register__username"
           type="text"
           required
-          placeholder="Username"
           value={username}
           onChange={e => setUsername(e.target.value)}
         />
-        <Input
+        <label htmlFor="register__email">Email address</label>
+        <AuthInput
+          id="register__email"
+          type="email"
+          required
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+        />
+        <label htmlFor="register__password">Password</label>
+        <AuthInput
+          id="register__password"
           type="password"
           required
-          placeholder="Password"
           value={password}
           onChange={e => setPassword(e.target.value)}
         />
-        <Button disabled={!isValidForm()}>Register</Button>
-      </Form>
+        <span>
+          Make sure it&apos;s at least 8 characters including a number and a
+          lowercase letter.
+        </span>
+        <AuthSignUpButton>Create an account</AuthSignUpButton>
+      </AuthForm>
     </FormWrapper>
   );
 };
 
 export default RegisterForm;
 
-const FormWrapper = styled.div``;
-const Form = styled.form``;
+const FormWrapper = styled.div`
+  width: 530px;
+  margin: 0 auto;
+  @media screen and (max-width: 576px) {
+    width: calc(100% - 50px);
+  }
+  ${AuthErrorBlock} {
+    margin-bottom: 25px;
+  }
+  label::after {
+    content: ' *';
+    color: var(--red);
+    font-weight: 700;
+  }
+  span {
+    color: #ddd;
+    margin-top: -10px;
+    margin-bottom: 30px;
+    font-size: 13px;
+  }
+`;

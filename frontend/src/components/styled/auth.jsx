@@ -1,31 +1,53 @@
 import styled from 'styled-components';
 
-export const Input = styled.input`
-  margin: 12px 0 20px 0;
-  padding: 6px 12px;
-  background-color: ${props => props.theme.colors.lightGray};
-  border: 1px solid #ccc;
-  line-height: 20px;
-  outline: none;
+export const AuthErrorBlock = styled.div`
+  padding: 20px 30px;
+  background-color: var(--error-red);
+  border: 1px solid #777;
+  border-radius: 6px;
+  color: #eee;
+  text-align: center;
+  font-size: 13px;
 `;
 
-export const Button = styled.button`
-  margin-top: 5px;
+export const AuthForm = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const AuthInput = styled.input`
+  margin-top: 12px;
+  margin-bottom: 20px;
+  padding: 6px 12px;
+  background-color: var(--light-gray);
+  line-height: 20px;
+  &:focus {
+    outline: 2px solid var(--blue);
+  }
+`;
+
+const AuthButton = styled.button`
   padding: 7px 16px;
   border: none;
   border-radius: 6px;
-  background-color: ${props => props.theme.colors.green};
-  color: ${props => props.theme.colors.lightGray};
-  line-height: 20px;
+  color: var(--light-gray);
   cursor: pointer;
 `;
 
-export const ErrorBlock = styled.div`
-  width: 320px;
-  padding: 15px 0;
-  margin: 0 auto 30px auto;
+export const AuthSignInButton = styled(AuthButton)`
+  background-color: var(--green);
+  line-height: 20px;
+`;
+
+export const AuthSignUpButton = styled(AuthButton)`
+  background-color: var(--blue);
+  line-height: 32px;
+`;
+
+export const AuthLink = styled.div`
   text-align: center;
-  font-size: 13px;
-  background-color: #b70113;
-  border-radius: 6px;
+  a {
+    margin-left: 5px;
+    color: var(--blue);
+  }
 `;

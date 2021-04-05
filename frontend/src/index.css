@@ -2,15 +2,9 @@
   margin: 0;
   padding: 0;
   border: 0;
+  font-family: inherit;
   font-size: 100%;
-  font: inherit;
   box-sizing: border-box;
-}
-
-body {
-  font-family: 'Roboto', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 a {

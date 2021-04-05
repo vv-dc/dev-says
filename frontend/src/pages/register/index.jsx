@@ -3,13 +3,18 @@ import { Redirect, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { AuthService } from '../../services/auth.service';
 import RegisterForm from './register-form';
+import AuthHeader from '../../components/auth-header';
+import { AuthLink } from '../../components/styled/auth';
 
 const RegisterPage = () =>
   !AuthService.isAuthenticated() ? (
     <RegisterBody>
-      <h1>Register</h1>
+      <AuthHeader body="Create new account" />
       <RegisterForm />
-      <Link to="/login">Login</Link>
+      <AuthLink>
+        <span>Already have an account?</span>
+        <Link to="/login">Sign in</Link>
+      </AuthLink>
     </RegisterBody>
   ) : (
     <Redirect to="/" />
@@ -17,4 +22,10 @@ const RegisterPage = () =>
 
 export default RegisterPage;
 
-const RegisterBody = styled.div``;
+const RegisterBody = styled.div`
+  font-size: 15px;
+  color: var(--light-gray);
+  ${AuthLink} {
+    margin-top: 35px;
+  }
+`;

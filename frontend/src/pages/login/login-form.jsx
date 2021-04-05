@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { AuthService } from '../../services/auth.service';
-import { Input, Button, ErrorBlock } from '../../components/styled/auth';
+import {
+  AuthForm,
+  AuthInput,
+  AuthSignInButton,
+  AuthErrorBlock,
+} from '../../components/styled/auth';
 
 const LoginForm = () => {
   const [login, setLogin] = useState('');
@@ -22,35 +26,37 @@ const LoginForm = () => {
   };
 
   return (
-    <>
-      {error ? <ErrorBlock>{error}</ErrorBlock> : null}
-      <FormWrapper>
-        <Form onSubmit={handleInput}>
-          <label htmlFor="field-login">Username or email address</label>
-          <Input
-            id="field-login"
-            type="text"
-            required
-            maxLength="255"
-            value={login}
-            onChange={e => setLogin(e.target.value)}
-          />
-          <label htmlFor="field-password">
-            Password
-            <Link to="/reset-password">Forgot password?</Link>
-          </label>
-          <Input
-            id="field-password"
-            type="password"
-            required
-            maxLength="30"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-          />
-          <Button>Sign in</Button>
-        </Form>
-      </FormWrapper>
-    </>
+    <FormWrapper>
+      {error ? (
+        <AuthErrorBlock onClick={() => setError('')}>{error}</AuthErrorBlock>
+      ) : null}
+      <AuthForm onSubmit={handleInput}>
+        <label htmlFor="login__login">Username or email address</label>
+        <AuthInput
+          id="login__login"
+          type="text"
+          required
+          maxLength="255"
+          value={login}
+          onChange={e => setLogin(e.target.value)}
+        />
+        <label htmlFor="login__password">
+          Password
+          <Link to="/reset-password" tabIndex="-1">
+            Forgot password?
+          </Link>
+        </label>
+        <AuthInput
+          id="login__password"
+          type="password"
+          required
+          maxLength="30"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+        />
+        <AuthSignInButton>Sign in</AuthSignInButton>
+      </AuthForm>
+    </FormWrapper>
   );
 };
 
@@ -59,14 +65,18 @@ export default LoginForm;
 const FormWrapper = styled.div`
   width: 320px;
   margin: 0 auto;
-  padding: 30px;
-  border: 0.5px solid #777;
+  ${AuthErrorBlock} {
+    margin-bottom: 25px;
+  }
+  ${AuthForm} {
+    padding: 30px;
+    border: 1px solid #777;
+  }
+  ${AuthSignInButton} {
+    margin-top: 5px;
+  }
   a {
     float: right;
-    color: ${props => props.theme.colors.blue};
+    color: var(--blue);
   }
-`;
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
 `;
