@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { AuthService } from '../../services/auth.service';
+import GoogleButton from '../../components/google-button';
+import GithubButton from '../../components/github-button';
+import { LightDivider } from '../../components/styled/divider';
 import {
   AuthForm,
   AuthInput,
@@ -15,14 +18,16 @@ const LoginForm = () => {
   const [error, setError] = useState('');
   const history = useHistory();
 
-  const handleInput = async event => {
+  const handleExternalLogin = (service, { code }) =>
+    AuthService.loginExternal(service, code)
+      .then(() => history.push('/'))
+      .catch(err => setError(err.message));
+
+  const handleLogin = event => {
     event.preventDefault();
-    try {
-      await AuthService.login(login, password);
-      history.push('/');
-    } catch (error) {
-      setError(error.message);
-    }
+    AuthService.login(login, password)
+      .then(() => history.push('/'))
+      .catch(err => setError(err.message));
   };
 
   return (
@@ -30,7 +35,7 @@ const LoginForm = () => {
       {error ? (
         <AuthErrorBlock onClick={() => setError('')}>{error}</AuthErrorBlock>
       ) : null}
-      <AuthForm onSubmit={handleInput}>
+      <AuthForm onSubmit={handleLogin}>
         <label htmlFor="login__login">Username or email address</label>
         <AuthInput
           id="login__login"
@@ -55,6 +60,17 @@ const LoginForm = () => {
           onChange={e => setPassword(e.target.value)}
         />
         <AuthSignInButton>Sign in</AuthSignInButton>
+        <LightDivider>OR</LightDivider>
+        <GoogleButton
+          buttonText="Sign in with Google"
+          onSuccess={res => handleExternalLogin('google', res)}
+          onFailure={() => setError('Server error')}
+        />
+        <GithubButton
+          buttonText="Sign in with GitHub"
+          onSuccess={res => handleExternalLogin('github', res)}
+          onFailure={() => setError('Server error')}
+        />
       </AuthForm>
     </FormWrapper>
   );
@@ -72,8 +88,11 @@ const FormWrapper = styled.div`
     padding: 30px;
     border: 1px solid #777;
   }
-  ${AuthSignInButton} {
-    margin-top: 5px;
+  ${LightDivider} {
+    margin: 15px 0;
+  }
+  button:nth-of-type(2) {
+    margin-bottom: 15px;
   }
   a {
     float: right;

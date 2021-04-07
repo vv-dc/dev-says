@@ -43,6 +43,20 @@ export class AuthService {
     }
   }
 
+  static async registerExternal(service, username, code) {
+    await http.post(`/auth/register/${service}`, { username, code });
+  }
+
+  static async loginExternal(service, code) {
+    const fingerprint = await getFingerprint();
+    const response = await http.post(
+      `auth/login/${service}`,
+      { code, fingerprint },
+      { withCredentials: true }
+    );
+    AuthStore.setAuthData(response);
+  }
+
   static isAccessTokenExpired() {
     const expDate = AuthStore.expiredAt - 10;
     const nowDate = Math.floor(new Date().getTime() / 1000);

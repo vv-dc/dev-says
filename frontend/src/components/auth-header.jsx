@@ -16,7 +16,7 @@ export default AuthHeader;
 const HeaderBody = styled.header`
   text-align: center;
   color: var(--light-gray);
-  padding: 35px 0;
+  padding: 25px 0 35px 0;
   h1 {
     font-family: var(--font-heading);
     font-size: 48px;
