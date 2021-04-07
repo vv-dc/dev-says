@@ -7,7 +7,7 @@ const app = build();
 test('GET `/` route', async () => {
   const res = await app.inject({
     method: 'GET',
-    url: '/api',
+    url: '/',
   });
   expect(res.json()).toEqual({ message: 'Hello from DevSays' });
 });
