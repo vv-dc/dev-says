@@ -1,39 +1,25 @@
 'use strict';
 
-const { BadRequest } = require('http-errors');
-require('dotenv').config();
-const { COOKIE_SECRET, REFRESH_EXPIRES_IN, DOMAIN } = process.env;
-
 const schema = require('../schemas/auth');
+require('dotenv').config();
+
+const { getRefreshToken, sendTokens } = require('../helpers/tokens');
+const { getGithubEmail } = require('../helpers/github-email');
 const { AuthService } = require('./../services/auth/auth.service');
 
 module.exports = async function (fastify) {
   fastify.register(require('fastify-cookie'), {
-    secret: COOKIE_SECRET,
+    secret: process.env.COOKIE_SECRET,
   });
 
   fastify.decorateRequest('getRefreshToken', function () {
-    let { refreshToken } = this.cookies;
-    refreshToken = this.unsignCookie(refreshToken);
-    if (!refreshToken.valid) {
-      throw new BadRequest('Invalid Cookie');
-    }
-    return refreshToken.value;
+    return getRefreshToken.bind(this)();
   });
-
+  fastify.decorateRequest('getUserAgent', function () {
+    return this.headers['user-agent'];
+  });
   fastify.decorateReply('sendTokens', function ({ accessToken, refreshToken }) {
-    const expiresIn = parseInt(REFRESH_EXPIRES_IN);
-    this.setCookie('refreshToken', refreshToken, {
-      // secure: true,
-      // httpOnly: true,
-      signed: true,
-      sameSite: true,
-      domain: DOMAIN,
-      path: '/auth',
-      maxAge: Math.floor(expiresIn * 0.001),
-      expires: new Date(Date.now() + expiresIn),
-    });
-    this.send({ accessToken });
+    sendTokens.bind(this)(accessToken, refreshToken);
   });
 
   const authService = new AuthService();
@@ -47,8 +33,25 @@ module.exports = async function (fastify) {
 
   async function register(request, reply) {
     try {
-      const { email, password, username } = request.body;
-      await authService.register(email, password, username);
+      await authService.register(request.body, 'local');
+      reply.code(200).send();
+    } catch (error) {
+      reply.send(error);
+    }
+  }
+
+  fastify.route({
+    method: 'POST',
+    path: '/auth/register/github',
+    schema: schema.registerGithub,
+    handler: registerGithub,
+  });
+
+  async function registerGithub(request, reply) {
+    try {
+      const { authCode, username } = request.body;
+      const email = await getGithubEmail(authCode);
+      await authService.registerGithub(email, username);
       reply.code(200).send();
     } catch (error) {
       reply.send(error);
@@ -64,13 +67,33 @@ module.exports = async function (fastify) {
 
   async function login(request, reply) {
     try {
-      const userAgent = String(request.headers['user-agent']);
-      const { login, password, fingerprint } = request.body;
       const tokenPair = await authService.login(
-        login,
-        password,
+        request.body,
+        request.getUserAgent(),
+        'local'
+      );
+      reply.sendTokens(tokenPair);
+    } catch (error) {
+      reply.send(error);
+    }
+  }
+
+  fastify.route({
+    method: 'POST',
+    path: '/auth/login/github',
+    schema: schema.loginGithub,
+    handler: loginGithub,
+  });
+
+  async function loginGithub(request, reply) {
+    try {
+      const { authCode, fingerprint } = request.body;
+      const email = await getGithubEmail(authCode);
+      console.dir({ email });
+      const tokenPair = await authService.loginGithub(
+        email,
         fingerprint,
-        userAgent
+        request.getUserAgent()
       );
       reply.sendTokens(tokenPair);
     } catch (error) {

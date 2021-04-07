@@ -26,6 +26,13 @@ class RefreshService {
     });
   }
 
+  async findByFingerprint(userId, fingerprint) {
+    return this.pg.findOne({
+      table: this.table,
+      where: { userId, fingerprint },
+    });
+  }
+
   async deleteAndGet(refreshToken) {
     const rows = await this.pg.delete({
       table: this.table,

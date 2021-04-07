@@ -15,6 +15,16 @@ class UserService {
     });
   }
 
+  async findByLogin(login) {
+    return (
+      await this.pg.execute(
+        `SELECT * FROM "Users"
+         WHERE "email"=$1 OR "username"=$1`,
+        [login]
+      )
+    )[0];
+  }
+
   async findByEmail(email) {
     return this.pg.findOne({
       table: this.table,
@@ -29,15 +39,14 @@ class UserService {
     });
   }
 
-  async userExists(email, username) {
-    return this.findByEmail(email) || this.findByUsername(username);
-  }
-
   async add(userData) {
-    return this.pg.insert({
-      items: [userData],
-      table: this.table,
-    });
+    return (
+      await this.pg.insert({
+        items: [userData],
+        table: this.table,
+        returning: ['userId'],
+      })
+    )[0];
   }
 }
 

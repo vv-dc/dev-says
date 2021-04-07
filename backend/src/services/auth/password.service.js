@@ -2,7 +2,7 @@
 
 const argon2 = require('argon2');
 
-class HashService {
+class PasswordService {
   constructor(options = {}) {
     this.options = options
       ? options
@@ -20,4 +20,4 @@ class HashService {
   }
 }
 
-module.exports = { HashService };
+module.exports = { PasswordService };

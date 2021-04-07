@@ -1,8 +1,6 @@
 'use strict';
 
 const { Pool } = require('pg');
-const fs = require('fs');
-require('dotenv').config();
 class PgApi {
   constructor() {
     this.pool = new Pool();
@@ -124,16 +122,6 @@ class PgApi {
     } catch (error) {
       return error;
     }
-  }
-
-  async executeFile(path) {
-    let query;
-    try {
-      query = await fs.promises.readFile(path, 'utf-8');
-    } catch (error) {
-      return error;
-    }
-    return this.execute(query);
   }
 }
 

@@ -2,7 +2,6 @@ CREATE TABLE "Users" (
 	"userId" serial PRIMARY KEY,
 	"username" varchar(120) NOT NULL UNIQUE,
 	"email" varchar(255) NOT NULL UNIQUE,
-	"password" varchar(120) NOT NULL,
 	"fullName" varchar(255),
 	"avatarPath" varchar(255),
 	"location" varchar(80),
@@ -12,6 +11,18 @@ CREATE TABLE "Users" (
 	"isAdmin" boolean DEFAULT FALSE,
 	"createdAt" timestamp DEFAULT CURRENT_TIMESTAMP,
 	"updatedAt" timestamp DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE "AuthProviders" (
+	"providerId" smallserial PRIMARY KEY,
+	"providerName" varchar(60) NOT NULL UNIQUE
+);
+
+CREATE TABLE "Auths" (
+	"authId" serial PRIMARY KEY,
+	"userId" int NOT NULL REFERENCES "Users" ON DELETE CASCADE,
+	"authProviderId" smallint NOT NULL REFERENCES "AuthProviders" ON DELETE CASCADE,
+	"password" varchar(100) NOT NULL
 );
 
 CREATE TABLE "RefreshSessions" (
@@ -30,20 +41,20 @@ CREATE TABLE "Tags" (
 );
 
 CREATE TABLE "TagSubscriptions" (
-	"subscriberId" int REFERENCES "Users",
+	"subscriberId" int REFERENCES "Users" ON DELETE CASCADE,
 	"tagId" int REFERENCES "Tags",
 	PRIMARY KEY("subscriberId", "tagId")
 );
 
 CREATE TABLE "Followers" (
-	"followedId" int REFERENCES "Users",
-	"followerId" int REFERENCES "Users",
+	"followedId" int REFERENCES "Users" ON DELETE CASCADE,
+	"followerId" int REFERENCES "Users" ON DELETE CASCADE,
 	PRIMARY KEY("followedId", "followerId")
 );
 
 CREATE TABLE "Posts" (
 	"postId" bigserial PRIMARY KEY,
-	"authorId" int NOT NULL REFERENCES "Users",
+	"authorId" int NOT NULL REFERENCES "Users" ON DELETE CASCADE,
 	"title" text NOT NULL,
 	"contentFile" varchar(255) NOT NULL UNIQUE,
 	"isPublic" boolean DEFAULT TRUE,
@@ -52,22 +63,22 @@ CREATE TABLE "Posts" (
 );
 
 CREATE TABLE "Bookmarks" (
-	"userId" int REFERENCES "Users",
-	"postId" bigint REFERENCES "Posts",
+	"userId" int REFERENCES "Users" ON DELETE CASCADE,
+	"postId" bigint REFERENCES "Posts" ON DELETE CASCADE,
 	PRIMARY KEY("userId", "postId")
 );
 
 CREATE TABLE "PostTags" (
-	"postId" bigint REFERENCES "Posts",
+	"postId" bigint REFERENCES "Posts" ON DELETE CASCADE,
 	"tagId" int REFERENCES "Tags",
 	PRIMARY KEY("postId", "tagId")
 );
 
 CREATE TABLE "Comments" (
 	"commentId" bigserial PRIMARY KEY,
-	"postId" bigint NOT NULL REFERENCES "Posts",
-	"authorId" int NOT NULL REFERENCES "Users",
-	"parentCommentId" bigint REFERENCES "Comments",
+	"postId" bigint NOT NULL REFERENCES "Posts" ON DELETE CASCADE,
+	"authorId" int NOT NULL REFERENCES "Users" ON DELETE CASCADE,
+	"parentCommentId" bigint REFERENCES "Comments" ON DELETE CASCADE,
 	"content" json NOT NULL,
 	"sentAt" timestamp DEFAULT CURRENT_TIMESTAMP,
 	"updatedAt" timestamp DEFAULT CURRENT_TIMESTAMP

@@ -7,7 +7,8 @@ require('dotenv').config();
 const { RefreshService } = require('./refresh.service');
 const { UserService } = require('../users/user.service');
 const { JwtService } = require('./jwt.service');
-const { HashService } = require('./hash.service');
+const { PasswordService } = require('./password.service');
+const { ProviderService } = require('./provider.service');
 
 const { MAX_SESSIONS, REFRESH_EXPIRES_IN } = process.env;
 
@@ -16,27 +17,60 @@ class AuthService {
     this.refreshService = new RefreshService();
     this.userService = new UserService();
     this.jwtService = new JwtService();
-    this.hashService = new HashService();
+    this.passwordService = new PasswordService();
+    this.providerService = new ProviderService();
   }
 
-  async register(email, pass, username) {
-    if (await this.userService.userExists(email, username)) {
+  async register({ email, password, username }, authProvider) {
+    if (await this.userService.findByEmail(email)) {
       throw new Conflict('User already exists');
     }
-    const password = await this.hashService.hash(pass);
-    await this.userService.add({ email, password, username });
+    const hashedPassword = password
+      ? await this.passwordService.hash(password)
+      : undefined;
+    const { userId } = await this.userService.add({ email, username });
+
+    await this.providerService.addAuth({
+      userId,
+      password: hashedPassword,
+      authProvider,
+    });
   }
 
-  async login(login, password, fingerprint, userAgent) {
-    const criterion = login.includes('@') ? 'Email' : 'Username';
-    const user = await this.userService[`findBy${criterion}`](login);
-
+  async login({ login, password, fingerprint }, userAgent, authProvider) {
+    const user = await this.userService.findByLogin(login);
     if (!user) throw new Forbidden('Incorrect login');
-    if (!(await this.hashService.verify(user.password, password))) {
+
+    const { userId } = user;
+    if (await this.refreshService.findByFingerprint(userId, fingerprint)) {
+      throw new Forbidden('Already logged in');
+    }
+    const auth = await this.providerService.findAuth(userId, authProvider);
+    if (!auth) throw new Forbidden('Invalid auth provider');
+
+    const { password: hashedPassword } = auth;
+    if (
+      authProvider === 'local' &&
+      !(await this.passwordService.verify(hashedPassword, password))
+    ) {
       throw new Forbidden('Incorrect password');
     }
-    const { userId } = user;
     return this.addRefreshSesssion({ userId, fingerprint, userAgent });
+  }
+
+  async registerGithub(email, username) {
+    return this.register({ email, username }, 'github');
+  }
+
+  async loginGithub(email, fingerprint, userAgent) {
+    const user = await this.userService.findByEmail(email);
+    if (!user) throw new Forbidden('Incorrect email');
+
+    const auth = await this.providerService.findAuth(user.userId, 'github');
+    if (!auth) {
+      throw new Forbidden('Invalid auth provider');
+    }
+    return this.login({ login: email, fingerprint }, userAgent, 'github');
   }
 
   async refreshToken(refreshToken, fingerprint) {

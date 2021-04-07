@@ -12,6 +12,17 @@ const register = {
   },
 };
 
+const registerGithub = {
+  body: {
+    type: 'object',
+    properties: {
+      username: { type: 'string' },
+      authCode: { type: 'string' },
+    },
+    required: ['username', 'authCode'],
+  },
+};
+
 const login = {
   response: {
     200: {
@@ -32,6 +43,18 @@ const login = {
   },
 };
 
+const loginGithub = {
+  response: login.response,
+  body: {
+    type: 'object',
+    properties: {
+      fingerprint: { type: 'string' },
+      authCode: { type: 'string' },
+    },
+    required: ['fingerprint', 'authCode'],
+  },
+};
+
 const refresh = {
   response: login.response,
   body: {
@@ -49,7 +72,9 @@ const logout = {
 
 module.exports = {
   register,
+  registerGithub,
   login,
+  loginGithub,
   refresh,
   logout,
 };
