@@ -89,7 +89,6 @@ module.exports = async function (fastify) {
     try {
       const { authCode, fingerprint } = request.body;
       const email = await getGithubEmail(authCode);
-      console.dir({ email });
       const tokenPair = await authService.loginGithub(
         email,
         fingerprint,

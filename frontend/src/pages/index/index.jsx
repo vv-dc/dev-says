@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AuthStore from '../../stores/auth-store';
@@ -13,7 +14,7 @@ const IndexPage = () => {
   );
 };
 
-export default IndexPage;
+export default observer(IndexPage);
 
 const Wrapper = styled.div`
   color: var(--light-gray);

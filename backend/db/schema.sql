@@ -22,7 +22,7 @@ CREATE TABLE "Auths" (
 	"authId" serial PRIMARY KEY,
 	"userId" int NOT NULL REFERENCES "Users" ON DELETE CASCADE,
 	"authProviderId" smallint NOT NULL REFERENCES "AuthProviders" ON DELETE CASCADE,
-	"password" varchar(100) NOT NULL
+	"password" varchar(100)
 );
 
 CREATE TABLE "RefreshSessions" (

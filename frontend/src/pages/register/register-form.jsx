@@ -39,7 +39,7 @@ const RegisterForm = () => {
 
   const handleInput = event => {
     event.preventDefault();
-    !isValidForm() && handleRegister();
+    isValidForm() && handleRegister();
   };
 
   return (

@@ -32,7 +32,7 @@ export class AuthService {
     try {
       const fingerprint = await getFingerprint();
       const response = await http.post(
-        '/auth/refresh-tokens',
+        '/auth/refresh',
         { fingerprint },
         { withCredentials: true }
       );
@@ -43,18 +43,18 @@ export class AuthService {
     }
   }
 
-  static async registerExternal(service, username, code) {
-    await http.post(`/auth/register/${service}`, { username, code });
+  static async registerExternal(service, username, authCode) {
+    await http.post(`/auth/register/${service}`, { username, authCode });
   }
 
-  static async loginExternal(service, code) {
+  static async loginExternal(service, authCode) {
     const fingerprint = await getFingerprint();
     const response = await http.post(
       `auth/login/${service}`,
-      { code, fingerprint },
+      { authCode, fingerprint },
       { withCredentials: true }
     );
-    AuthStore.setAuthData(response);
+    AuthStore.setAuthData(response.data);
   }
 
   static isAccessTokenExpired() {
