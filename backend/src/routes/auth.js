@@ -4,8 +4,7 @@ const schema = require('../schemas/auth');
 require('dotenv').config();
 
 const { getRefreshToken, sendTokens } = require('../helpers/tokens');
-const { getGithubEmail } = require('../helpers/github-email');
-const { AuthService } = require('./../services/auth/auth.service');
+const { AuthService } = require('../services/auth/auth.service');
 
 module.exports = async function (fastify) {
   fastify.register(require('fastify-cookie'), {
@@ -28,111 +27,92 @@ module.exports = async function (fastify) {
     method: 'POST',
     path: '/auth/register',
     schema: schema.register,
-    handler: register,
-  });
-
-  async function register(request, reply) {
-    try {
+    handler: async (request, reply) => {
       await authService.register(request.body, 'local');
       reply.code(200).send();
-    } catch (error) {
-      reply.send(error);
-    }
-  }
+    },
+  });
 
   fastify.route({
     method: 'POST',
     path: '/auth/register/github',
-    schema: schema.registerGithub,
-    handler: registerGithub,
+    schema: schema.registerExternal,
+    handler: async (request, reply) => {
+      await authService.registerGithub(request.body);
+      reply.code(200).send();
+    },
   });
 
-  async function registerGithub(request, reply) {
-    try {
-      const { authCode, username } = request.body;
-      const email = await getGithubEmail(authCode);
-      await authService.registerGithub(email, username);
+  fastify.route({
+    method: 'POST',
+    path: '/auth/register/google',
+    schema: schema.registerExternal,
+    handler: async (request, reply) => {
+      await authService.registerGoogle(request.body);
       reply.code(200).send();
-    } catch (error) {
-      reply.send(error);
-    }
-  }
+    },
+  });
 
   fastify.route({
     method: 'POST',
     path: '/auth/login',
     schema: schema.login,
-    handler: login,
-  });
-
-  async function login(request, reply) {
-    try {
+    handler: async (request, reply) => {
       const tokenPair = await authService.login(
         request.body,
         request.getUserAgent(),
         'local'
       );
       reply.sendTokens(tokenPair);
-    } catch (error) {
-      reply.send(error);
-    }
-  }
+    },
+  });
 
   fastify.route({
     method: 'POST',
     path: '/auth/login/github',
-    schema: schema.loginGithub,
-    handler: loginGithub,
-  });
-
-  async function loginGithub(request, reply) {
-    try {
-      const { authCode, fingerprint } = request.body;
-      const email = await getGithubEmail(authCode);
+    schema: schema.loginExternal,
+    handler: async (request, reply) => {
       const tokenPair = await authService.loginGithub(
-        email,
-        fingerprint,
+        request.body,
         request.getUserAgent()
       );
       reply.sendTokens(tokenPair);
-    } catch (error) {
-      reply.send(error);
-    }
-  }
+    },
+  });
+
+  fastify.route({
+    method: 'POST',
+    path: '/auth/login/google',
+    schema: schema.loginExternal,
+    handler: async (request, reply) => {
+      const tokenPair = await authService.loginGoogle(
+        request.body,
+        request.getUserAgent()
+      );
+      reply.sendTokens(tokenPair);
+    },
+  });
 
   fastify.route({
     method: 'POST',
     path: '/auth/refresh',
     schema: schema.refresh,
-    handler: refresh,
-  });
-
-  async function refresh(request, reply) {
-    try {
-      const { fingerprint } = request.body;
+    handler: async (request, reply) => {
       const tokenPair = await authService.refreshToken(
         request.getRefreshToken(),
-        fingerprint
+        request.body.fingerprint
       );
       reply.sendTokens(tokenPair);
-    } catch (error) {
-      reply.send(error);
-    }
-  }
+    },
+  });
 
   fastify.route({
     method: 'POST',
     path: '/auth/logout',
     schema: schema.logout,
-    handler: logout,
-  });
-
-  async function logout(request, reply) {
-    try {
+    handler: async (request, reply) => {
       await authService.logout(request.getRefreshToken());
       reply.code(200).send();
-    } catch (error) {
-      reply.send(error);
-    }
-  }
+    },
+  });
 };

@@ -12,7 +12,7 @@ const register = {
   },
 };
 
-const registerGithub = {
+const registerExternal = {
   body: {
     type: 'object',
     properties: {
@@ -43,7 +43,7 @@ const login = {
   },
 };
 
-const loginGithub = {
+const loginExternal = {
   response: login.response,
   body: {
     type: 'object',
@@ -66,15 +66,13 @@ const refresh = {
   },
 };
 
-const logout = {
-  body: refresh.body,
-};
+const logout = {};
 
 module.exports = {
   register,
-  registerGithub,
+  registerExternal,
   login,
-  loginGithub,
+  loginExternal,
   refresh,
   logout,
 };

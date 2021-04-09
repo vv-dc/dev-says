@@ -9,6 +9,8 @@ const { UserService } = require('../users/user.service');
 const { JwtService } = require('./jwt.service');
 const { PasswordService } = require('./password.service');
 const { ProviderService } = require('./provider.service');
+const { getGithubEmail } = require('../../helpers/github-email');
+const { getGoogleEmail } = require('../../helpers/google-email');
 
 const { MAX_SESSIONS, REFRESH_EXPIRES_IN } = process.env;
 
@@ -22,10 +24,14 @@ class AuthService {
   }
 
   async register({ email, password, username }, authProvider) {
-    if (await this.userService.findByEmail(email)) {
-      throw new Conflict('User already exists');
+    const isLocal = authProvider === 'local';
+    if (isLocal && (await this.userService.findByUsername(username))) {
+      throw new Conflict('Username already picked');
     }
-    const hashedPassword = password
+    if (await this.userService.findByEmail(email)) {
+      throw new Conflict('Email already picked');
+    }
+    const hashedPassword = isLocal
       ? await this.passwordService.hash(password)
       : undefined;
     const { userId } = await this.userService.add({ email, username });
@@ -35,6 +41,22 @@ class AuthService {
       password: hashedPassword,
       authProvider,
     });
+  }
+
+  async registerExternal(authCode, username, authProvider, getEmail) {
+    if (await this.userService.findByUsername(username)) {
+      throw new Conflict('Username already picked');
+    }
+    const email = await getEmail(authCode);
+    await this.register({ email, username }, authProvider);
+  }
+
+  async registerGoogle({ authCode, username }) {
+    await this.registerExternal(authCode, username, 'google', getGoogleEmail);
+  }
+
+  async registerGithub({ authCode, username }) {
+    await this.registerExternal(authCode, username, 'github', getGithubEmail);
   }
 
   async login({ login, password, fingerprint }, userAgent, authProvider) {
@@ -58,19 +80,14 @@ class AuthService {
     return this.addRefreshSesssion({ userId, fingerprint, userAgent });
   }
 
-  async registerGithub(email, username) {
-    return this.register({ email, username }, 'github');
+  async loginGithub({ authCode, fingerprint }, userAgent) {
+    const email = await getGithubEmail(authCode);
+    return this.login({ login: email, fingerprint }, userAgent, 'github');
   }
 
-  async loginGithub(email, fingerprint, userAgent) {
-    const user = await this.userService.findByEmail(email);
-    if (!user) throw new Forbidden('Incorrect email');
-
-    const auth = await this.providerService.findAuth(user.userId, 'github');
-    if (!auth) {
-      throw new Forbidden('Invalid auth provider');
-    }
-    return this.login({ login: email, fingerprint }, userAgent, 'github');
+  async loginGoogle({ authCode, fingerprint }, userAgent) {
+    const email = await getGoogleEmail(authCode);
+    return this.login({ login: email, fingerprint }, userAgent, 'google');
   }
 
   async refreshToken(refreshToken, fingerprint) {

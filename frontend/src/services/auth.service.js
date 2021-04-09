@@ -44,14 +44,20 @@ export class AuthService {
   }
 
   static async registerExternal(service, username, authCode) {
-    await http.post(`/auth/register/${service}`, { username, authCode });
+    await http.post(`/auth/register/${service}`, {
+      username,
+      authCode: decodeURIComponent(authCode),
+    });
   }
 
   static async loginExternal(service, authCode) {
     const fingerprint = await getFingerprint();
     const response = await http.post(
       `auth/login/${service}`,
-      { authCode, fingerprint },
+      {
+        authCode: decodeURIComponent(authCode),
+        fingerprint,
+      },
       { withCredentials: true }
     );
     AuthStore.setAuthData(response.data);
