@@ -15,8 +15,8 @@ const GlobalStyles = createGlobalStyle`
     --dark-gray: #27282a;
     --green: #25bb41;
     --blue: #2378a9;
-    --error-red: #862626;
     --red: #cb2431;
+    --error-red: #8a050c;
     --font-heading: 'Bebas Neue';
     --font-regular: 'Roboto';
   }

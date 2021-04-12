@@ -5,7 +5,7 @@ import { getFingerprint } from '../helpers/get-fingerprint';
 const http = new HttpService({ withAuth: false });
 
 export class AuthService {
-  static async login(login, password) {
+  static async loginLocal(login, password) {
     const fingerprint = await getFingerprint();
     const response = await http.post(
       '/auth/login',
@@ -15,8 +15,40 @@ export class AuthService {
     AuthStore.setAuthData(response.data);
   }
 
-  static async register(email, username, password) {
+  static async loginExternal(authProvider, authCode) {
+    const fingerprint = await getFingerprint();
+    const response = await http.post(
+      `auth/login/${authProvider}`,
+      {
+        authCode: decodeURIComponent(authCode),
+        fingerprint,
+      },
+      { withCredentials: true }
+    );
+    AuthStore.setAuthData(response.data);
+  }
+
+  static async registerLocal(email, username, password) {
     await http.post('/auth/register', { email, username, password });
+  }
+
+  static async registerExternal(authProvider, username, authCode) {
+    console.log({ authProvider, username, authCode });
+    await http.post(`/auth/register/${authProvider}`, {
+      username,
+      authCode: decodeURIComponent(authCode),
+    });
+  }
+
+  static async register(formState) {
+    const { authProvider } = formState;
+    if (authProvider === 'local') {
+      const { email, username, password } = formState;
+      await this.registerLocal(email, username, password);
+    } else {
+      const { username, authCode } = formState;
+      await this.registerExternal(authProvider, username, authCode);
+    }
   }
 
   static async logout() {
@@ -41,26 +73,6 @@ export class AuthService {
       AuthStore.resetAuthData();
       return error;
     }
-  }
-
-  static async registerExternal(service, username, authCode) {
-    await http.post(`/auth/register/${service}`, {
-      username,
-      authCode: decodeURIComponent(authCode),
-    });
-  }
-
-  static async loginExternal(service, authCode) {
-    const fingerprint = await getFingerprint();
-    const response = await http.post(
-      `auth/login/${service}`,
-      {
-        authCode: decodeURIComponent(authCode),
-        fingerprint,
-      },
-      { withCredentials: true }
-    );
-    AuthStore.setAuthData(response.data);
   }
 
   static isAccessTokenExpired() {

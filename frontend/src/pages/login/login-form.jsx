@@ -6,7 +6,7 @@ import GoogleButton from '../../components/google-button';
 import GithubButton from '../../components/github-button';
 import { LightDivider } from '../../components/styled/divider';
 import {
-  AuthForm,
+  AuthFormContent,
   AuthInput,
   AuthSignInButton,
   AuthErrorBlock,
@@ -18,16 +18,16 @@ const LoginForm = () => {
   const [error, setError] = useState('');
   const history = useHistory();
 
-  const handleExternalLogin = (service, { code }) =>
+  const handleExternalLogin = (service, code) =>
     AuthService.loginExternal(service, code)
       .then(() => history.push('/'))
-      .catch(err => setError(err.message));
+      .catch(err => setError(err.response.data.message));
 
   const handleLogin = event => {
     event.preventDefault();
-    AuthService.login(login, password)
+    AuthService.loginLocal(login, password)
       .then(() => history.push('/'))
-      .catch(err => setError(err.message));
+      .catch(err => setError(err.response.data.message));
   };
 
   return (
@@ -35,43 +35,45 @@ const LoginForm = () => {
       {error ? (
         <AuthErrorBlock onClick={() => setError('')}>{error}</AuthErrorBlock>
       ) : null}
-      <AuthForm onSubmit={handleLogin}>
-        <label htmlFor="login__login">Username or email address</label>
-        <AuthInput
-          id="login__login"
-          type="text"
-          required
-          maxLength="255"
-          value={login}
-          onChange={e => setLogin(e.target.value)}
-        />
-        <label htmlFor="login__password">
-          Password
-          <Link to="/reset-password" tabIndex="-1">
-            Forgot password?
-          </Link>
-        </label>
-        <AuthInput
-          id="login__password"
-          type="password"
-          required
-          maxLength="30"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-        />
-        <AuthSignInButton>Sign in</AuthSignInButton>
-        <LightDivider>OR</LightDivider>
-        <GoogleButton
-          buttonText="Sign in with Google"
-          onSuccess={res => handleExternalLogin('google', res)}
-          onFailure={() => setError('Server error')}
-        />
-        <GithubButton
-          buttonText="Sign in with GitHub"
-          onSuccess={res => handleExternalLogin('github', res)}
-          onFailure={() => setError('Server error')}
-        />
-      </AuthForm>
+      <form onSubmit={handleLogin}>
+        <AuthFormContent>
+          <label htmlFor="login__login">Username or email address</label>
+          <AuthInput
+            id="login__login"
+            type="text"
+            required
+            maxLength="255"
+            value={login}
+            onChange={e => setLogin(e.target.value.trim())}
+          />
+          <label htmlFor="login__password">
+            Password
+            <Link to="/reset-password" tabIndex="-1">
+              Forgot password?
+            </Link>
+          </label>
+          <AuthInput
+            id="login__password"
+            type="password"
+            required
+            maxLength="30"
+            value={password}
+            onChange={e => setPassword(e.target.value.trim())}
+          />
+          <AuthSignInButton>Sign in</AuthSignInButton>
+          <LightDivider>OR</LightDivider>
+          <GoogleButton
+            buttonText="Sign in with Google"
+            onSuccess={res => handleExternalLogin('google', res.code)}
+            onFailure={() => setError('Server error')}
+          />
+          <GithubButton
+            buttonText="Sign in with GitHub"
+            onSuccess={res => handleExternalLogin('github', res.code)}
+            onFailure={() => setError('Server error')}
+          />
+        </AuthFormContent>
+      </form>
     </FormWrapper>
   );
 };
@@ -84,7 +86,7 @@ const FormWrapper = styled.div`
   ${AuthErrorBlock} {
     margin-bottom: 25px;
   }
-  ${AuthForm} {
+  ${AuthFormContent} {
     padding: 30px;
     border: 1px solid #777;
   }

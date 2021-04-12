@@ -11,7 +11,7 @@ export const AuthErrorBlock = styled.div`
   font-size: 13px;
 `;
 
-export const AuthForm = styled.form`
+export const AuthFormContent = styled.div`
   display: flex;
   flex-direction: column;
 `;

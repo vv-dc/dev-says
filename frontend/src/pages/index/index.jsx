@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AuthStore from '../../stores/auth-store';
+import { AuthService } from '../../services/auth.service';
 
 const IndexPage = () => {
   return (
@@ -10,6 +11,7 @@ const IndexPage = () => {
       <h1>{AuthStore.accessToken}</h1>
       <Link to="/login">Login</Link>
       <Link to="/register">Register</Link>
+      <button onClick={async () => await AuthService.logout()}>Logout</button>
     </Wrapper>
   );
 };
