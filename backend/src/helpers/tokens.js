@@ -3,7 +3,7 @@
 const { BadRequest } = require('http-errors');
 
 require('dotenv').config();
-const { REFRESH_EXPIRES_IN, DOMAIN } = process.env;
+const { REFRESH_EXPIRES_IN, DOMAIN, PROTOCOL } = process.env;
 
 function getRefreshToken() {
   let { refreshToken } = this.cookies;
@@ -17,7 +17,7 @@ function getRefreshToken() {
 function sendTokens(accessToken, refreshToken) {
   const expiresIn = parseInt(REFRESH_EXPIRES_IN);
   this.setCookie('refreshToken', refreshToken, {
-    // secure: true,
+    secure: PROTOCOL === 'https',
     httpOnly: true,
     signed: true,
     sameSite: true,

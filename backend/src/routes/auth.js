@@ -1,5 +1,6 @@
 'use strict';
 
+const Cookie = require('fastify-cookie');
 const schema = require('../schemas/auth');
 require('dotenv').config();
 
@@ -7,7 +8,7 @@ const { getRefreshToken, sendTokens } = require('../helpers/tokens');
 const { AuthService } = require('../services/auth/auth.service');
 
 module.exports = async function (fastify) {
-  fastify.register(require('fastify-cookie'), {
+  fastify.register(Cookie, {
     secret: process.env.COOKIE_SECRET,
   });
 

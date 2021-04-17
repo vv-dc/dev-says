@@ -1,7 +1,7 @@
 'use strict';
 
 const { Forbidden } = require('http-errors');
-const axios = require('axios').default;
+const fetch = require('node-fetch');
 
 require('dotenv').config();
 const {
@@ -12,23 +12,26 @@ const {
 } = process.env;
 
 async function getGithubEmail(authCode) {
-  const token = await axios({
+  const responseToken = await fetch(GITHUB_TOKEN_URL, {
     method: 'POST',
-    url: GITHUB_TOKEN_URL,
-    data: {
+    body: JSON.stringify({
       client_id: GITHUB_ID,
       client_secret: GITHUB_SECRET,
       code: authCode,
+    }),
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
-    headers: { Accept: 'application/json' },
   });
-  const { access_token } = token.data;
-  const emails = await axios({
-    method: 'GET',
-    url: GITHUB_API_URL,
+  const { access_token } = await responseToken.json();
+
+  const responseData = await fetch(GITHUB_API_URL, {
     headers: { Authorization: `token ${access_token}` },
   });
-  const primary = emails.data.find(email => email.primary);
+  const emails = await responseData.json();
+
+  const primary = emails.find(email => email.primary);
   if (!primary.verified) {
     throw new Forbidden('Email not verified');
   }

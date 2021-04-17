@@ -1,7 +1,7 @@
 'use strict';
 
 const { Forbidden } = require('http-errors');
-const axios = require('axios').default;
+const fetch = require('node-fetch');
 
 require('dotenv').config();
 const {
@@ -11,32 +11,31 @@ const {
   GOOGLE_API_URL,
   DOMAIN,
   FRONTEND_PORT,
+  PROTOCOL,
 } = process.env;
 
 async function getGoogleEmail(authCode) {
-  const token = await axios({
+  const responseToken = await fetch(GOOGLE_TOKEN_URL, {
     method: 'POST',
-    url: GOOGLE_TOKEN_URL,
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       'Cache-Control': 'no-cache',
     },
-    data: new URLSearchParams({
+    body: new URLSearchParams({
       code: authCode,
       client_id: GOOGLE_ID,
       client_secret: GOOGLE_SECRET,
-      redirect_uri: `http://${DOMAIN}:${FRONTEND_PORT}`,
+      redirect_uri: `${PROTOCOL}://${DOMAIN}:${FRONTEND_PORT}`,
       grant_type: 'authorization_code',
     }).toString(),
   });
-  const info = await axios({
-    method: 'GET',
-    url: GOOGLE_API_URL,
-    params: {
-      id_token: token.data.id_token,
-    },
-  });
-  const { data } = info;
+  const { id_token } = await responseToken.json();
+
+  const responseData = await fetch(
+    `${GOOGLE_API_URL}?${new URLSearchParams({ id_token }).toString()}`
+  );
+  const data = await responseData.json();
+
   if (!data.email_verified) {
     throw new Forbidden('Email not verified');
   }

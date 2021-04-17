@@ -9,8 +9,8 @@ CREATE TABLE "Users" (
 	"website" varchar(255),
 	"bio" text,
 	"isAdmin" boolean DEFAULT FALSE,
-	"createdAt" timestamp DEFAULT CURRENT_TIMESTAMP,
-	"updatedAt" timestamp DEFAULT CURRENT_TIMESTAMP
+	"createdAt" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	"updatedAt" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE "AuthProviders" (
@@ -32,7 +32,7 @@ CREATE TABLE "RefreshSessions" (
 	"userAgent" varchar(255) NOT NULL,
 	"fingerprint" varchar(200) NOT NULL,
 	"expiresIn" bigint NOT NULL,
-	"createdAt" timestamp with time zone NOT NULL DEFAULT now()
+	"createdAt" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE "Tags" (
@@ -58,8 +58,8 @@ CREATE TABLE "Posts" (
 	"title" text NOT NULL,
 	"contentFile" varchar(255) NOT NULL UNIQUE,
 	"isPublic" boolean DEFAULT TRUE,
-	"createdAt" timestamp DEFAULT CURRENT_TIMESTAMP,
-	"updatedAt" timestamp DEFAULT CURRENT_TIMESTAMP
+	"createdAt" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	"updatedAt" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE "Bookmarks" (
@@ -80,6 +80,6 @@ CREATE TABLE "Comments" (
 	"authorId" int NOT NULL REFERENCES "Users" ON DELETE CASCADE,
 	"parentCommentId" bigint REFERENCES "Comments" ON DELETE CASCADE,
 	"content" json NOT NULL,
-	"sentAt" timestamp DEFAULT CURRENT_TIMESTAMP,
-	"updatedAt" timestamp DEFAULT CURRENT_TIMESTAMP
+	"sentAt" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	"updatedAt" timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
