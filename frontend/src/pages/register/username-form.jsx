@@ -8,7 +8,8 @@ import {
 
 export const UsernameForm = ({ state, updateState, setError }) => {
   const handleClick = event => {
-    if (!state.username.match('[^@#]{2,}$')) {
+    const noCharpAndAt2Symbols = '[^@#]{2,}$';
+    if (!state.username.match(noCharpAndAt2Symbols)) {
       event.preventDefault();
       setError(
         'The username must be at least 2 characters long and not contain "#" and "@"'

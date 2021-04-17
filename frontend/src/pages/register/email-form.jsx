@@ -12,7 +12,8 @@ import {
 export const EmailForm = ({ state, updateState, updateStep, setError }) => {
   const handleLocalRegister = event => {
     event.preventDefault();
-    state.password.match('^(?=.*[A-Za-z])(?=.*d)[A-Za-z\\d]{8,}$')
+    const letterNumber8Symbols = '^(?=.*[A-Za-z])(?=.*d)[A-Za-z\\d]{8,}$';
+    state.password.match(letterNumber8Symbols)
       ? updateStep(+1)
       : setError(
           'The password must be at least 8 characters long, including a number and a letter'
