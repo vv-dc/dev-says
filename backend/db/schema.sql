@@ -3,7 +3,7 @@ CREATE TABLE "Users" (
 	"username" varchar(120) NOT NULL UNIQUE,
 	"email" varchar(255) NOT NULL UNIQUE,
 	"fullName" varchar(255),
-	"avatarPath" varchar(255),
+	"imageURL" varchar(255),
 	"location" varchar(80),
 	"company" varchar(120),
 	"website" varchar(255),
@@ -55,8 +55,8 @@ CREATE TABLE "Followers" (
 CREATE TABLE "Posts" (
 	"postId" bigserial PRIMARY KEY,
 	"authorId" int NOT NULL REFERENCES "Users" ON DELETE CASCADE,
-	"title" text NOT NULL,
-	"contentFile" varchar(255) NOT NULL UNIQUE,
+	"title" varchar(255) NOT NULL,
+	"content" jsonb NOT NULL UNIQUE,
 	"isPublic" boolean DEFAULT TRUE,
 	"createdAt" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	"updatedAt" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -79,7 +79,7 @@ CREATE TABLE "Comments" (
 	"postId" bigint NOT NULL REFERENCES "Posts" ON DELETE CASCADE,
 	"authorId" int NOT NULL REFERENCES "Users" ON DELETE CASCADE,
 	"parentCommentId" bigint REFERENCES "Comments" ON DELETE CASCADE,
-	"content" json NOT NULL,
-	"sentAt" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	"rawContent" text NOT NULL,
+	"postedAt" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	"updatedAt" timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
