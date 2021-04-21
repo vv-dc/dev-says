@@ -56,7 +56,7 @@ CREATE TABLE "Posts" (
 	"postId" bigserial PRIMARY KEY,
 	"authorId" int NOT NULL REFERENCES "Users" ON DELETE CASCADE,
 	"title" varchar(255) NOT NULL,
-	"content" jsonb NOT NULL UNIQUE,
+	"content" jsonb NOT NULL,
 	"isPublic" boolean DEFAULT TRUE,
 	"createdAt" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	"updatedAt" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
