@@ -123,6 +123,15 @@ class PgApi {
       return error;
     }
   }
+
+  async executeFunction(funcName, params = []) {
+    const keys = Array.from(
+      { length: params.length },
+      (_, i) => `$${i + 1}`
+    ).join(',');
+    const query = `SELECT * FROM ${funcName}(${keys})`;
+    return this.execute(query, params);
+  }
 }
 
 module.exports = { PgApi };
