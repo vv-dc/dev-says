@@ -3,7 +3,7 @@
 const postStructure = {
   type: 'object',
   properties: {
-    postId: { type: 'number' },
+    id: { type: 'number' },
     title: { type: 'string' },
     content: {
       type: 'object',
@@ -15,7 +15,7 @@ const postStructure = {
     updatedAt: { type: 'string', format: 'date-time' },
     tags: { type: 'array', items: { type: 'string' } },
   },
-  required: ['postId', 'title', 'content', 'createdAt'],
+  required: ['id', 'title', 'content', 'createdAt'],
 };
 
 const postOne = {

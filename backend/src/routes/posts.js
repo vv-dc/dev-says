@@ -22,11 +22,8 @@ module.exports = async function (fastify) {
     path: '/posts',
     schema: schema.postList,
     handler: async (request, reply) => {
-      const { tag } = request.query;
-      if (tag) {
-        const posts = await postService.findByTag(tag);
-        reply.send({ posts });
-      }
+      const posts = await postService.findByQuery(request.query);
+      reply.send({ posts });
     },
   });
 };

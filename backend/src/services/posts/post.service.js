@@ -6,6 +6,7 @@ class PostService {
   constructor() {
     this.table = 'Posts';
     this.pg = new PgApi();
+    this.searchOptions = ['tag', 'username', 'userId'];
   }
 
   async findById(postId) {
@@ -13,8 +14,13 @@ class PostService {
     return rows[0];
   }
 
-  async findByTag(tag) {
-    return this.pg.executeFunction('getPostsByTag', [tag]);
+  async findByQuery(query) {
+    const option = this.searchOptions.filter(option => query[option])[0];
+    if (option) {
+      const functionName = `getPostsBy${option}`;
+      return this.pg.executeFunction(functionName, [query[option]]);
+    }
+    return [];
   }
 }
 
