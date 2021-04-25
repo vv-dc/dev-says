@@ -14,18 +14,18 @@ const GlobalStyles = createGlobalStyle`
     --gray: #cccccc;
     --light-gray: #f1f0ea;
     --dark-gray: #18191a;
-    --cell-gray: #2d2d2d;
     --green: #0dab76;
     --blue: #2378a9;
     --red: #cb2431;
     --error-red: #8a050c;
+    --bg-post: #101816;
     --font-heading: 'Bebas Neue';
   }
   body {
     background-color: var(--black);
     color: var(--light-gray);
-    font-family: -apple-system, BlinkMacSystemFont, 
-      "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 
+      'Roboto', 'Cantarell', sans-serif;
   }
 `;
 

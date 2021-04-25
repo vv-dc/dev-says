@@ -18,11 +18,11 @@ const UserPosts = ({ user }) => {
   return isLoading ? (
     <h1>Loading posts...</h1>
   ) : (
-    <div>
+    <>
       {posts.map(post => (
         <Post key={post.id} post={post} user={user}></Post>
       ))}
-    </div>
+    </>
   );
 };
 

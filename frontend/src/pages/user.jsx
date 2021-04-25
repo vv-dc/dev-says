@@ -26,19 +26,16 @@ const UserPage = () => {
     <UserNotFound username={username} />
   ) : (
     <Wrapper>
-      <div>
-        <h1>
-          <span>{user.fullName}&nbsp;</span>
-          <span>@{user.username}</span>
-        </h1>
-      </div>
+      <h1>
+        <span>{user.fullName}&nbsp;</span>
+        <span>@{user.username}</span>
+      </h1>
       <UserPosts user={user} />
     </Wrapper>
   );
 };
 
 const Wrapper = styled.main`
-  padding: 25px 50px;
   border-radius: 30px;
 `;
 
