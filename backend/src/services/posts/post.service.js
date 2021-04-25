@@ -6,7 +6,7 @@ class PostService {
   constructor() {
     this.table = 'Posts';
     this.pg = new PgApi();
-    this.searchOptions = ['tag', 'username', 'userId'];
+    this.searchOptions = ['tag', 'userId', 'username'];
   }
 
   async findById(postId) {
