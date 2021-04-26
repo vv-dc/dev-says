@@ -5,12 +5,25 @@ import CellMarkDown from './markdown';
 
 const Cell = ({ type, ...rest }) => {
   return (
-    <Wrapper>
+    <CellWrapper>
       {type === 'code' ? <CellCode {...rest} /> : <CellMarkDown {...rest} />}
-    </Wrapper>
+    </CellWrapper>
   );
 };
 
-const Wrapper = styled.div``;
+const CellWrapper = styled.div`
+  padding: 10px;
+  border: 1px solid var(--border-light);
+  font-size: 14px;
+  h1 {
+    font-size: 18px;
+  }
+  h2 {
+    font-size: 16px;
+  }
+  &:hover {
+    border-color: var(--green);
+  }
+`;
 
 export default Cell;

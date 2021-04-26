@@ -49,6 +49,7 @@ const FirstLine = styled.div`
   flex-wrap: wrap;
   font-size: 16px;
   margin-top: -3px;
+  margin-right: 15px;
   * {
     margin: 3px 5px 0 0;
   }

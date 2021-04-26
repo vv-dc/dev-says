@@ -24,4 +24,7 @@ const Dot = styled.div`
 const DotsWrapper = styled.nav`
   display: flex;
   padding: 5px 0;
+  &:hover {
+    opacity: 0.7;
+  }
 `;

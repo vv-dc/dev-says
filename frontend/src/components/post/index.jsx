@@ -3,13 +3,15 @@ import styled from 'styled-components';
 
 import PostHeader from './header';
 import PostBody from './body';
+import PostTags from './tags';
 
 const Post = ({ user, post }) => {
-  const { title, content, createdAt, updatedAt } = post;
+  const { title, content, createdAt, updatedAt, tags } = post;
   return (
     <PostWrapper>
       <PostHeader user={user} createdAt={createdAt} updatedAt={updatedAt} />
       <PostBody title={title} content={content} />
+      <PostTags tags={tags} />
     </PostWrapper>
   );
 };

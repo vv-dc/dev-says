@@ -19,6 +19,7 @@ const GlobalStyles = createGlobalStyle`
     --red: #cb2431;
     --error-red: #8a050c;
     --bg-post: #101816;
+    --border-light: #777;
     --font-heading: 'Bebas Neue';
   }
   body {
