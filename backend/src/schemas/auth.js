@@ -30,6 +30,7 @@ const login = {
       properties: {
         accessToken: { type: 'string' },
       },
+      required: ['accessToken'],
     },
   },
   body: {
