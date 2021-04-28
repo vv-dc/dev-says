@@ -36,13 +36,13 @@ CREATE TABLE "RefreshSessions" (
 );
 
 CREATE TABLE "Tags" (
-	"tagId" serial PRIMARY KEY,
+	"tagId" smallserial PRIMARY KEY,
 	"tagName" varchar(80) NOT NULL UNIQUE
 );
 
 CREATE TABLE "TagSubscriptions" (
 	"subscriberId" int REFERENCES "Users" ON DELETE CASCADE,
-	"tagId" int REFERENCES "Tags",
+	"tagId" smallint REFERENCES "Tags",
 	PRIMARY KEY("subscriberId", "tagId")
 );
 
@@ -85,7 +85,7 @@ CREATE TABLE "Comments" (
 	"commentId" bigserial PRIMARY KEY,
 	"postId" bigint NOT NULL REFERENCES "Posts" ON DELETE CASCADE,
 	"authorId" int NOT NULL REFERENCES "Users" ON DELETE CASCADE,
-	"parentCommentId" bigint REFERENCES "Comments" ON DELETE CASCADE,
+	"parentId" bigint REFERENCES "Comments" ON DELETE CASCADE,
 	"rawContent" text NOT NULL,
 	"postedAt" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	"updatedAt" timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP
