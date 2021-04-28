@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
+
 import IndexPage from './pages/index';
 import LoginPage from './pages/login';
 import RegisterPage from './pages/register';

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+
 import { PostService } from '../../services/posts.service';
 import Post from '../post';
 
@@ -7,8 +8,8 @@ const UserPosts = ({ user }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchPosts = async () => {
-    const posts = await PostService.getByUserId(user.userId);
-    setPosts(posts);
+    const { posts } = await PostService.getByUserId(user.userId);
+    setPosts(state => state.concat(posts));
   };
 
   useEffect(() => {

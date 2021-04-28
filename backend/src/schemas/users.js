@@ -8,7 +8,7 @@ const user = {
         user: {
           type: 'object',
           properties: {
-            userId: { type: 'number' },
+            userId: { type: 'integer' },
             username: { type: 'string' },
             email: { type: 'string' },
             fullName: { type: 'string' },
@@ -21,6 +21,7 @@ const user = {
             createdAt: { type: 'string', format: 'date-time' },
             updatedAt: { type: 'string', format: 'date-time' },
           },
+          required: ['userId', 'username', 'email', 'createdAt', 'updatedAt'],
         },
       },
     },

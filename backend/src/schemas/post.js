@@ -3,7 +3,7 @@
 const postStructure = {
   type: 'object',
   properties: {
-    id: { type: 'number' },
+    id: { type: 'integer' },
     title: { type: 'string' },
     content: {
       type: 'object',
@@ -14,11 +14,27 @@ const postStructure = {
     createdAt: { type: 'string', format: 'date-time' },
     updatedAt: { type: 'string', format: 'date-time' },
     tags: { type: 'array', items: { type: 'string' } },
+    totalScore: { type: 'integer' },
   },
-  required: ['id', 'title', 'content', 'createdAt'],
+  required: ['id', 'title', 'content', 'createdAt', 'updatedAt', 'totalScore'],
 };
 
-const postOne = {
+const postScoreStructure = {
+  type: 'object',
+  properties: {
+    score: { type: 'integer' },
+  },
+  required: ['score'],
+};
+
+const getPostOne = {
+  params: {
+    type: 'object',
+    properties: {
+      postId: { type: 'integer' },
+    },
+    required: ['postId'],
+  },
   response: {
     200: {
       type: 'object',
@@ -29,7 +45,7 @@ const postOne = {
   },
 };
 
-const postList = {
+const getPostList = {
   response: {
     200: {
       type: 'object',
@@ -43,4 +59,23 @@ const postList = {
   },
 };
 
-module.exports = { postOne, postList };
+const getPostScore = {
+  params: {
+    type: 'object',
+    properties: {
+      userId: { type: 'integer' },
+      postId: { type: 'integer' },
+    },
+    required: ['userId', 'postId'],
+  },
+  response: {
+    200: postScoreStructure,
+  },
+};
+
+const putPostScore = {
+  params: getPostScore.params,
+  body: postScoreStructure,
+};
+
+module.exports = { getPostOne, getPostList, getPostScore, putPostScore };

@@ -115,6 +115,16 @@ class PgApi {
     return this.execute(query, params);
   }
 
+  async callFunction({ fields, functionName, params = [] }) {
+    const keys = fields ? fields.map(key => `"${key}"`).join(',') : '*';
+    const escaped = Array.from(
+      { length: params.length },
+      (_, i) => `$${i + 1}`
+    ).join(',');
+    const query = `SELECT ${keys} FROM "${functionName}"(${escaped})`;
+    return this.execute(query, params);
+  }
+
   async execute(query, params = []) {
     try {
       const rows = await this.pool.query(query, params);
@@ -122,15 +132,6 @@ class PgApi {
     } catch (error) {
       return error;
     }
-  }
-
-  async executeFunction(funcName, params = []) {
-    const keys = Array.from(
-      { length: params.length },
-      (_, i) => `$${i + 1}`
-    ).join(',');
-    const query = `SELECT * FROM ${funcName}(${keys})`;
-    return this.execute(query, params);
   }
 }
 

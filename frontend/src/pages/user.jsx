@@ -12,7 +12,7 @@ const UserPage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchUser = async () => {
-    const user = await UserService.getByUsername(username);
+    const { user } = await UserService.getByUsername(username);
     setUser(user);
   };
 

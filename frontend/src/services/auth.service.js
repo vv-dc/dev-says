@@ -1,6 +1,7 @@
 import AuthStore from '../stores/auth-store';
 import { HttpService } from './http.service';
 import { getFingerprint } from '../helpers/get-fingerprint';
+import { AuthError } from '../helpers/auth-error';
 
 const http = new HttpService({ withAuth: false });
 
@@ -33,7 +34,6 @@ export class AuthService {
   }
 
   static async registerExternal(authProvider, username, authCode) {
-    console.log({ authProvider, username, authCode });
     await http.post(`/auth/register/${authProvider}`, {
       username,
       authCode: decodeURIComponent(authCode),
@@ -52,11 +52,8 @@ export class AuthService {
   }
 
   static async logout() {
-    await new HttpService({ withAuth: true }).post(
-      '/auth/logout',
-      {},
-      { withCredentials: true }
-    );
+    const authHttp = new HttpService({ withAuth: true });
+    await authHttp.post('/auth/logout');
     AuthStore.resetAuthData();
   }
 
@@ -82,10 +79,23 @@ export class AuthService {
   }
 
   static isAuthenticated() {
-    return Boolean(AuthStore.accessToken);
+    return this.isAccessTokenExpired()
+      ? this.refreshTokens().then(() => AuthStore.accessToken)
+      : AuthStore.accessToken && !this.isAccessTokenExpired();
   }
 
-  static getAccessToken() {
+  static get accessToken() {
+    if (!this.isAuthenticated()) throw new AuthError();
     return AuthStore.accessToken;
+  }
+
+  static get userId() {
+    if (!this.isAuthenticated()) throw new AuthError();
+    return AuthStore.userId;
+  }
+
+  static get user() {
+    if (!this.isAuthenticated()) throw new AuthError();
+    return AuthStore.user;
   }
 }

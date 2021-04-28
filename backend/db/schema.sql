@@ -74,6 +74,13 @@ CREATE TABLE "PostTags" (
 	PRIMARY KEY("postId", "tagId")
 );
 
+CREATE TABLE "PostScores" (
+	"userId" int REFERENCES "Users" ON DELETE CASCADE,
+	"postId" bigint REFERENCES "Posts" ON DELETE CASCADE,
+	"score" smallint DEFAULT 0,
+	PRIMARY KEY("userId", "postId")
+);
+
 CREATE TABLE "Comments" (
 	"commentId" bigserial PRIMARY KEY,
 	"postId" bigint NOT NULL REFERENCES "Posts" ON DELETE CASCADE,
