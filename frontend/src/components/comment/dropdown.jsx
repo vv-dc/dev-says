@@ -1,8 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
-import CommentThread from './thread';
 
-const DropDown = ({ replies, isExpanded, fetchComments }) => {
+import CommentThread from './thread';
+import CommentContext from './context';
+
+const DropDown = ({ replies, isExpanded }) => {
+  const { fetchComments } = useContext(CommentContext);
   const { id, count, children } = replies;
 
   useEffect(() => {
@@ -12,7 +15,7 @@ const DropDown = ({ replies, isExpanded, fetchComments }) => {
   return (
     isExpanded && (
       <ThreadWrapper>
-        <CommentThread comments={children} fetchComments={fetchComments} />
+        <CommentThread comments={children} />
       </ThreadWrapper>
     )
   );
@@ -21,5 +24,5 @@ const DropDown = ({ replies, isExpanded, fetchComments }) => {
 export default DropDown;
 
 const ThreadWrapper = styled.div`
-  padding-left: 46px;
+  margin-top: 10px;
 `;

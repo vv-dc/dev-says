@@ -49,43 +49,6 @@ const getComments = {
   },
 };
 
-const addComment = {
-  body: {
-    type: 'object',
-    properties: {
-      postId: { type: 'integer' },
-      authorId: { type: 'integer' },
-      parentCommentId: { type: 'integer', nullable: true },
-      rawContent: { type: 'string' },
-    },
-    required: ['postId', 'authorId', 'parentCommentId', 'rawContent'],
-  },
-};
-
-const updateComment = {
-  body: {
-    type: 'object',
-    properties: {
-      commentId: { type: 'integer' },
-      rawContent: { type: 'string' },
-    },
-    required: ['commentId', 'rawContent'],
-  },
-};
-
-const deleteComment = {
-  params: {
-    type: 'object',
-    properties: {
-      commentId: { type: 'integer' },
-    },
-    required: ['commentId'],
-  },
-};
-
 module.exports = {
   getComments,
-  addComment,
-  updateComment,
-  deleteComment,
 };

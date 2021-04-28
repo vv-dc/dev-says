@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { CommentService } from '../../services/comment.service';
-import CommentThread from './thread';
+import DropDown from './dropdown';
+import CommentContext from './context';
 
-const CommentSection = ({ postId = 4 }) => {
+const CommentSection = ({ postId, commentsCount, isExpanded }) => {
   const [commentTree, setCommentTree] = useState([]);
   const parentId = null;
-
-  useEffect(() => fetchComments(parentId), []);
 
   const fetchComments = async parentId => {
     const comments = await CommentService.getByParent(postId, parentId);
@@ -24,29 +23,21 @@ const CommentSection = ({ postId = 4 }) => {
 
   const comments = commentTree.filter(node => node.parentId === parentId);
   return (
-    <ContentWrapper>
-      <MainThreadWrapper>
-        <CommentThread comments={comments} fetchComments={fetchComments} />
-      </MainThreadWrapper>
-    </ContentWrapper>
+    <CommentContext.Provider value={{ fetchComments }}>
+      <SectionWrapper>
+        <DropDown
+          replies={{ id: parentId, count: commentsCount, children: comments }}
+          isExpanded={isExpanded}
+        />
+      </SectionWrapper>
+    </CommentContext.Provider>
   );
 };
 
 export default CommentSection;
 
-const ContentWrapper = styled.div`
-  padding: 20px 30px;
-  width: 600px;
-  background-color: var(--bg-post);
-  @media screen and (max-width: 600px) {
-    width: 100vw;
-  }
-  margin: 0 auto;
-`;
-
-const MainThreadWrapper = styled.div`
+const SectionWrapper = styled.div`
   width: 540px;
-  font-family: Cantarell;
   font-size: 14px;
   @media screen and (max-width: 600px) {
     width: calc(100vw - 60px);

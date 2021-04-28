@@ -5,8 +5,7 @@ import IndexPage from './pages/index';
 import LoginPage from './pages/login';
 import RegisterPage from './pages/register';
 import ResetPasswordPage from './pages/reset-password';
-
-import CommentSection from './components/comments/section';
+import CommentPage from './pages/comment';
 
 const GlobalStyles = createGlobalStyle`
   :root {
@@ -40,7 +39,7 @@ const App = () => (
         <Route exact path="/register" component={RegisterPage} />
         <Route exact path="/login" component={LoginPage} />
         <Route exact path="/reset-password" component={ResetPasswordPage} />
-        <Route exact path="/comment" component={CommentSection} />
+        <Route exact path="/comment" component={CommentPage} />
       </Switch>
     </BrowserRouter>
   </>

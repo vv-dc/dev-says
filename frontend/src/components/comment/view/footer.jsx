@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import ViewReplies from '../shared/view-replies';
+import ViewReplies from '../../shared/view-replies';
 
 const Footer = ({ replies, showReplies }) => {
   return (

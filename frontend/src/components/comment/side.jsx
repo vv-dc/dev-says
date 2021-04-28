@@ -14,6 +14,5 @@ const SideBlock = ({ author }) => {
 export default SideBlock;
 
 const SideWrapper = styled.div`
-  padding-top: 10px;
   align-self: flex-start;
 `;

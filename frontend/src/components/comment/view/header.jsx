@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Dots from '../shared/dots';
-import TimeAgo from '../shared/time-ago';
-import Edited from '../shared/edited';
-import UserTag from '../users/tag';
+import Dots from '../../shared/dots';
+import TimeAgo from '../../shared/time-ago';
+import Edited from '../../shared/edited';
+import UserTag from '../../users/tag';
 
 const Header = ({ author, postedAt, updatedAt }) => {
   return (

@@ -20,7 +20,7 @@ BEGIN
 			"Users"."username",
 			"Users"."imageURL",
 			"Comments"."commentId",
-			"Comments"."parentCommentId",
+			"Comments"."parentId",
 			"Comments"."rawContent",
 			"Comments"."postedAt",
       "Comments"."updatedAt",
@@ -29,14 +29,14 @@ BEGIN
 		JOIN "Users" ON "Users"."userId"="Comments"."authorId"
 		LEFT JOIN (
 			SELECT 
-				"Comments"."parentCommentId",
+				"Comments"."parentId",
 				COUNT("Comments"."commentId") AS "replies"
 			FROM "Comments"
-			GROUP BY "parentCommentId"
-		) AS "Replies" ON "Comments"."commentId"="Replies"."parentCommentId"
+			GROUP BY "parentId"
+		) AS "Replies" ON "Comments"."commentId"="Replies"."parentId"
 		WHERE 
 			"Comments"."postId" = %s
-			AND "Comments"."parentCommentId" %s
+			AND "Comments"."parentId" %s
 		ORDER BY "postedAt"',
 		"post", "parentCondition"
 	);

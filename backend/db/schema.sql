@@ -78,7 +78,7 @@ CREATE TABLE "Comments" (
 	"commentId" bigserial PRIMARY KEY,
 	"postId" bigint NOT NULL REFERENCES "Posts" ON DELETE CASCADE,
 	"authorId" int NOT NULL REFERENCES "Users" ON DELETE CASCADE,
-	"parentCommentId" bigint REFERENCES "Comments" ON DELETE CASCADE,
+	"parentId" bigint REFERENCES "Comments" ON DELETE CASCADE,
 	"rawContent" text NOT NULL,
 	"postedAt" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	"updatedAt" timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP
