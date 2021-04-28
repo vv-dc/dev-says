@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
+
 import IndexPage from './pages/index';
 import LoginPage from './pages/login';
 import RegisterPage from './pages/register';
-import ResetPasswordPage from './pages/reset-password';
-import CommentPage from './pages/comment';
+import UserPage from './pages/user';
 
 const GlobalStyles = createGlobalStyle`
   :root {
@@ -39,7 +39,7 @@ const App = () => (
         <Route exact path="/register" component={RegisterPage} />
         <Route exact path="/login" component={LoginPage} />
         <Route exact path="/reset-password" component={ResetPasswordPage} />
-        <Route exact path="/comment" component={CommentPage} />
+        <Route path="/:username" component={UserPage} />
       </Switch>
     </BrowserRouter>
   </>

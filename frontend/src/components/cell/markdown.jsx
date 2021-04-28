@@ -1,5 +1,8 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 
-const MarkDown = ({ source }) => <ReactMarkdown>{source}</ReactMarkdown>;
-export default MarkDown;
+const CellMarkDown = ({ source }) => (
+  <ReactMarkdown>{source.join('\n')}</ReactMarkdown>
+);
+
+export default CellMarkDown;

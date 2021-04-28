@@ -64,3 +64,40 @@ ul {
   font-weight: 100;
   src: url('fonts/roboto-v20-latin-ext_latin-100.woff2') format('woff2');
 }
+
+@font-face {
+  font-family: 'Font Awesome 5 Free';
+  font-style: normal;
+  font-weight: 900;
+  font-display: block;
+  src: url('fonts/fa-solid-900.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Font Awesome 5 Free';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('fonts/fa-regular-400.woff2') format('woff2');
+}
+
+.fa,
+.fab,
+.fas,
+.far {
+  font-family: 'Font Awesome 5 Free';
+}
+
+.fa,
+.fas {
+  font-weight: 900;
+}
+
+.fab,
+.far {
+  font-weight: 400;
+}
+
+.far.fa-building:before {
+  content: '\f1ad';
+}
