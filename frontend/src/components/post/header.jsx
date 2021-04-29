@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import UserAvatar from '../user/avatar';
 import UserTag from '../user/tag';
 import UserCompany from '../user/company';
-import TimeAgo from '../time-ago';
-import Edited from '../edited';
-import PostDots from './dots';
+import TimeAgo from '../shared/time-ago';
+import Edited from '../shared/edited';
+import Dots from '../shared/dots';
 
 const PostHeader = ({ user, createdAt, updatedAt }) => {
   const { fullName, username, company } = user;
@@ -25,7 +25,7 @@ const PostHeader = ({ user, createdAt, updatedAt }) => {
           <UserCompany company={company} />
         </SecondLine>
       </HeaderBody>
-      <PostDots />
+      <Dots />
     </HeaderWrapper>
   );
 };

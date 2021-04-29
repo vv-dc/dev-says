@@ -1,20 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Header from './header';
-import Footer from './footer';
-import MarkDown from '../../cell/markdown';
+import CommentHeader from './header';
+import CommentFooter from './footer';
+import CellMarkDown from '../../cell/markdown';
 
 const CommentBody = ({ data, showReplies }) => {
   const { author, postedAt, updatedAt, rawContent, replies } = data;
   return (
-    <div>
-      <Header author={author} postedAt={postedAt} updatedAt={updatedAt} />
+    <>
+      <CommentHeader
+        author={author}
+        postedAt={postedAt}
+        updatedAt={updatedAt}
+      />
       <Content>
-        <MarkDown source={rawContent} />
+        <CellMarkDown source={rawContent} />
       </Content>
-      <Footer replies={replies} showReplies={showReplies} />
-    </div>
+      <CommentFooter replies={replies} showReplies={showReplies} />
+    </>
   );
 };
 

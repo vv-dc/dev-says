@@ -5,6 +5,7 @@ import { createGlobalStyle } from 'styled-components';
 import IndexPage from './pages/index';
 import LoginPage from './pages/login';
 import RegisterPage from './pages/register';
+import ResetPasswordPage from './pages/reset-password';
 import UserPage from './pages/user';
 
 const GlobalStyles = createGlobalStyle`

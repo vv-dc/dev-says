@@ -73,7 +73,7 @@ export class AuthService {
   }
 
   static isAccessTokenExpired() {
-    const expDate = AuthStore.expiredAt - 10;
+    const expDate = AuthStore.expiresAt - 10;
     const nowDate = Math.floor(new Date().getTime() / 1000);
     return expDate <= nowDate;
   }

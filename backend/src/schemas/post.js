@@ -15,8 +15,17 @@ const postStructure = {
     updatedAt: { type: 'string', format: 'date-time' },
     tags: { type: 'array', items: { type: 'string' } },
     totalScore: { type: 'integer' },
+    commentsCount: { type: 'integer' },
   },
-  required: ['id', 'title', 'content', 'createdAt', 'updatedAt', 'totalScore'],
+  required: [
+    'id',
+    'title',
+    'content',
+    'createdAt',
+    'updatedAt',
+    'totalScore',
+    'commentsCount',
+  ],
 };
 
 const postScoreStructure = {

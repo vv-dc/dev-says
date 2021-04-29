@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
 
 import { UserService } from '../services/users.service';
 import UserNotFound from '../components/user/not-found';
 import UserPosts from '../components/user/posts';
-import { useParams } from 'react-router-dom';
 
 const UserPage = () => {
   const { username } = useParams();

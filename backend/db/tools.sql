@@ -5,10 +5,17 @@ RETURNS bigint AS $$
   WHERE "postId" = $1;
 $$ LANGUAGE SQL;
 
+CREATE OR REPLACE FUNCTION "getPostCommentsCount"("postId" bigint)
+RETURNS bigint AS $$
+  SELECT COALESCE(count(*), 0) AS "commentsCount"
+  FROM "Comments" WHERE "postId" = $1;
+$$ LANGUAGE SQL;
+
 CREATE OR REPLACE VIEW vPostTemplate AS (
    SELECT "postId" AS "id", "title", "content", "createdAt", 
           "updatedAt", array_agg("tagName") AS "tags",
-          "getPostTotalScore"(0) AS "totalScore"
+          "getPostTotalScore"(0) AS "totalScore",
+          "getPostCommentsCount"(0) AS "commentsCount"
   FROM "Posts"
     JOIN "PostTags" USING ("postId")
     JOIN "Tags" USING ("tagId")
@@ -19,7 +26,8 @@ CREATE OR REPLACE FUNCTION getPostById("postId" int)
 RETURNS TABLE (LIKE vPostTemplate) AS $$
   SELECT "postId", "title", "content", "createdAt", 
          "updatedAt", array_agg("tagName") AS "tags",
-         "getPostTotalScore"("postId") AS "totalScore"
+         "getPostTotalScore"("postId") AS "totalScore",
+         "getPostCommentsCount"("postId") AS "commentsCount"
   FROM "Posts"
     JOIN "PostTags" USING ("postId")
     JOIN "Tags" USING ("tagId")
@@ -31,7 +39,8 @@ CREATE OR REPLACE FUNCTION getPostsByTag("tag" varchar(120))
 RETURNS TABLE (LIKE vPostTemplate) AS $$
   SELECT "postId", "title", "content",
          "createdAt", "updatedAt", "tags",
-         "getPostTotalScore"("postId") AS "totalScore"
+         "getPostTotalScore"("postId") AS "totalScore",
+         "getPostCommentsCount"("postId") AS "commentsCount"
   FROM "Posts" JOIN LATERAL (
     SELECT "postId", array_agg("tagName") AS "tags"
     FROM "PostTags" JOIN "Tags" USING ("tagId")
@@ -44,7 +53,8 @@ CREATE OR REPLACE FUNCTION getPostsByUsername("username" varchar(120))
 RETURNS TABLE (LIKE vPostTemplate) AS $$
   SELECT "postId", "title", "content", "createdAt",
           "updatedAt", array_agg("tagName") AS "tags",
-          "getPostTotalScore"("postId") AS "totalScore"
+          "getPostTotalScore"("postId") AS "totalScore",
+          "getPostCommentsCount"("postId") AS "commentsCount"
   FROM "Posts"
     JOIN "PostTags" USING ("postId")
     JOIN "Tags" USING ("tagId")
@@ -60,7 +70,8 @@ CREATE OR REPLACE FUNCTION "getPostsByUserId"("userId" int)
 RETURNS TABLE (LIKE vPostTemplate) AS $$
   SELECT "postId", "title", "content", "createdAt",
          "updatedAt", array_agg("tagName") AS "tags",
-         "getPostTotalScore"("postId") AS "totalScore"
+         "getPostTotalScore"("postId") AS "totalScore",
+         "getPostCommentsCount"("postId") AS "commentsCount"
   FROM "Posts"
     JOIN "PostTags" USING ("postId")
     JOIN "Tags" USING ("tagId")
@@ -117,5 +128,5 @@ BEGIN
 		ORDER BY "postedAt"',
 		"post", "parentCondition"
 	);
-END; $$
-LANGUAGE PLPGSQL;                                                           
+END; 
+$$ LANGUAGE PLPGSQL;                                                           

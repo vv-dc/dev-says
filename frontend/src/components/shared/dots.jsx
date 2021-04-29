@@ -1,26 +1,30 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Dots = () => (
-  <DotList>
+const PostDots = () => (
+  <DotsWrapper>
     <Dot />
     <Dot />
     <Dot />
-  </DotList>
+  </DotsWrapper>
 );
 
-export default Dots;
+export default PostDots;
 
 const Dot = styled.div`
-  background-color: var(--green);
-  width: 7px;
   height: 7px;
+  width: 7px;
   border-radius: 50%;
+  background-color: var(--green);
   &:not(:last-of-type) {
-    margin-right: 7px;
+    margin-right: 5px;
   }
 `;
 
-const DotList = styled.div`
+const DotsWrapper = styled.nav`
   display: flex;
+  padding: 5px 0;
+  &:hover {
+    opacity: 0.7;
+  }
 `;

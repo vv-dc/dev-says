@@ -1,15 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import UserProfileImage from '../users/profile-image';
+import Avatar from '../user/avatar';
 
-const SideBlock = ({ author }) => {
-  return (
-    <SideWrapper>
-      <UserProfileImage user={author} size={36} />
-    </SideWrapper>
-  );
-};
+const SideBlock = ({ author }) => (
+  <SideWrapper>
+    <Avatar user={author} size={36} />
+  </SideWrapper>
+);
 
 export default SideBlock;
 

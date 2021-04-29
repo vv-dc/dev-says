@@ -10,7 +10,7 @@ const CellCode = ({ language, version, source }) => (
       <CodeInfoItem color="blue">{version}</CodeInfoItem>
     </CodeControlPanel>
     <CodeLines>
-      <SyntaxHighlighter language={language} style={vs2015} font>
+      <SyntaxHighlighter language={language} style={vs2015}>
         {source.join('\n')}
       </SyntaxHighlighter>
     </CodeLines>

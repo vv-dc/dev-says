@@ -5,9 +5,19 @@ import PostMenu from './menu';
 import PostHeader from './header';
 import PostBody from './body';
 import PostTags from './tags';
+import PostComments from './comments';
 
 const Post = ({ user, post }) => {
-  const { id, title, content, createdAt, updatedAt, tags, totalScore } = post;
+  const {
+    id,
+    title,
+    content,
+    createdAt,
+    updatedAt,
+    tags,
+    totalScore,
+    commentsCount,
+  } = post;
   return (
     <PostWrapper>
       <PostMenu postId={id} totalScore={totalScore} />
@@ -15,6 +25,7 @@ const Post = ({ user, post }) => {
         <PostHeader user={user} createdAt={createdAt} updatedAt={updatedAt} />
         <PostBody title={title} content={content} />
         <PostTags tags={tags} />
+        <PostComments postId={id} commentsCount={commentsCount} />
       </PostContent>
     </PostWrapper>
   );

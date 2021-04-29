@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import CommentBody from './view/comment';
-import DropDown from './dropdown';
+import CommentDropDown from './dropdown';
 import SideBlock from './side';
 
 const CommentBranch = ({ comment }) => {
@@ -19,7 +19,7 @@ const CommentBranch = ({ comment }) => {
       <SideBlock author={comment.author} />
       <MainBlock>
         <CommentBody data={comment} showReplies={onExpnadedChange} />
-        <DropDown replies={replies} isExpanded={isExpanded} />
+        <CommentDropDown replies={replies} isExpanded={isExpanded} />
       </MainBlock>
     </BranchWrapper>
   );

@@ -4,11 +4,11 @@ import styled from 'styled-components';
 import Dots from '../../shared/dots';
 import TimeAgo from '../../shared/time-ago';
 import Edited from '../../shared/edited';
-import UserTag from '../../users/tag';
+import UserTag from '../../user/tag';
 
-const Header = ({ author, postedAt, updatedAt }) => {
+const CommentHeader = ({ author, postedAt, updatedAt }) => {
   return (
-    <CommentHeader>
+    <HeaderWrapper>
       <InfoBlock>
         <Username>
           <UserTag username={author.username} />
@@ -17,13 +17,13 @@ const Header = ({ author, postedAt, updatedAt }) => {
         <Edited createdAt={postedAt} updatedAt={updatedAt} />
       </InfoBlock>
       <Dots />
-    </CommentHeader>
+    </HeaderWrapper>
   );
 };
 
-export default Header;
+export default CommentHeader;
 
-const CommentHeader = styled.div`
+const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;

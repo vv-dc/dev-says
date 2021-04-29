@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import CommentThread from './thread';
 import CommentContext from './context';
 
-const DropDown = ({ replies, isExpanded }) => {
+const CommentDropDown = ({ replies, isExpanded }) => {
   const { fetchComments } = useContext(CommentContext);
   const { id, count, children } = replies;
 
@@ -21,7 +21,7 @@ const DropDown = ({ replies, isExpanded }) => {
   );
 };
 
-export default DropDown;
+export default CommentDropDown;
 
 const ThreadWrapper = styled.div`
   margin-top: 10px;
