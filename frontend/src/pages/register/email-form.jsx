@@ -12,7 +12,7 @@ import {
 export const EmailForm = ({ state, updateState, updateStep, setError }) => {
   const handleLocalRegister = event => {
     event.preventDefault();
-    const letterNumber8Symbols = '^(?=.*[A-Za-z])(?=.*d)[A-Za-z\\d]{8,}$';
+    const letterNumber8Symbols = '^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$';
     state.password.match(letterNumber8Symbols)
       ? updateStep(+1)
       : setError(

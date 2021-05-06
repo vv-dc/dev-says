@@ -3,9 +3,9 @@ import styled from 'styled-components';
 
 import ViewReplies from '../../shared/view-replies';
 
-const CommentFooter = ({ replies, showReplies }) => (
+const CommentFooter = ({ replies, showReplies, addReply }) => (
   <FooterWrapper>
-    <Reply>Reply</Reply>
+    <Reply onClick={addReply}>Reply</Reply>
     <Report>Report</Report>
     <ViewReplies replies={replies} onClick={showReplies} />
   </FooterWrapper>

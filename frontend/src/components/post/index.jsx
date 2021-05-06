@@ -6,6 +6,7 @@ import PostHeader from './header';
 import PostBody from './body';
 import PostTags from './tags';
 import PostComments from './comments';
+import { CommentStore } from '../../stores/comment-store';
 
 const Post = ({ user, post }) => {
   const {
@@ -18,6 +19,7 @@ const Post = ({ user, post }) => {
     totalScore,
     commentsCount,
   } = post;
+  const store = new CommentStore(id);
   return (
     <PostWrapper>
       <PostMenu postId={id} totalScore={totalScore} />
@@ -25,7 +27,7 @@ const Post = ({ user, post }) => {
         <PostHeader user={user} createdAt={createdAt} updatedAt={updatedAt} />
         <PostBody title={title} content={content} />
         <PostTags tags={tags} />
-        <PostComments postId={id} commentsCount={commentsCount} />
+        <PostComments store={store} commentsCount={commentsCount} />
       </PostContent>
     </PostWrapper>
   );

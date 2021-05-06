@@ -8,7 +8,14 @@ class CommentService {
     this.table = 'Comments';
     this.pg = new PgApi();
   }
-
+  async add(comment) {
+    const rows = await this.pg.insert({
+      items: [comment],
+      table: this.table,
+      returning: ['commentId', 'postedAt'],
+    });
+    return rows[0];
+  }
   async findByPostAndParent(postId, parentId) {
     const comments = await this.pg.callFunction({
       functionName: 'getCommentsByPostAndParent',

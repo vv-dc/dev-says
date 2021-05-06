@@ -19,4 +19,17 @@ module.exports = async function (fastify) {
       reply.send({ comments });
     },
   });
+
+  fastify.route({
+    method: 'POST',
+    path: '/posts/:postId/comments/:parentId',
+    schema: schema.addComment,
+    handler: async (request, reply) => {
+      const comment = await commentService.add({
+        ...request.params,
+        ...request.body,
+      });
+      reply.send({ comment });
+    },
+  });
 };

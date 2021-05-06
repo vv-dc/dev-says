@@ -1,5 +1,14 @@
 'use strict';
 
+const urlParams = {
+  type: 'object',
+  properties: {
+    postId: { type: 'integer' },
+    parentId: { type: 'integer', nullable: true },
+  },
+  required: ['postId'],
+};
+
 const getComments = {
   response: {
     200: {
@@ -37,18 +46,41 @@ const getComments = {
           },
         },
       },
+      required: ['comments'],
     },
   },
-  params: {
+  params: urlParams,
+};
+
+const addComment = {
+  response: {
+    200: {
+      type: 'object',
+      properties: {
+        comment: {
+          type: 'object',
+          properties: {
+            commentId: { type: 'integer' },
+            postedAt: { type: 'string', format: 'date-time' },
+          },
+          required: ['commentId', 'postedAt'],
+        },
+      },
+      required: ['comment'],
+    },
+  },
+  body: {
     type: 'object',
     properties: {
-      postId: { type: 'integer' },
-      parentId: { type: 'integer', nullable: true },
+      authorId: { type: 'integer' },
+      rawContent: { type: 'string' },
     },
-    required: ['postId'],
+    required: ['authorId', 'rawContent'],
   },
+  params: urlParams,
 };
 
 module.exports = {
   getComments,
+  addComment,
 };

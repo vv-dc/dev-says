@@ -2,11 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 import CommentHeader from './header';
-import CommentFooter from './footer';
 import CellMarkDown from '../../cell/markdown';
 
-const CommentBody = ({ data, showReplies }) => {
-  const { author, postedAt, updatedAt, rawContent, replies } = data;
+const CommentBody = ({ comment, commentFooter }) => {
+  const { author, postedAt, updatedAt, rawContent } = comment;
   return (
     <>
       <CommentHeader
@@ -17,7 +16,7 @@ const CommentBody = ({ data, showReplies }) => {
       <Content>
         <CellMarkDown source={rawContent} />
       </Content>
-      <CommentFooter replies={replies} showReplies={showReplies} />
+      {commentFooter}
     </>
   );
 };
