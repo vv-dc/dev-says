@@ -3,15 +3,13 @@ import styled from 'styled-components';
 
 import Tag from '../tag';
 
-const PostTags = ({ tags }) => {
-  return (
-    <TagsWrapper>
-      {tags.map((tag, idx) => (
-        <Tag key={idx} tagName={tag} />
-      ))}
-    </TagsWrapper>
-  );
-};
+const PostTags = ({ tags }) => (
+  <TagsWrapper>
+    {tags.map((tag, idx) => (
+      <Tag key={idx} tagName={tag} />
+    ))}
+  </TagsWrapper>
+);
 
 export default PostTags;
 

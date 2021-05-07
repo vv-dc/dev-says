@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import UserAvatar from '../user/avatar';
 import UserTag from '../user/tag';
-import UserCompany from '../user/company';
 import TimeAgo from '../shared/time-ago';
 import Edited from '../shared/edited';
 import Dots from '../shared/dots';
@@ -22,7 +21,7 @@ const PostHeader = ({ user, createdAt, updatedAt }) => {
           <Edited createdAt={createdAt} updatedAt={updatedAt} />
         </FirstLine>
         <SecondLine>
-          <UserCompany company={company} />
+          <span className="far fa-building" /> {company}
         </SecondLine>
       </HeaderBody>
       <Dots />
@@ -34,7 +33,7 @@ export default PostHeader;
 
 const HeaderWrapper = styled.div`
   display: flex;
-  nav {
+  & > :last-child {
     margin-left: auto;
   }
 `;

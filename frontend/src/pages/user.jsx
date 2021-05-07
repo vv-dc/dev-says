@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import { UserService } from '../services/users.service';
 import UserNotFound from '../components/user/not-found';
+import UserInfo from '../components/user/info';
 import UserPosts from '../components/user/posts';
 
 const UserPage = () => {
@@ -26,17 +27,19 @@ const UserPage = () => {
     <UserNotFound username={username} />
   ) : (
     <Wrapper>
-      <h1>
-        <span>{user.fullName}&nbsp;</span>
-        <span>@{user.username}</span>
-      </h1>
+      <UserInfo user={user} />
       <UserPosts user={user} />
     </Wrapper>
   );
 };
 
-const Wrapper = styled.main`
-  border-radius: 30px;
+const Wrapper = styled.div`
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 30px 0;
+  & > :first-child {
+    margin-bottom: 35px;
+  }
 `;
 
 export default UserPage;

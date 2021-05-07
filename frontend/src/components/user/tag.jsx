@@ -1,14 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
+import { InternalLink } from '../styled/link';
 
 const UserTag = ({ username }) => (
-  <UserLink href={`/${username}`}>@{username}</UserLink>
+  <InternalLink to={`/${username}`}>@{username}</InternalLink>
 );
 
 export default UserTag;
-
-const UserLink = styled.a`
-  &:hover {
-    color: var(--green);
-  }
-`;

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const PostDots = () => (
+const Dots = () => (
   <DotsWrapper>
     <Dot />
     <Dot />
@@ -9,7 +9,7 @@ const PostDots = () => (
   </DotsWrapper>
 );
 
-export default PostDots;
+export default Dots;
 
 const Dot = styled.div`
   height: 7px;
@@ -23,7 +23,7 @@ const Dot = styled.div`
 
 const DotsWrapper = styled.nav`
   display: flex;
-  padding: 5px 0;
+  justify-content: flex-end;
   &:hover {
     opacity: 0.7;
   }
