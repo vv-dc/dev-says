@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { PostService } from '../../services/posts.service';
 import Post from '../post';
+import Spinner from '../shared/spinner';
 
 const UserPosts = ({ user }) => {
   const [posts, setPosts] = useState([]);
@@ -18,7 +19,7 @@ const UserPosts = ({ user }) => {
   }, []);
 
   return isLoading ? (
-    <h1>Loading posts...</h1>
+    <Spinner width={700} height={500} />
   ) : (
     <PostsWrapper>
       {posts.map(post => (

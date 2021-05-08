@@ -27,8 +27,10 @@ const UserInfo = ({ user }) => {
     <InfoWrapper>
       <Background backgroundURL={backgroundURL} />
       <Content>
-        <Avatar src={imageURL} $size={120} />
-        <Dots />
+        <UserClickableInfo>
+          <Avatar src={imageURL} $size={120} />
+          <Dots />
+        </UserClickableInfo>
         <UserPrimaryInfo fullName={fullName} username={username} status={bio} />
         <UserNumericInfo
           posts={posts}
@@ -60,6 +62,11 @@ const Background = styled.div`
   background-color: var(--gray-dark);
 `;
 
+const UserClickableInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const Avatar = styled.img`
   position: absolute;
   top: ${p => 45 - p.$size}px;
@@ -72,9 +79,9 @@ const Avatar = styled.img`
 
 const Content = styled.div`
   position: relative;
-  padding: 40px 30px;
+  padding: 20px 30px;
   background-color: var(--bg-post);
-  div {
+  & > div:not(:first-of-type) {
     margin-bottom: 10px;
   }
   button {

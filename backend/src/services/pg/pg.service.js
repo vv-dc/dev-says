@@ -1,6 +1,7 @@
 'use strict';
 
 const { Pool } = require('pg');
+
 class PgApi {
   constructor() {
     this.pool = new Pool();
@@ -132,6 +133,14 @@ class PgApi {
     } catch (error) {
       return error;
     }
+  }
+
+  async aggregate({ func, field, table, where }) {
+    const key = `${func}("${field}")`;
+    const whereClause = this.where(where);
+    const query = `SELECT ${key} FROM "${table}" ${whereClause}`;
+    const params = where ? Object.values(where).flat() : [];
+    return this.execute(query, params);
   }
 }
 

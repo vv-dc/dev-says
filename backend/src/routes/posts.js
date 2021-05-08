@@ -33,8 +33,12 @@ module.exports = async function (fastify) {
     schema: schema.getPostScore,
     handler: async (request, reply) => {
       const { postId, userId } = request.params;
-      const score = await postService.getUserScore(userId, postId);
-      reply.send({ score });
+      if (userId) {
+        const score = await postService.getUserScore(userId, postId);
+        reply.send({ score });
+      }
+      const totalScore = await postService.getTotalScore(postId);
+      reply.send({ totalScore });
     },
   });
 

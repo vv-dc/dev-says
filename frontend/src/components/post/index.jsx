@@ -15,12 +15,11 @@ const Post = ({ user, post }) => {
     createdAt,
     updatedAt,
     tags,
-    totalScore,
     commentsCount,
   } = post;
   return (
     <PostWrapper>
-      <PostMenu postId={id} totalScore={totalScore} />
+      <PostMenu postId={id} />
       <PostContent>
         <PostHeader user={user} createdAt={createdAt} updatedAt={updatedAt} />
         <PostBody title={title} content={content} />

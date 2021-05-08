@@ -3,28 +3,40 @@ import styled from 'styled-components';
 
 const Dots = () => (
   <DotsWrapper>
-    <Dot />
-    <Dot />
-    <Dot />
+    <DotsList>
+      <Dot />
+      <Dot />
+      <Dot />
+    </DotsList>
   </DotsWrapper>
 );
 
 export default Dots;
 
 const Dot = styled.div`
-  height: 7px;
-  width: 7px;
+  height: 3px;
+  width: 3px;
   border-radius: 50%;
   background-color: var(--green);
   &:not(:last-of-type) {
-    margin-right: 5px;
+    margin-right: 3px;
   }
 `;
 
-const DotsWrapper = styled.nav`
+const DotsWrapper = styled.div`
+  margin-left: auto;
+`;
+
+const DotsList = styled.div`
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: center;
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  margin-left: 15px;
+  cursor: pointer;
   &:hover {
-    opacity: 0.7;
+    background-color: rgba(13, 171, 118, 0.1);
   }
 `;

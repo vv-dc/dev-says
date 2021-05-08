@@ -6,6 +6,7 @@ import { UserService } from '../services/users.service';
 import UserNotFound from '../components/user/not-found';
 import UserInfo from '../components/user/info';
 import UserPosts from '../components/user/posts';
+import Spinner from '../components/shared/spinner';
 
 const UserPage = () => {
   const { username } = useParams();
@@ -22,7 +23,7 @@ const UserPage = () => {
   }, []);
 
   return isLoading ? (
-    <h1>Loading...</h1>
+    <Spinner width={700} height={300} />
   ) : !user ? (
     <UserNotFound username={username} />
   ) : (

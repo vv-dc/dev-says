@@ -84,17 +84,17 @@ export class AuthService {
       : AuthStore.accessToken && !this.isAccessTokenExpired();
   }
 
-  static get accessToken() {
+  static getAccessToken() {
     if (!this.isAuthenticated()) throw new AuthError();
     return AuthStore.accessToken;
   }
 
-  static get userId() {
+  static getUserId() {
     if (!this.isAuthenticated()) throw new AuthError();
     return AuthStore.userId;
   }
 
-  static get user() {
+  static getUser() {
     if (!this.isAuthenticated()) throw new AuthError();
     return AuthStore.user;
   }

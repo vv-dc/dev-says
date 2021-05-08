@@ -48,6 +48,16 @@ class PostService {
     return [];
   }
 
+  async getTotalScore(postId) {
+    const row = await this.pg.aggregate({
+      func: 'sum',
+      field: 'score',
+      table: 'PostScores',
+      where: { postId },
+    });
+    return row.sum || 0;
+  }
+
   async getUserScore(userId, postId) {
     const row = await this.pg.findOne({
       fields: ['score'],
