@@ -134,14 +134,6 @@ class PgApi {
       return error;
     }
   }
-
-  async aggregate({ func, field, table, where }) {
-    const key = `${func}("${field}")`;
-    const whereClause = this.where(where);
-    const query = `SELECT ${key} FROM "${table}" ${whereClause}`;
-    const params = where ? Object.values(where).flat() : [];
-    return this.execute(query, params);
-  }
 }
 
 module.exports = { PgApi };

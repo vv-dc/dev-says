@@ -11,22 +11,21 @@ import UserPage from './pages/user';
 const GlobalStyles = createGlobalStyle`
   :root {
     --black: #080c0b;
-    --white: #ffffff;
+    --white: #f1f0ea;
     --gray: #ccc;
-    --gray-dark: #333;
-    --light-gray: #f1f0ea;
-    --dark-gray: #18191a;
+    --gray-dark: #18191a;
     --green: #0dab76;
     --blue: #2378a9;
     --red: #cb2431;
     --error-red: #8a050c;
     --bg-post: #101816;
+    --border-dark: #333;
     --border-light: #777;
     --font-heading: 'Bebas Neue';
   }
   body {
     background-color: var(--black);
-    color: var(--light-gray);
+    color: var(--white);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 
       'Roboto', 'Cantarell', sans-serif;
   }

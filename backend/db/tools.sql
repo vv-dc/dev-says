@@ -117,4 +117,15 @@ BEGIN
 		"post", "parentCondition"
 	);
 END; 
-$$ LANGUAGE PLPGSQL;                                                           
+$$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION "getUserStats"("userId" int)
+RETURNS TABLE (
+  "postsNumber" int, 
+  "followersNumber" int, 
+  "followingNumber" int
+) AS $$
+  SELECT (SELECT COALESCE(count(*), 0) FROM "Posts" WHERE "authorId" = $1),
+         (SELECT COALESCE(count(*), 0) FROM "Followers" WHERE "followedId" = $1),
+         (SELECT COALESCE(count(*), 0) FROM "Followers" WHERE "followerId" = $1)
+$$ LANGUAGE SQL;

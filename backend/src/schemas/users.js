@@ -1,6 +1,6 @@
 'use strict';
 
-const user = {
+const getUser = {
   response: {
     200: {
       type: 'object',
@@ -13,6 +13,7 @@ const user = {
             email: { type: 'string' },
             fullName: { type: 'string' },
             imageURL: { type: 'string' },
+            backgroundURL: { type: 'string' },
             location: { type: 'string' },
             company: { type: 'string' },
             website: { type: 'string' },
@@ -28,4 +29,23 @@ const user = {
   },
 };
 
-module.exports = { user };
+const getUserStats = {
+  response: {
+    200: {
+      type: 'object',
+      properties: {
+        stats: {
+          type: 'object',
+          properties: {
+            postsNumber: { type: 'integer' },
+            followersNumber: { type: 'integer' },
+            followingNumber: { type: 'integer' },
+          },
+          required: ['postsNumber', 'followersNumber', 'followingNumber'],
+        },
+      },
+    },
+  },
+};
+
+module.exports = { getUser, getUserStats };

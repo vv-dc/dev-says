@@ -4,6 +4,7 @@ CREATE TABLE "Users" (
 	"email" varchar(255) NOT NULL UNIQUE,
 	"fullName" varchar(255),
 	"imageURL" varchar(255),
+	"backgroundURL" varchar(255),
 	"location" varchar(80),
 	"company" varchar(120),
 	"website" varchar(255),

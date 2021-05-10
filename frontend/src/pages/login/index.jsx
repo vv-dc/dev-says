@@ -24,7 +24,6 @@ export default LoginPage;
 
 const LoginBody = styled.div`
   font-size: 14px;
-  color: var(--light-gray);
   ${AuthLink} {
     margin-top: 25px;
   }

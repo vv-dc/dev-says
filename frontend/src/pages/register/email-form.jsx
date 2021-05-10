@@ -72,7 +72,6 @@ const FormContent = styled(AuthFormContent)`
     margin: 15px 0;
   }
   span {
-    color: #ddd;
     margin-top: -10px;
     margin-bottom: 30px;
     font-size: 13px;

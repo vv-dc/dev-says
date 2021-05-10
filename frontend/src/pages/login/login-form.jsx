@@ -88,7 +88,7 @@ const FormWrapper = styled.div`
   }
   ${AuthFormContent} {
     padding: 30px;
-    border: 1px solid #777;
+    border: 1px solid var(--border-light);
   }
   ${LightDivider} {
     margin: 15px 0;

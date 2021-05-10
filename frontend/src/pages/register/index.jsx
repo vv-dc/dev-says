@@ -24,7 +24,6 @@ export default RegisterPage;
 
 const RegisterBody = styled.div`
   font-size: 15px;
-  color: var(--light-gray);
   ${AuthLink} {
     margin-top: 35px;
   }

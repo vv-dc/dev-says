@@ -7,7 +7,7 @@ import UserFollowButton from '../follow-button';
 import UserSecondaryInfo from './secondary';
 import Dots from '../../shared/dots';
 
-const UserInfo = ({ user }) => {
+const UserInfo = ({ user, stats }) => {
   const {
     userId,
     imageURL,
@@ -19,9 +19,6 @@ const UserInfo = ({ user }) => {
     company,
     website,
     createdAt,
-    followers,
-    following,
-    posts,
   } = user;
   return (
     <InfoWrapper>
@@ -32,11 +29,7 @@ const UserInfo = ({ user }) => {
           <Dots />
         </UserClickableInfo>
         <UserPrimaryInfo fullName={fullName} username={username} status={bio} />
-        <UserNumericInfo
-          posts={posts}
-          followers={followers}
-          following={following}
-        />
+        <UserNumericInfo username={username} {...stats} />
         <UserFollowButton userId={userId} />
         <UserSecondaryInfo
           location={location}
@@ -53,13 +46,13 @@ export default UserInfo;
 
 const InfoWrapper = styled.div`
   font-size: 14px;
-  border-bottom: 5px solid var(--gray-dark);
+  border-bottom: 5px solid var(--border-dark);
 `;
 
 const Background = styled.div`
   height: 150px;
   background-image: url(${p => p.backgroundURL});
-  background-color: var(--gray-dark);
+  background-color: var(--border-dark);
 `;
 
 const UserClickableInfo = styled.div`

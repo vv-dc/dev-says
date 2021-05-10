@@ -18,4 +18,10 @@ export class UserService {
     const response = await http.get(apiUrl);
     return response.data;
   }
+
+  static async getStats(userId) {
+    const apiUrl = `/${this.entity}/${userId}/stats`;
+    const response = await http.get(apiUrl);
+    return response.data;
+  }
 }

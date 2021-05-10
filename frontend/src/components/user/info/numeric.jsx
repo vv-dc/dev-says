@@ -4,16 +4,21 @@ import styled from 'styled-components';
 import FormattedNumber from '../../shared/formatted-number';
 import { InternalLink } from '../../styled/link';
 
-const UserNumericInfo = ({ username, posts, followers, following }) => (
+const UserNumericInfo = ({
+  username,
+  postsNumber,
+  followersNumber,
+  followingNumber,
+}) => (
   <NumericWrapper>
     <span>
-      <FormattedNumber number={posts} /> Posts
+      <FormattedNumber number={postsNumber} /> Posts
     </span>
     <InternalLink to={`${username}/followers`}>
-      <FormattedNumber number={followers} /> Followers
+      <FormattedNumber number={followersNumber} /> Followers
     </InternalLink>
     <InternalLink to={`${username}/following`}>
-      <FormattedNumber number={following} /> Following
+      <FormattedNumber number={followingNumber} /> Following
     </InternalLink>
   </NumericWrapper>
 );

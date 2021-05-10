@@ -11,10 +11,15 @@ import Spinner from '../components/shared/spinner';
 const UserPage = () => {
   const { username } = useParams();
   const [user, setUser] = useState(null);
+  const [stats, setStats] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchUser = async () => {
     const { user } = await UserService.getByUsername(username);
+    if (user) {
+      const { stats } = await UserService.getStats(user.userId);
+      setStats(stats);
+    }
     setUser(user);
   };
 
@@ -28,7 +33,7 @@ const UserPage = () => {
     <UserNotFound username={username} />
   ) : (
     <Wrapper>
-      <UserInfo user={user} />
+      <UserInfo user={user} stats={stats} />
       <UserPosts user={user} />
     </Wrapper>
   );
