@@ -10,11 +10,12 @@ class PostService {
   }
 
   async findById(postId) {
-    const rows = await this.pg.callFunction({
-      functionName: 'getPostById',
-      params: [postId],
-    });
-    return rows[0];
+    return (
+      await this.pg.callFunction({
+        functionName: 'getPostById',
+        params: [postId],
+      })
+    )[0];
   }
 
   async findByUserId(userId) {
@@ -46,6 +47,12 @@ class PostService {
       return this[functionName](value);
     }
     return [];
+  }
+
+  async getTotalScore(postId) {
+    const query = 'SELECT sum("score") FROM "PostScores" WHERE "postId" = $1';
+    const rows = await this.pg.execute(query, [postId]);
+    return rows[0].sum || 0;
   }
 
   async getUserScore(userId, postId) {

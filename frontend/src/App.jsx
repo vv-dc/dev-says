@@ -11,15 +11,15 @@ import UserPage from './pages/user';
 const GlobalStyles = createGlobalStyle`
   :root {
     --black: #080c0b;
-    --white: #ffffff;
-    --gray: #cccccc;
-    --light-gray: #f1f0ea;
-    --dark-gray: #18191a;
+    --white: #f1f0ea;
+    --gray: #ccc;
+    --gray-dark: #18191a;
     --green: #0dab76;
     --blue: #2378a9;
     --red: #cb2431;
     --error-red: #8a050c;
     --bg-post: #101816;
+    --border-dark: #333;
     --border-light: #777;
     --bg-dot-list: rgba(13, 171, 118, 0.1);
     --dropdown-shadow: rgba(153, 153, 153, 0.2);
@@ -27,7 +27,7 @@ const GlobalStyles = createGlobalStyle`
   }
   body {
     background-color: var(--black);
-    color: var(--light-gray);
+    color: var(--white);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 
       'Roboto', 'Cantarell', sans-serif;
   }

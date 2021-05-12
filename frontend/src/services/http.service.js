@@ -11,7 +11,7 @@ export class HttpService {
         if (AuthService.isAccessTokenExpired()) {
           AuthService.refreshTokens().catch(err => Promise.reject(err));
         }
-        request.headers.authorization = AuthService.accessToken;
+        request.headers.authorization = AuthService.getAccessToken();
         request.withCredentials = true;
         return request;
       });

@@ -48,6 +48,15 @@ class UserService {
       })
     )[0];
   }
+
+  async getUserStats(userId) {
+    return (
+      await this.pg.callFunction({
+        functionName: 'getUserStats',
+        params: [userId],
+      })
+    )[0];
+  }
 }
 
 module.exports = { UserService };

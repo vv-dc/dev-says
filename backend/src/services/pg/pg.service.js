@@ -1,6 +1,7 @@
 'use strict';
 
 const { Pool } = require('pg');
+
 class PgApi {
   constructor() {
     this.pool = new Pool();

@@ -18,7 +18,7 @@ export class PostService {
 
   static async getUserScore(postId) {
     try {
-      const userId = AuthService.userId;
+      const userId = AuthService.getUserId();
       const apiUrl = `/${this.entity}/${postId}/scores/${userId}`;
       const response = await authHttp.get(apiUrl);
       return response.data;
@@ -27,8 +27,14 @@ export class PostService {
     }
   }
 
+  static async getTotalScore(postId) {
+    const apiUrl = `/${this.entity}/${postId}/scores/`;
+    const response = await http.get(apiUrl);
+    return response.data;
+  }
+
   static async updateUserScore(postId, score) {
-    const userId = AuthService.userId;
+    const userId = AuthService.getUserId();
     const apiUrl = `/${this.entity}/${postId}/scores/${userId}`;
     await authHttp.put(apiUrl, { score });
   }

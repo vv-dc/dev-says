@@ -2,21 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
+import Spinner from '../../shared/spinner';
 import { AuthError } from '../../../helpers/auth-error';
 import { PostService } from '../../../services/posts.service';
 import { ReactComponent as Comment } from './icons/comment.svg';
 import { ReactComponent as Share } from './icons/share.svg';
 
-const PostMenu = ({ postId, totalScore }) => {
+const PostMenu = ({ postId }) => {
   const [score, setScore] = useState(0);
-  const [total, setTotal] = useState(totalScore);
+  const [total, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
 
   const fetchScores = async () => {
     const { score } = await PostService.getUserScore(postId);
+    const { totalScore } = await PostService.getTotalScore(postId);
     setScore(score);
-    setTotal(total => total - score);
+    setTotal(totalScore - score);
   };
 
   const handleClick = async newScore => {
@@ -33,7 +35,7 @@ const PostMenu = ({ postId, totalScore }) => {
   useEffect(() => fetchScores().then(() => setIsLoading(false)), []);
 
   return isLoading ? (
-    <h1>Loading...</h1>
+    <Spinner width={60} height={80} />
   ) : (
     <MenuWrapper>
       <UpTriangle onClick={() => handleClick(1)} active={score === 1} />

@@ -14,7 +14,6 @@ const postStructure = {
     createdAt: { type: 'string', format: 'date-time' },
     updatedAt: { type: 'string', format: 'date-time' },
     tags: { type: 'array', items: { type: 'string' } },
-    totalScore: { type: 'integer' },
     commentsCount: { type: 'integer' },
   },
   required: [
@@ -23,7 +22,6 @@ const postStructure = {
     'content',
     'createdAt',
     'updatedAt',
-    'totalScore',
     'commentsCount',
   ],
 };
@@ -32,8 +30,8 @@ const postScoreStructure = {
   type: 'object',
   properties: {
     score: { type: 'integer' },
+    totalScore: { type: 'integer' },
   },
-  required: ['score'],
 };
 
 const getPostOne = {
@@ -72,10 +70,10 @@ const getPostScore = {
   params: {
     type: 'object',
     properties: {
-      userId: { type: 'integer' },
+      userId: { type: 'integer', nullable: true },
       postId: { type: 'integer' },
     },
-    required: ['userId', 'postId'],
+    required: ['postId'],
   },
   response: {
     200: postScoreStructure,
