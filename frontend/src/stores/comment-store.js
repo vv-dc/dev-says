@@ -2,7 +2,8 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import { CommentService } from '../services/comment.service';
 
 export class CommentStore {
-  comments = [];
+  index = new Map();
+  tree = new Map();
   postId = undefined;
 
   constructor(postId) {
@@ -10,50 +11,72 @@ export class CommentStore {
     makeAutoObservable(this);
   }
 
-  getCommentById(commentId) {
-    const comment = this.comments.filter(comment => {
-      return comment.id === commentId;
-    });
-    return comment[0];
+  getComment(commentId) {
+    if (commentId === null) return null;
+    const path = [commentId];
+
+    let parentId = this.index.get(commentId);
+    while (parentId !== null) {
+      path.push(parentId);
+      parentId = this.index.get(parentId);
+    }
+    let children = this.tree,
+      comment = null;
+    for (const id of path.reverse()) {
+      comment = children.get(id);
+      children = comment.replies;
+    }
+    return comment;
+  }
+
+  getReplies(parent) {
+    return parent ? parent.replies : this.tree;
   }
 
   async fetchComments(parentId) {
-    const data = await CommentService.getByParent({
+    const comments = await CommentService.getByParent({
       postId: this.postId,
       parentId,
     });
-    const comments = data.map(comment => {
-      return Object.assign(comment, { children: [] });
-    });
-    const parent = this.getCommentById(parentId);
+    const parent = this.getComment(parentId);
+    const children = this.getReplies(parent);
+
     runInAction(() => {
-      if (parent) {
-        parent.children.push(...comments);
+      for (const comment of comments) {
+        const { id, parentId } = comment;
+        const replies = new Map();
+
+        children.set(id, { ...comment, replies });
+        this.index.set(id, parentId);
       }
-      this.comments.push(...comments);
     });
   }
 
   async addComment(parentId, rawContent) {
-    const comment = await CommentService.addComment({
+    const comment = await CommentService.add({
       postId: this.postId,
       parentId,
       rawContent,
     });
-    const parent = this.getCommentById(parentId);
+    const parent = this.getComment(parentId);
+
     runInAction(() => {
-      if (parent) {
-        parent.children.push(comment);
-        parent.replies += 1;
-      }
-      this.comments.push(comment);
+      this.index.set(comment.id, parentId);
+      if (parent) parent.replyCount += 1;
+
+      const children = this.getReplies(parent);
+      children.set(comment.id, comment);
     });
   }
 
-  getReplies(parentId) {
-    const replies = this.comments.filter(comment => {
-      return comment.parentId === parentId;
+  async updateComment(id, rawContent) {
+    const updatedAt = new Date();
+    await CommentService.update({ id, rawContent, updatedAt });
+
+    const comment = this.getComment(id);
+    runInAction(() => {
+      comment.updatedAt = updatedAt;
+      comment.rawContent = rawContent;
     });
-    return replies;
   }
 }

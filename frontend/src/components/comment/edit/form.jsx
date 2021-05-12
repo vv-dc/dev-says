@@ -1,52 +1,38 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import SideBlock from '../side';
-import CommentContext from '../context';
-import { AuthService } from '../../../services/auth.service';
 import { BaseButton } from '../../styled/base-button';
 
-const CommentForm = ({ parentId, onCancel }) => {
-  const { store } = useContext(CommentContext);
-  const [comment, setComment] = useState('');
+const CommentForm = ({ handleSubmit, handleCancel, initContent = '' }) => {
+  const [content, setContent] = useState(initContent);
 
-  const handleCancel = event => {
+  const handleFormSubmit = event => {
     event.preventDefault();
-    onCancel();
+    handleSubmit(content);
   };
-  const handleSubmit = event => {
+  const handleFormCancel = event => {
     event.preventDefault();
-    store.addComment(parentId, comment);
-    onCancel();
+    handleCancel();
   };
-
   return (
-    <FormWrapper>
-      <SideBlock author={AuthService.user} />
-      <Form onSubmit={handleSubmit}>
-        <CommentArea
-          value={comment}
-          placeholder="Leave a comment"
-          onChange={event => setComment(event.target.value)}
-        />
-        <div>
-          <CancelButton onClick={handleCancel}>Cancel</CancelButton>
-          <CommentButton>Comment</CommentButton>
-        </div>
-      </Form>
-    </FormWrapper>
+    <Form onSubmit={handleFormSubmit}>
+      <CommentArea
+        value={content}
+        onChange={event => setContent(event.target.value)}
+        placeholder="Leave a comment"
+      />
+      <div>
+        <CancelButton onClick={handleFormCancel}>Cancel</CancelButton>
+        <CommentButton>Comment</CommentButton>
+      </div>
+    </Form>
   );
 };
 
 export default CommentForm;
 
-const FormWrapper = styled.div`
-  display: flex;
-  margin-top: 10px;
-`;
 const Form = styled.form`
   width: 100%;
-  margin-left: 10px;
 `;
 
 const CommentArea = styled.textarea`
@@ -54,7 +40,7 @@ const CommentArea = styled.textarea`
   outline: none;
   border: none;
   width: 100%;
-  padding: 6px 8px;
+  padding: 4px 4px;
   margin-bottom: 7px;
   color: var(--light-gray);
   background-color: transparent;

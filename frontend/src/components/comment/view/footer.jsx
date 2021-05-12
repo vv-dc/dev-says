@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import ViewReplies from '../../shared/view-replies';
+import ViewReplies from './view-replies';
 
-const CommentFooter = ({ replies, showReplies, addReply }) => (
+const CommentFooter = ({ replyCount, showReplies, addReply }) => (
   <FooterWrapper>
     <Reply onClick={addReply}>Reply</Reply>
     <Report>Report</Report>
-    <ViewReplies replies={replies} onClick={showReplies} />
+    <ViewReplies replyCount={replyCount} onClick={showReplies} />
   </FooterWrapper>
 );
 

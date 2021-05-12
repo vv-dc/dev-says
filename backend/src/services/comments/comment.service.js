@@ -12,9 +12,16 @@ class CommentService {
     const rows = await this.pg.insert({
       items: [comment],
       table: this.table,
-      returning: ['commentId', 'postedAt'],
+      returning: ['commentId'],
     });
-    return rows[0];
+    return rows[0].commentId;
+  }
+  async updateContent({ commentId, rawContent, updatedAt }) {
+    return this.pg.update({
+      changes: { rawContent, updatedAt },
+      table: this.table,
+      where: { commentId },
+    });
   }
   async findByPostAndParent(postId, parentId) {
     const comments = await this.pg.callFunction({

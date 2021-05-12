@@ -1,21 +1,37 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 
 import { AuthService } from '../../services/auth.service';
+import CommentContext from './context';
 import CommentBody from './view/comment';
 import CommentDropDown from './dropdown';
 import SideBlock from './side';
-import CommentForm from './edit/form';
+import ReplyForm from './edit/reply-form';
 import CommentFooter from './view/footer';
+import { observer } from 'mobx-react';
 
-const CommentBranch = ({ comment }) => {
-  const [isExpanded, setExpanded] = useState(false);
-  const [withReply, setWithReply] = useState(false);
+const CommentBranch = observer(({ comment }) => {
+  const { store } = useContext(CommentContext);
   const history = useHistory();
 
-  const { id: parentId, replies: count, author } = comment;
+  const [isExpanded, setExpanded] = useState(false);
+  const [withReply, setWithReply] = useState(false);
 
+  const { id, author, replyCount, replies } = comment;
+  const replyInfo = {
+    parentId: id,
+    count: replyCount,
+    replies,
+  };
+  const handleReplySubmit = content => {
+    store.addComment(id, content);
+    setWithReply(false);
+  };
+  const handleReplyCancel = () => {
+    if (replyCount < 1) setExpanded(false);
+    setWithReply(false);
+  };
   const addReply = () => {
     if (!AuthService.isAuthenticated()) {
       history.push('./login');
@@ -30,34 +46,34 @@ const CommentBranch = ({ comment }) => {
       <MainBlock>
         <CommentBody
           comment={comment}
-          commentFooter={
+          footer={
             <CommentFooter
-              replies={count}
+              replyCount={replyCount}
               showReplies={() => setExpanded(state => !state)}
               addReply={addReply}
             />
           }
         />
         <CommentDropDown
-          isExpanded={isExpanded}
-          commentForm={
+          replyInfo={replyInfo}
+          replyForm={
             withReply && (
-              <CommentForm
-                parentId={parentId}
-                onCancel={() => setWithReply(false)}
+              <ReplyForm
+                handleSubmit={handleReplySubmit}
+                handleCancel={handleReplyCancel}
               />
             )
           }
-          replies={{ parentId, count }}
+          isExpanded={isExpanded}
         />
       </MainBlock>
     </BranchWrapper>
   );
-};
+});
 
 export default CommentBranch;
 
-const BranchWrapper = styled.div`
+const BranchWrapper = styled.li`
   display: flex;
   margin-top: 10px;
   &:not(:last-child) {

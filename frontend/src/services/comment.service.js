@@ -11,13 +11,15 @@ export class CommentService {
     );
     return response.data.comments;
   }
-  static async addComment({ postId, parentId, rawContent }) {
+  static async add({ postId, parentId, rawContent }) {
     const { userId: authorId, username, imageURL } = AuthService.user;
+    const postedAt = new Date();
+
     const response = await http.post(
       `/posts/${postId}/comments/${parentId ?? ''}`,
-      { authorId, rawContent }
+      { authorId, rawContent, postedAt }
     );
-    const { commentId: id, postedAt } = response.data.comment;
+    const { commentId: id } = response.data;
     const comment = {
       id,
       parentId,
@@ -25,9 +27,12 @@ export class CommentService {
       rawContent,
       postedAt,
       updatedAt: postedAt,
-      replies: 0,
-      children: [],
+      replyCount: 0,
+      replies: new Map(),
     };
     return comment;
+  }
+  static async update({ id, rawContent, updatedAt }) {
+    await http.patch(`/comments/${id}`, { rawContent, updatedAt });
   }
 }

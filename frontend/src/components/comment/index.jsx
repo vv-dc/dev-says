@@ -2,14 +2,18 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import styled from 'styled-components';
 
-import DropDown from './dropdown';
+import CommentDropDown from './dropdown';
 import CommentContext from './context';
 
-const CommentSection = observer(({ store, commentsCount, isExpanded }) => (
+const CommentSection = observer(({ store, replyCount, isExpanded }) => (
   <CommentContext.Provider value={{ store }}>
     <SectionWrapper>
-      <DropDown
-        replies={{ parentId: null, count: commentsCount }}
+      <CommentDropDown
+        replyInfo={{
+          count: replyCount,
+          parentId: null,
+          replies: store.tree,
+        }}
         isExpanded={isExpanded}
       />
     </SectionWrapper>

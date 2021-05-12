@@ -19,7 +19,7 @@ const PostComments = ({ store, commentsCount }) => {
       {isExpanded && (
         <Comment
           store={store}
-          commentsCount={commentsCount}
+          replyCount={commentsCount}
           isExpanded={isExpanded}
         />
       )}

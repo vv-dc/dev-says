@@ -93,9 +93,9 @@ RETURNS TABLE (
 	"id" bigint,
 	"parentId" bigint,
 	"rawContent" text,
-	"postedAt" timestamp,
-  "updatedAt" timestamp,
-	"replies" bigint
+	"postedAt" timestamp with time zone,
+  "updatedAt" timestamp with time zone,
+	"replyCount" bigint
 ) AS $$
 DECLARE
 	"parentCondition" text := 'IS NULL';

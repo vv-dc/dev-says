@@ -5,13 +5,12 @@ import styled from 'styled-components';
 import CommentThread from './thread';
 import CommentContext from './context';
 
-const CommentDropDown = observer(({ replies, isExpanded, commentForm }) => {
+const CommentDropDown = observer(({ replyInfo, isExpanded, replyForm }) => {
   const { store } = useContext(CommentContext);
-  const { parentId, count } = replies;
 
-  const children = store.getReplies(parentId);
+  const { count, parentId, replies } = replyInfo;
   useEffect(() => {
-    if (children.length !== +count && isExpanded) {
+    if (replies.size !== +count && isExpanded) {
       store.fetchComments(parentId);
     }
   }, [isExpanded]);
@@ -19,7 +18,7 @@ const CommentDropDown = observer(({ replies, isExpanded, commentForm }) => {
   return (
     isExpanded && (
       <ThreadWrapper>
-        <CommentThread comments={children} commentForm={commentForm} />
+        <CommentThread comments={replies} replyForm={replyForm} />
       </ThreadWrapper>
     )
   );

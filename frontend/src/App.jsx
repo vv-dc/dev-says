@@ -21,6 +21,8 @@ const GlobalStyles = createGlobalStyle`
     --error-red: #8a050c;
     --bg-post: #101816;
     --border-light: #777;
+    --bg-dot-list: rgba(13, 171, 118, 0.1);
+    --dropdown-shadow: rgba(153, 153, 153, 0.2);
     --font-heading: 'Bebas Neue';
   }
   body {

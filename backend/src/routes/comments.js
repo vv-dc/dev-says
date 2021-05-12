@@ -23,13 +23,28 @@ module.exports = async function (fastify) {
   fastify.route({
     method: 'POST',
     path: '/posts/:postId/comments/:parentId',
-    schema: schema.addComment,
+    schema: schema.postComment,
     handler: async (request, reply) => {
-      const comment = await commentService.add({
+      const { postedAt } = request.body;
+      const commentId = await commentService.add({
+        ...request.params,
+        ...request.body,
+        updatedAt: postedAt,
+      });
+      reply.send({ commentId });
+    },
+  });
+
+  fastify.route({
+    method: 'PATCH',
+    path: '/comments/:commentId',
+    schema: schema.patchComment,
+    handler: async (request, reply) => {
+      await commentService.updateContent({
         ...request.params,
         ...request.body,
       });
-      reply.send({ comment });
+      reply.send();
     },
   });
 };
