@@ -19,7 +19,7 @@ export default ReplyForm;
 const FormWrapper = styled.div`
   display: flex;
   margin-top: 10px;
-  & > *:nth-child(2) {
+  & > *:last-child {
     margin-left: 10px;
   }
 `;

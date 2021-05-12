@@ -36,9 +36,9 @@ module.exports = async function (fastify) {
   });
 
   fastify.route({
-    method: 'PATCH',
+    method: 'PUT',
     path: '/comments/:commentId',
-    schema: schema.patchComment,
+    schema: schema.putComment,
     handler: async (request, reply) => {
       await commentService.updateContent({
         ...request.params,

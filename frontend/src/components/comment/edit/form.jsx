@@ -49,7 +49,7 @@ const CommentArea = styled.textarea`
 const FormButton = styled(BaseButton)`
   padding: 6px 8px;
   border-radius: 12px;
-  color: black;
+  color: #000;
 `;
 
 const CancelButton = styled(FormButton)`

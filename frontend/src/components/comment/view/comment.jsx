@@ -1,7 +1,9 @@
 import React, { useContext, useState } from 'react';
+import { useHistory } from 'react-router';
 import { observer } from 'mobx-react';
 import styled from 'styled-components';
 
+import { AuthService } from '../../../services/auth.service';
 import CommentContext from '../context';
 import CommentHeader from './header';
 import CommentForm from '../edit/form';
@@ -10,12 +12,20 @@ import CellMarkDown from '../../cell/markdown';
 const CommentBody = observer(({ comment, footer }) => {
   const [isEditing, setIsEditing] = useState(false);
   const { store } = useContext(CommentContext);
+  const history = useHistory();
 
   const { id, author, postedAt, updatedAt, rawContent } = comment;
 
   const handleEditSubmit = content => {
     store.updateComment(id, content);
     setIsEditing(false);
+  };
+  const handleEditClick = () => {
+    if (AuthService.isAuthenticated()) {
+      if (author.id === AuthService.userId) {
+        setIsEditing(true);
+      }
+    } else history.push('./login');
   };
   return isEditing ? (
     <CommentForm
@@ -27,7 +37,7 @@ const CommentBody = observer(({ comment, footer }) => {
     <CommentView>
       <CommentHeader author={author} date={{ postedAt, updatedAt }}>
         <ul>
-          <Option onClick={() => setIsEditing(true)}>Edit</Option>
+          <Option onClick={handleEditClick}>Edit</Option>
         </ul>
       </CommentHeader>
       <Content>

@@ -17,12 +17,12 @@ export class CommentStore {
 
     let parentId = this.index.get(commentId);
     while (parentId !== null) {
-      path.push(parentId);
+      path.unshift(parentId);
       parentId = this.index.get(parentId);
     }
     let children = this.tree,
       comment = null;
-    for (const id of path.reverse()) {
+    for (const id of path) {
       comment = children.get(id);
       children = comment.replies;
     }

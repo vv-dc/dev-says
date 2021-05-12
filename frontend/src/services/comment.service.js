@@ -23,7 +23,7 @@ export class CommentService {
     const comment = {
       id,
       parentId,
-      author: { username, imageURL },
+      author: { id: authorId, username, imageURL },
       rawContent,
       postedAt,
       updatedAt: postedAt,
@@ -33,6 +33,6 @@ export class CommentService {
     return comment;
   }
   static async update({ id, rawContent, updatedAt }) {
-    await http.patch(`/comments/${id}`, { rawContent, updatedAt });
+    await http.put(`/comments/${id}`, { rawContent, updatedAt });
   }
 }

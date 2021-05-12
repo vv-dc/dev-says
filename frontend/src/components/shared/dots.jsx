@@ -1,12 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useHistory } from 'react-router';
 import styled from 'styled-components';
-
-import { AuthService } from '../../services/auth.service';
 
 const Dots = ({ children }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const history = useHistory();
   const menu = useRef();
 
   const handleClickOutside = event => {
@@ -14,11 +10,6 @@ const Dots = ({ children }) => {
       setIsExpanded(false);
     }
   };
-  const handleClick = () => {
-    if (!AuthService.isAuthenticated()) history.push('./login');
-    else setIsExpanded(true);
-  };
-
   useEffect(() => {
     if (isExpanded) {
       document.addEventListener('mousedown', handleClickOutside);
@@ -33,7 +24,7 @@ const Dots = ({ children }) => {
   return (
     <DotsWrapper>
       {isExpanded && <DotsMenuWrapper ref={menu}>{children}</DotsMenuWrapper>}
-      <DotsList onClick={handleClick}>
+      <DotsList onClick={() => setIsExpanded(true)}>
         <Dot />
         <Dot />
         <Dot />

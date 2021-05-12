@@ -32,10 +32,11 @@ const getComments = {
               author: {
                 type: 'object',
                 properties: {
+                  id: { type: 'integer' },
                   username: { type: 'string' },
                   imageURL: { type: 'string' },
                 },
-                required: ['username', 'imageURL'],
+                required: ['id', 'username', 'imageURL'],
               },
               rawContent: { type: 'string' },
               postedAt: { type: 'string', format: 'date-time' },
@@ -61,7 +62,7 @@ const getComments = {
 };
 
 const postComment = {
-  response: { 200: commentId },
+  response: { 201: commentId },
   body: {
     type: 'object',
     properties: {
@@ -74,7 +75,7 @@ const postComment = {
   params: postParent,
 };
 
-const patchComment = {
+const putComment = {
   response: { 200: {} },
   body: {
     type: 'object',
@@ -90,5 +91,5 @@ const patchComment = {
 module.exports = {
   getComments,
   postComment,
-  patchComment,
+  putComment,
 };
