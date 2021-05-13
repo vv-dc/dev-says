@@ -2,8 +2,8 @@
 
 const formatComments = comments =>
   comments.map(comment => {
-    const { username, imageURL, ...rest } = comment;
-    rest.author = { username, imageURL };
+    const { authorId, username, imageURL, ...rest } = comment;
+    rest.author = { id: authorId, username, imageURL };
     return rest;
   });
 

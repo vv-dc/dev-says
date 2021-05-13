@@ -1,25 +1,28 @@
 import React, { useContext, useEffect } from 'react';
+import { observer } from 'mobx-react';
 import styled from 'styled-components';
 
 import CommentThread from './thread';
 import CommentContext from './context';
 
-const CommentDropDown = ({ replies, isExpanded }) => {
-  const { fetchComments } = useContext(CommentContext);
-  const { id, count, children } = replies;
+const CommentDropDown = observer(({ replyInfo, isExpanded, replyForm }) => {
+  const { store } = useContext(CommentContext);
 
+  const { count, parentId, replies } = replyInfo;
   useEffect(() => {
-    if (children.length !== +count && isExpanded) fetchComments(id);
+    if (replies.size !== +count && isExpanded) {
+      store.fetchComments(parentId);
+    }
   }, [isExpanded]);
 
   return (
     isExpanded && (
       <ThreadWrapper>
-        <CommentThread comments={children} />
+        <CommentThread comments={replies} replyForm={replyForm} />
       </ThreadWrapper>
     )
   );
-};
+});
 
 export default CommentDropDown;
 

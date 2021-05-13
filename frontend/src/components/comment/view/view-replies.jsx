@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ViewReplies = ({ replies, onClick }) =>
-  replies && (
+const ViewReplies = ({ replyCount, onClick }) =>
+  replyCount > 0 && (
     <Replies onClick={onClick}>
-      View {replies} {replies == 1 ? 'reply' : 'replies'}
+      View {replyCount} {replyCount == 1 ? 'reply' : 'replies'}
     </Replies>
   );
 

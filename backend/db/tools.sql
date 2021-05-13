@@ -76,14 +76,15 @@ $$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION "getCommentsByPostAndParent"("post" int, "parent" int)
 RETURNS TABLE (
+	"authorId" int,
 	"username" varchar(120),
 	"imageURL" varchar(255),
 	"id" bigint,
 	"parentId" bigint,
 	"rawContent" text,
-	"postedAt" timestamp,
-  "updatedAt" timestamp,
-	"replies" bigint
+	"postedAt" timestamp with time zone,
+  	"updatedAt" timestamp with time zone,
+	"replyCount" bigint
 ) AS $$
 DECLARE
 	"parentCondition" text := 'IS NULL';
@@ -93,6 +94,7 @@ BEGIN
 	END IF;
 	RETURN QUERY EXECUTE format( 
 		'SELECT 
+      "Users"."userId",
 			"Users"."username",
 			"Users"."imageURL",
 			"Comments"."commentId",

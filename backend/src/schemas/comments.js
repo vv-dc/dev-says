@@ -1,5 +1,22 @@
 'use strict';
 
+const postParent = {
+  type: 'object',
+  properties: {
+    postId: { type: 'integer' },
+    parentId: { type: 'integer', nullable: true },
+  },
+  required: ['postId'],
+};
+
+const commentId = {
+  type: 'object',
+  properties: {
+    commentId: { type: 'integer' },
+  },
+  required: ['commentId'],
+};
+
 const getComments = {
   response: {
     200: {
@@ -15,15 +32,16 @@ const getComments = {
               author: {
                 type: 'object',
                 properties: {
+                  id: { type: 'integer' },
                   username: { type: 'string' },
                   imageURL: { type: 'string' },
                 },
-                required: ['username', 'imageURL'],
+                required: ['id', 'username', 'imageURL'],
               },
               rawContent: { type: 'string' },
               postedAt: { type: 'string', format: 'date-time' },
               updatedAt: { type: 'string', format: 'date-time' },
-              replies: { type: 'integer', nullable: true },
+              replyCount: { type: 'integer', nullable: true },
             },
             required: [
               'id',
@@ -32,23 +50,46 @@ const getComments = {
               'rawContent',
               'postedAt',
               'updatedAt',
-              'replies',
+              'replyCount',
             ],
           },
         },
       },
+      required: ['comments'],
     },
   },
-  params: {
+  params: postParent,
+};
+
+const postComment = {
+  response: { 201: commentId },
+  body: {
     type: 'object',
     properties: {
-      postId: { type: 'integer' },
-      parentId: { type: 'integer', nullable: true },
+      authorId: { type: 'integer' },
+      rawContent: { type: 'string' },
+      postedAt: { type: 'string', format: 'date-time' },
     },
-    required: ['postId'],
+    required: ['authorId', 'rawContent', 'postedAt'],
   },
+  params: postParent,
+};
+
+const putComment = {
+  response: { 200: {} },
+  body: {
+    type: 'object',
+    properties: {
+      rawContent: { type: 'string' },
+      updatedAt: { type: 'string', format: 'date-time' },
+    },
+    required: ['rawContent', 'updatedAt'],
+  },
+  params: commentId,
 };
 
 module.exports = {
   getComments,
+  postComment,
+  putComment,
 };

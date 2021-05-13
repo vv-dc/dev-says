@@ -6,7 +6,8 @@ import TimeAgo from '../../shared/time-ago';
 import Edited from '../../shared/edited';
 import UserTag from '../../user/tag';
 
-const CommentHeader = ({ author, postedAt, updatedAt }) => {
+const CommentHeader = ({ author, date, children }) => {
+  const { postedAt, updatedAt } = date;
   return (
     <HeaderWrapper>
       <InfoBlock>
@@ -16,7 +17,7 @@ const CommentHeader = ({ author, postedAt, updatedAt }) => {
         <TimeAgo date={updatedAt} />
         <Edited createdAt={postedAt} updatedAt={updatedAt} />
       </InfoBlock>
-      <Dots />
+      <Dots>{children}</Dots>
     </HeaderWrapper>
   );
 };

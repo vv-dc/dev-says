@@ -1,13 +1,15 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 
 import CommentBranch from './branch';
 
-const CommentThread = ({ comments }) => (
+const CommentThread = observer(({ comments, replyForm }) => (
   <ul>
-    {comments.map(comment => (
-      <CommentBranch key={comment.id} comment={comment} />
+    {Array.from(comments).map(([id, comment]) => (
+      <CommentBranch key={id} comment={comment} />
     ))}
+    {replyForm}
   </ul>
-);
+));
 
 export default CommentThread;

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Comment from '../comment';
 import DropDown from '../shared/dropdown';
 
-const PostComments = ({ postId, commentsCount }) => {
+const PostComments = ({ store, commentsCount }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleClick = () => setIsExpanded(state => !state);
@@ -18,8 +18,8 @@ const PostComments = ({ postId, commentsCount }) => {
       />
       {isExpanded && (
         <Comment
-          postId={postId}
-          commentsCount={commentsCount}
+          store={store}
+          replyCount={commentsCount}
           isExpanded={isExpanded}
         />
       )}

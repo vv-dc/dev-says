@@ -1,38 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { observer } from 'mobx-react';
 import styled from 'styled-components';
 
-import { CommentService } from '../../services/comment.service';
-import DropDown from './dropdown';
+import CommentDropDown from './dropdown';
 import CommentContext from './context';
 
-const CommentSection = ({ postId, commentsCount, isExpanded }) => {
-  const [commentTree, setCommentTree] = useState([]);
-  const parentId = null;
-
-  const fetchComments = async parentId => {
-    const comments = await CommentService.getByParent(postId, parentId);
-    const nodes = comments.map(comment =>
-      Object.assign({}, comment, { children: [] })
-    );
-    setCommentTree(tree => {
-      const parent = tree.filter(node => node.id === parentId)[0];
-      if (parent) parent.children = nodes;
-      return tree.concat(nodes);
-    });
-  };
-
-  const comments = commentTree.filter(node => node.parentId === parentId);
-  return (
-    <CommentContext.Provider value={{ fetchComments }}>
-      <SectionWrapper>
-        <DropDown
-          replies={{ id: parentId, count: commentsCount, children: comments }}
-          isExpanded={isExpanded}
-        />
-      </SectionWrapper>
-    </CommentContext.Provider>
-  );
-};
+const CommentSection = observer(({ store, replyCount, isExpanded }) => (
+  <CommentContext.Provider value={{ store }}>
+    <SectionWrapper>
+      <CommentDropDown
+        replyInfo={{
+          count: replyCount,
+          parentId: null,
+          replies: store.tree,
+        }}
+        isExpanded={isExpanded}
+      />
+    </SectionWrapper>
+  </CommentContext.Provider>
+));
 
 export default CommentSection;
 
