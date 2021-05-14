@@ -12,7 +12,7 @@ export class CommentService {
     return response.data.comments;
   }
   static async add({ postId, parentId, rawContent }) {
-    const { userId: authorId, username, imageURL } = AuthService.user;
+    const { userId: authorId, username, imageURL } = AuthService.getUser();
     const postedAt = new Date();
 
     const response = await http.post(

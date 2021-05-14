@@ -2,42 +2,59 @@ import AuthStore from '../stores/auth-store';
 import { HttpService } from './http.service';
 import { getFingerprint } from '../helpers/get-fingerprint';
 import { AuthError } from '../helpers/auth-error';
+import { HttpError } from '../helpers/http-error';
 
 const http = new HttpService({ withAuth: false });
 
 export class AuthService {
   static async loginLocal(login, password) {
-    const fingerprint = await getFingerprint();
-    const response = await http.post(
-      '/auth/login',
-      { login, password, fingerprint },
-      { withCredentials: true }
-    );
-    AuthStore.setAuthData(response.data);
+    try {
+      const fingerprint = await getFingerprint();
+      const response = await http.post(
+        '/auth/login',
+        { login, password, fingerprint },
+        { withCredentials: true }
+      );
+      AuthStore.setAuthData(response.data);
+    } catch (error) {
+      throw new HttpError(error);
+    }
   }
 
   static async loginExternal(authProvider, authCode) {
-    const fingerprint = await getFingerprint();
-    const response = await http.post(
-      `auth/login/${authProvider}`,
-      {
-        authCode: decodeURIComponent(authCode),
-        fingerprint,
-      },
-      { withCredentials: true }
-    );
-    AuthStore.setAuthData(response.data);
+    try {
+      const fingerprint = await getFingerprint();
+      const response = await http.post(
+        `auth/login/${authProvider}`,
+        {
+          authCode: decodeURIComponent(authCode),
+          fingerprint,
+        },
+        { withCredentials: true }
+      );
+      AuthStore.setAuthData(response.data);
+    } catch (error) {
+      throw new HttpError(error);
+    }
   }
 
   static async registerLocal(email, username, password) {
-    await http.post('/auth/register', { email, username, password });
+    try {
+      await http.post('/auth/register', { email, username, password });
+    } catch (error) {
+      throw new HttpError(error);
+    }
   }
 
   static async registerExternal(authProvider, username, authCode) {
-    await http.post(`/auth/register/${authProvider}`, {
-      username,
-      authCode: decodeURIComponent(authCode),
-    });
+    try {
+      await http.post(`/auth/register/${authProvider}`, {
+        username,
+        authCode: decodeURIComponent(authCode),
+      });
+    } catch (error) {
+      throw new HttpError(error);
+    }
   }
 
   static async register(formState) {
@@ -68,7 +85,7 @@ export class AuthService {
       AuthStore.setAuthData(response.data);
     } catch (error) {
       AuthStore.resetAuthData();
-      return error;
+      throw new HttpError(error);
     }
   }
 

@@ -22,7 +22,7 @@ const CommentBody = observer(({ comment, footer }) => {
   };
   const handleEditClick = () => {
     if (AuthService.isAuthenticated()) {
-      if (author.id === AuthService.userId) {
+      if (author.id === AuthService.getUserId()) {
         setIsEditing(true);
       }
     } else history.push('./login');
@@ -51,15 +51,13 @@ const CommentBody = observer(({ comment, footer }) => {
 export default CommentBody;
 
 const Content = styled.div`
-  margin-top: 2px;
+  margin-top: 5px;
   margin-bottom: 7px;
-  line-height: 20px;
 `;
 
 const CommentView = styled.div``;
 
 const Option = styled.li`
   padding: 8px 24px;
-  line-height: 20px;
   cursor: pointer;
 `;

@@ -1,13 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import GoogleButton from '../../components/google-button';
-import GitHubButton from '../../components/github-button';
-import { LightDivider } from '../../components/styled/divider';
-import {
-  AuthFormContent,
-  AuthInput,
-  AuthSignUpButton,
-} from '../../components/styled/auth';
+import GoogleButton from '../google-button';
+import GitHubButton from '../github-button';
+import { LightDivider } from '../styled/divider';
+import { AuthFormContent, AuthInput, AuthSignUpButton } from '../styled/auth';
 
 export const EmailForm = ({ state, updateState, updateStep, setError }) => {
   const handleLocalRegister = event => {

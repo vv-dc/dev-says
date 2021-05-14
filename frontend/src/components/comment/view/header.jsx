@@ -26,13 +26,11 @@ export default CommentHeader;
 
 const HeaderWrapper = styled.div`
   display: flex;
-  align-items: center;
   justify-content: space-between;
 `;
 
 const InfoBlock = styled.h3`
   display: flex;
-  line-height: 20px;
   font-weight: 400;
   & > * {
     margin-right: 5px;
@@ -40,5 +38,5 @@ const InfoBlock = styled.h3`
 `;
 
 const Username = styled.span`
-  font-weight: 700;
+  font-weight: 900;
 `;

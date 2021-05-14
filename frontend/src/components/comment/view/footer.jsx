@@ -17,7 +17,7 @@ const FooterWrapper = styled.div`
   display: flex;
   color: var(--gray);
   font-size: 12px;
-  & > *:not(:last-child) {
+  & > :not(:last-child) {
     margin-right: 5px;
   }
 `;

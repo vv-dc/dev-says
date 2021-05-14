@@ -10,6 +10,11 @@ const Dots = ({ children }) => {
       setIsExpanded(false);
     }
   };
+
+  const handleClick = () => {
+    if (children) setIsExpanded(true);
+  };
+
   useEffect(() => {
     if (isExpanded) {
       document.addEventListener('mousedown', handleClickOutside);
@@ -24,16 +29,23 @@ const Dots = ({ children }) => {
   return (
     <DotsWrapper>
       {isExpanded && <DotsMenuWrapper ref={menu}>{children}</DotsMenuWrapper>}
-      <DotsList onClick={() => setIsExpanded(true)}>
-        <Dot />
-        <Dot />
-        <Dot />
-      </DotsList>
+      <DotsBody>
+        {!isExpanded && <DotsBackground onClick={handleClick} />}
+        <DotsList>
+          <Dot />
+          <Dot />
+          <Dot />
+        </DotsList>
+      </DotsBody>
     </DotsWrapper>
   );
 };
 
 export default Dots;
+
+const DotsList = styled.div`
+  display: flex;
+`;
 
 const Dot = styled.div`
   height: 3px;
@@ -46,29 +58,33 @@ const Dot = styled.div`
 `;
 
 const DotsWrapper = styled.div`
+  padding-top: 5px;
+  padding-left: 20px;
   position: relative;
   margin-left: auto;
+`;
+
+const DotsBody = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const DotsBackground = styled.div`
+  position: absolute;
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  cursor: pointer;
+  &:hover {
+    background-color: var(--bg-dots);
+  }
 `;
 
 const DotsMenuWrapper = styled.div`
   position: absolute;
   right: 0;
-  width: 200px;
-  box-shadow: 0px 0px 6px var(--dropdown-shadow);
-  border-radius: 4px;
+  min-width: 200px;
+  box-shadow: 0px 0px 6px var(--border-dark);
   background-color: var(--bg-post);
-`;
-
-const DotsList = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 35px;
-  width: 35px;
-  border-radius: 50%;
-  margin-left: 15px;
-  cursor: pointer;
-  &:hover {
-    background-color: var(--bg-dot-list);
-  }
 `;

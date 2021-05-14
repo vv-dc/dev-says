@@ -58,6 +58,7 @@ const Background = styled.div`
 const UserClickableInfo = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 35px;
 `;
 
 const Avatar = styled.img`

@@ -23,9 +23,5 @@ const CommentSection = observer(({ store, replyCount, isExpanded }) => (
 export default CommentSection;
 
 const SectionWrapper = styled.div`
-  width: 540px;
   font-size: 14px;
-  @media screen and (max-width: 600px) {
-    width: calc(100vw - 60px);
-  }
 `;

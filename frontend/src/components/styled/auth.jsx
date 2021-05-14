@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { BaseButton } from './base-button';
 
-export const AuthErrorBlock = styled.div`
+export const AuthErrorBlock = styled.div.attrs(() => ({
+  role: 'alert',
+}))`
   padding: 20px 30px;
   background-color: var(--error-red);
   border: 1px solid var(--border-light);

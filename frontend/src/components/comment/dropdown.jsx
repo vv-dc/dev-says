@@ -7,8 +7,8 @@ import CommentContext from './context';
 
 const CommentDropDown = observer(({ replyInfo, isExpanded, replyForm }) => {
   const { store } = useContext(CommentContext);
-
   const { count, parentId, replies } = replyInfo;
+
   useEffect(() => {
     if (replies.size !== +count && isExpanded) {
       store.fetchComments(parentId);

@@ -12,6 +12,6 @@ export default ViewReplies;
 
 const Replies = styled.a`
   color: var(--green);
-  font-weight: 700;
+  font-weight: 900;
   cursor: pointer;
 `;

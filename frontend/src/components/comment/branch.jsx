@@ -24,14 +24,17 @@ const CommentBranch = observer(({ comment }) => {
     count: replyCount,
     replies,
   };
+
   const handleReplySubmit = content => {
     store.addComment(id, content);
     setWithReply(false);
   };
+
   const handleReplyCancel = () => {
     if (replyCount < 1) setExpanded(false);
     setWithReply(false);
   };
+
   const addReply = () => {
     if (!AuthService.isAuthenticated()) {
       history.push('./login');
@@ -40,6 +43,7 @@ const CommentBranch = observer(({ comment }) => {
       setWithReply(true);
     }
   };
+
   return (
     <BranchWrapper>
       <SideBlock author={author} />
@@ -76,7 +80,7 @@ export default CommentBranch;
 const BranchWrapper = styled.li`
   display: flex;
   margin-top: 10px;
-  &:not(:last-child) {
+  & > :not(:last-child) {
     margin-bottom: 10px;
   }
 `;

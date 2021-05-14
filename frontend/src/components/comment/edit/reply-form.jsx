@@ -8,7 +8,7 @@ import CommentForm from './form';
 const ReplyForm = ({ handleSubmit, handleCancel }) => {
   return (
     <FormWrapper>
-      <SideBlock author={AuthService.user} />
+      <SideBlock author={AuthService.getUser()} />
       <CommentForm handleSubmit={handleSubmit} handleCancel={handleCancel} />
     </FormWrapper>
   );

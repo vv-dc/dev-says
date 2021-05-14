@@ -1,10 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {
-  AuthFormContent,
-  AuthInput,
-  AuthSignUpButton,
-} from '../../components/styled/auth';
+import { AuthFormContent, AuthInput, AuthSignUpButton } from '../styled/auth';
 
 export const UsernameForm = ({ state, updateState, setError }) => {
   const handleClick = event => {

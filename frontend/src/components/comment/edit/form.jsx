@@ -14,6 +14,7 @@ const CommentForm = ({ handleSubmit, handleCancel, initContent = '' }) => {
     event.preventDefault();
     handleCancel();
   };
+
   return (
     <Form onSubmit={handleFormSubmit}>
       <CommentArea

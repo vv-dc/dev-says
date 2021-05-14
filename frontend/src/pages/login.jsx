@@ -1,10 +1,10 @@
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { AuthService } from '../../services/auth.service';
-import LoginForm from './login-form';
-import AuthHeader from '../../components/auth-header';
-import { AuthLink } from '../../components/styled/auth';
+import { AuthService } from '../services/auth.service';
+import LoginForm from '../components/login-form';
+import AuthHeader from '../components/auth-header';
+import { AuthLink } from '../components/styled/auth';
 
 const LoginPage = () =>
   !AuthService.isAuthenticated() ? (
