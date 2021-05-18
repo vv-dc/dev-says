@@ -1,5 +1,8 @@
 import { makeAutoObservable } from 'mobx';
+
 import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/users.service';
+import { parseToken } from '../helpers/parse-token';
 
 class AuthStore {
   constructor() {
@@ -9,15 +12,20 @@ class AuthStore {
   }
 
   setAuthData({ accessToken }) {
-    const payload = accessToken.split('.')[1];
-    const tokenData = JSON.parse(atob(payload));
-    this.accessToken = accessToken;
-    this.expiredAt = tokenData.exp;
+    const { exp: expiresAt, userId } = parseToken(accessToken);
+    Object.assign(this, { accessToken, expiresAt, userId });
+    this.setUserProfile();
   }
 
   resetAuthData() {
-    this.accessToken = undefined;
-    this.expiredAt = undefined;
+    this.accessToken = this.expiresAt = this.userId = undefined;
+    this.user = null;
+  }
+
+  setUserProfile() {
+    UserService.getById(this.userId).then(({ user }) => {
+      this.user = user;
+    });
   }
 }
 

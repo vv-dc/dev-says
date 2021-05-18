@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { AuthService } from '../../services/auth.service';
-import GoogleButton from '../../components/google-button';
-import GithubButton from '../../components/github-button';
-import { LightDivider } from '../../components/styled/divider';
+import GoogleButton from '../google-button';
+import GithubButton from '../github-button';
+import { LightDivider } from '../styled/divider';
 import {
   AuthFormContent,
   AuthInput,
   AuthSignInButton,
   AuthErrorBlock,
-} from '../../components/styled/auth';
+} from '../styled/auth';
 
 const LoginForm = () => {
   const [login, setLogin] = useState('');
@@ -21,13 +21,13 @@ const LoginForm = () => {
   const handleExternalLogin = (service, code) =>
     AuthService.loginExternal(service, code)
       .then(() => history.push('/'))
-      .catch(err => setError(err.response.data.message));
+      .catch(err => setError(err.message));
 
   const handleLogin = event => {
     event.preventDefault();
     AuthService.loginLocal(login, password)
       .then(() => history.push('/'))
-      .catch(err => setError(err.response.data.message));
+      .catch(err => setError(err.message));
   };
 
   return (
@@ -88,7 +88,7 @@ const FormWrapper = styled.div`
   }
   ${AuthFormContent} {
     padding: 30px;
-    border: 1px solid #777;
+    border: 1px solid var(--border-light);
   }
   ${LightDivider} {
     margin: 15px 0;

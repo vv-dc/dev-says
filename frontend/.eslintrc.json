@@ -19,6 +19,7 @@
     },
     "sourceType": "module"
   },
+  "parser": "babel-eslint",
   "settings": {
     "react": {
       "version": "detect"

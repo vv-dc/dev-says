@@ -12,6 +12,7 @@ export class HttpService {
           AuthService.refreshTokens().catch(err => Promise.reject(err));
         }
         request.headers.authorization = AuthService.getAccessToken();
+        request.withCredentials = true;
         return request;
       });
     }

@@ -1,10 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {
-  AuthFormContent,
-  AuthInput,
-  AuthSignUpButton,
-} from '../../components/styled/auth';
+import { AuthFormContent, AuthInput, AuthSignUpButton } from '../styled/auth';
 
 export const UsernameForm = ({ state, updateState, setError }) => {
   const handleClick = event => {
@@ -37,7 +33,7 @@ export const UsernameForm = ({ state, updateState, setError }) => {
 
 const FormContent = styled(AuthFormContent)`
   padding: 35px;
-  border: 1px solid #777;
+  border: 1px solid var(--border-light);
   justify-content: center;
   input {
     line-height: 25px;

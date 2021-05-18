@@ -2,8 +2,8 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import AuthStore from '../../stores/auth-store';
-import { AuthService } from '../../services/auth.service';
+import AuthStore from '../stores/auth-store';
+import { AuthService } from '../services/auth.service';
 
 const IndexPage = () => {
   return (

@@ -1,18 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import GoogleButton from '../../components/google-button';
-import GitHubButton from '../../components/github-button';
-import { LightDivider } from '../../components/styled/divider';
-import {
-  AuthFormContent,
-  AuthInput,
-  AuthSignUpButton,
-} from '../../components/styled/auth';
+import GoogleButton from '../google-button';
+import GitHubButton from '../github-button';
+import { LightDivider } from '../styled/divider';
+import { AuthFormContent, AuthInput, AuthSignUpButton } from '../styled/auth';
 
 export const EmailForm = ({ state, updateState, updateStep, setError }) => {
   const handleLocalRegister = event => {
     event.preventDefault();
-    const letterNumber8Symbols = '^(?=.*[A-Za-z])(?=.*d)[A-Za-z\\d]{8,}$';
+    const letterNumber8Symbols = '^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$';
     state.password.match(letterNumber8Symbols)
       ? updateStep(+1)
       : setError(
@@ -72,7 +68,6 @@ const FormContent = styled(AuthFormContent)`
     margin: 15px 0;
   }
   span {
-    color: #ddd;
     margin-top: -10px;
     margin-bottom: 30px;
     font-size: 13px;

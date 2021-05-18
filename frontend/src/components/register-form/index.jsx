@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { AuthService } from '../../services/auth.service';
 import { EmailForm } from './email-form';
 import { UsernameForm } from './username-form';
-import { AuthErrorBlock } from '../../components/styled/auth';
+import { AuthErrorBlock } from '../styled/auth';
 
 const RegisterForm = () => {
   const [state, setState] = useState({

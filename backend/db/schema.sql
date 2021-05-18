@@ -4,13 +4,14 @@ CREATE TABLE "Users" (
 	"email" varchar(255) NOT NULL UNIQUE,
 	"fullName" varchar(255),
 	"imageURL" varchar(255),
+	"backgroundURL" varchar(255),
 	"location" varchar(80),
 	"company" varchar(120),
 	"website" varchar(255),
 	"bio" text,
 	"isAdmin" boolean DEFAULT FALSE,
-	"createdAt" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	"updatedAt" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+	"createdAt" timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	"updatedAt" timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE "AuthProviders" (
@@ -32,17 +33,17 @@ CREATE TABLE "RefreshSessions" (
 	"userAgent" varchar(255) NOT NULL,
 	"fingerprint" varchar(200) NOT NULL,
 	"expiresIn" bigint NOT NULL,
-	"createdAt" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+	"createdAt" timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE "Tags" (
-	"tagId" serial PRIMARY KEY,
+	"tagId" smallserial PRIMARY KEY,
 	"tagName" varchar(80) NOT NULL UNIQUE
 );
 
 CREATE TABLE "TagSubscriptions" (
 	"subscriberId" int REFERENCES "Users" ON DELETE CASCADE,
-	"tagId" int REFERENCES "Tags",
+	"tagId" smallint REFERENCES "Tags",
 	PRIMARY KEY("subscriberId", "tagId")
 );
 
@@ -56,10 +57,10 @@ CREATE TABLE "Posts" (
 	"postId" bigserial PRIMARY KEY,
 	"authorId" int NOT NULL REFERENCES "Users" ON DELETE CASCADE,
 	"title" varchar(255) NOT NULL,
-	"content" jsonb NOT NULL UNIQUE,
+	"content" jsonb NOT NULL,
 	"isPublic" boolean DEFAULT TRUE,
-	"createdAt" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	"updatedAt" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+	"createdAt" timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	"updatedAt" timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE "Bookmarks" (
@@ -74,12 +75,19 @@ CREATE TABLE "PostTags" (
 	PRIMARY KEY("postId", "tagId")
 );
 
+CREATE TABLE "PostScores" (
+	"userId" int REFERENCES "Users" ON DELETE CASCADE,
+	"postId" bigint REFERENCES "Posts" ON DELETE CASCADE,
+	"score" smallint DEFAULT 0,
+	PRIMARY KEY("userId", "postId")
+);
+
 CREATE TABLE "Comments" (
 	"commentId" bigserial PRIMARY KEY,
 	"postId" bigint NOT NULL REFERENCES "Posts" ON DELETE CASCADE,
 	"authorId" int NOT NULL REFERENCES "Users" ON DELETE CASCADE,
-	"parentCommentId" bigint REFERENCES "Comments" ON DELETE CASCADE,
+	"parentId" bigint REFERENCES "Comments" ON DELETE CASCADE,
 	"rawContent" text NOT NULL,
-	"postedAt" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	"updatedAt" timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP
+	"postedAt" timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	"updatedAt" timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

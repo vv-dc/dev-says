@@ -1,43 +1,60 @@
 import AuthStore from '../stores/auth-store';
 import { HttpService } from './http.service';
 import { getFingerprint } from '../helpers/get-fingerprint';
+import { AuthError } from '../helpers/auth-error';
+import { HttpError } from '../helpers/http-error';
 
 const http = new HttpService({ withAuth: false });
 
 export class AuthService {
   static async loginLocal(login, password) {
-    const fingerprint = await getFingerprint();
-    const response = await http.post(
-      '/auth/login',
-      { login, password, fingerprint },
-      { withCredentials: true }
-    );
-    AuthStore.setAuthData(response.data);
+    try {
+      const fingerprint = await getFingerprint();
+      const response = await http.post(
+        '/auth/login',
+        { login, password, fingerprint },
+        { withCredentials: true }
+      );
+      AuthStore.setAuthData(response.data);
+    } catch (error) {
+      throw new HttpError(error);
+    }
   }
 
   static async loginExternal(authProvider, authCode) {
-    const fingerprint = await getFingerprint();
-    const response = await http.post(
-      `auth/login/${authProvider}`,
-      {
-        authCode: decodeURIComponent(authCode),
-        fingerprint,
-      },
-      { withCredentials: true }
-    );
-    AuthStore.setAuthData(response.data);
+    try {
+      const fingerprint = await getFingerprint();
+      const response = await http.post(
+        `auth/login/${authProvider}`,
+        {
+          authCode: decodeURIComponent(authCode),
+          fingerprint,
+        },
+        { withCredentials: true }
+      );
+      AuthStore.setAuthData(response.data);
+    } catch (error) {
+      throw new HttpError(error);
+    }
   }
 
   static async registerLocal(email, username, password) {
-    await http.post('/auth/register', { email, username, password });
+    try {
+      await http.post('/auth/register', { email, username, password });
+    } catch (error) {
+      throw new HttpError(error);
+    }
   }
 
   static async registerExternal(authProvider, username, authCode) {
-    console.log({ authProvider, username, authCode });
-    await http.post(`/auth/register/${authProvider}`, {
-      username,
-      authCode: decodeURIComponent(authCode),
-    });
+    try {
+      await http.post(`/auth/register/${authProvider}`, {
+        username,
+        authCode: decodeURIComponent(authCode),
+      });
+    } catch (error) {
+      throw new HttpError(error);
+    }
   }
 
   static async register(formState) {
@@ -52,11 +69,8 @@ export class AuthService {
   }
 
   static async logout() {
-    await new HttpService({ withAuth: true }).post(
-      '/auth/logout',
-      {},
-      { withCredentials: true }
-    );
+    const authHttp = new HttpService({ withAuth: true });
+    await authHttp.post('/auth/logout');
     AuthStore.resetAuthData();
   }
 
@@ -71,21 +85,34 @@ export class AuthService {
       AuthStore.setAuthData(response.data);
     } catch (error) {
       AuthStore.resetAuthData();
-      return error;
+      throw new HttpError(error);
     }
   }
 
   static isAccessTokenExpired() {
-    const expDate = AuthStore.expiredAt - 10;
+    const expDate = AuthStore.expiresAt - 10;
     const nowDate = Math.floor(new Date().getTime() / 1000);
     return expDate <= nowDate;
   }
 
   static isAuthenticated() {
-    return Boolean(AuthStore.accessToken);
+    return this.isAccessTokenExpired()
+      ? this.refreshTokens().then(() => AuthStore.accessToken)
+      : AuthStore.accessToken && !this.isAccessTokenExpired();
   }
 
   static getAccessToken() {
+    if (!this.isAuthenticated()) throw new AuthError();
     return AuthStore.accessToken;
+  }
+
+  static getUserId() {
+    if (!this.isAuthenticated()) throw new AuthError();
+    return AuthStore.userId;
+  }
+
+  static getUser() {
+    if (!this.isAuthenticated()) throw new AuthError();
+    return AuthStore.user;
   }
 }

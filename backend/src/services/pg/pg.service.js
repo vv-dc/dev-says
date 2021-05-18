@@ -1,6 +1,7 @@
 'use strict';
 
 const { Pool } = require('pg');
+
 class PgApi {
   constructor() {
     this.pool = new Pool();
@@ -112,6 +113,16 @@ class PgApi {
       where ? Object.values(where) : [],
     ].flat();
 
+    return this.execute(query, params);
+  }
+
+  async callFunction({ fields, functionName, params = [] }) {
+    const keys = fields ? fields.map(key => `"${key}"`).join(',') : '*';
+    const escaped = Array.from(
+      { length: params.length },
+      (_, i) => `$${i + 1}`
+    ).join(',');
+    const query = `SELECT ${keys} FROM "${functionName}"(${escaped})`;
     return this.execute(query, params);
   }
 

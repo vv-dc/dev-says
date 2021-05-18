@@ -39,7 +39,7 @@ export default GoogleButton;
 
 const ButtonBody = styled(BaseButton)`
   background-color: var(--white);
-  color: var(--dark-gray);
+  color: var(--gray-dark);
   line-height: 18px;
   svg {
     height: 18px;
