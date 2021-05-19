@@ -1,14 +1,12 @@
 import { makeAutoObservable } from 'mobx';
 
-import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/users.service';
 import { parseToken } from '../helpers/parse-token';
 
 class AuthStore {
   constructor() {
-    AuthService.refreshTokens().catch(() => {
-      this.resetAuthData();
-    });
+    this.resetAuthData();
+    makeAutoObservable(this);
   }
 
   setAuthData({ accessToken }) {
@@ -29,4 +27,4 @@ class AuthStore {
   }
 }
 
-export default makeAutoObservable(new AuthStore());
+export default new AuthStore();

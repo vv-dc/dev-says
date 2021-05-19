@@ -1,7 +1,7 @@
 import { AuthService } from './auth.service';
 import { HttpService } from './http.service';
 
-const http = new HttpService({ withAuth: false }); // true for production
+const http = new HttpService({ withAuth: false });
 
 export class CommentService {
   static async getByParent({ postId, parentId }) {

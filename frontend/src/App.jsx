@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
+import { observer } from 'mobx-react';
 
+import { AuthService } from './services/auth.service';
 import IndexPage from './pages/index';
 import LoginPage from './pages/login';
 import RegisterPage from './pages/register';
 import ResetPasswordPage from './pages/reset-password';
 import UserPage from './pages/user';
+import Spinner from './components/shared/spinner';
 
 const GlobalStyles = createGlobalStyle`
   :root {
@@ -32,19 +35,36 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-const App = () => (
-  <>
-    <GlobalStyles />
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/" component={IndexPage} />
-        <Route exact path="/register" component={RegisterPage} />
-        <Route exact path="/login" component={LoginPage} />
-        <Route exact path="/reset-password" component={ResetPasswordPage} />
-        <Route path="/:username" component={UserPage} />
-      </Switch>
-    </BrowserRouter>
-  </>
-);
+const App = observer(() => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  const refreshTokens = async () => {
+    await AuthService.refreshTokens();
+  };
+
+  useEffect(() => {
+    refreshTokens();
+    setIsLoading(false);
+  }, []);
+
+  return (
+    <>
+      <GlobalStyles />
+      {isLoading ? (
+        <Spinner height={300} width={300} />
+      ) : (
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/" component={IndexPage} />
+            <Route exact path="/register" component={RegisterPage} />
+            <Route exact path="/login" component={LoginPage} />
+            <Route exact path="/reset-password" component={ResetPasswordPage} />
+            <Route path="/:username" component={UserPage} />
+          </Switch>
+        </BrowserRouter>
+      )}
+    </>
+  );
+});
 
 export default App;

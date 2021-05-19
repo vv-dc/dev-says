@@ -1,14 +1,13 @@
 import AuthStore from '../stores/auth-store';
 import { HttpService } from './http.service';
-import { getFingerprint } from '../helpers/get-fingerprint';
 import { AuthError } from '../helpers/auth-error';
 import { HttpError } from '../helpers/http-error';
-
-const http = new HttpService({ withAuth: false });
+import { getFingerprint } from '../helpers/get-fingerprint';
 
 export class AuthService {
   static async loginLocal(login, password) {
     try {
+      const http = new HttpService();
       const fingerprint = await getFingerprint();
       const response = await http.post(
         '/auth/login',
@@ -23,9 +22,10 @@ export class AuthService {
 
   static async loginExternal(authProvider, authCode) {
     try {
+      const http = new HttpService();
       const fingerprint = await getFingerprint();
       const response = await http.post(
-        `auth/login/${authProvider}`,
+        `/auth/login/${authProvider}`,
         {
           authCode: decodeURIComponent(authCode),
           fingerprint,
@@ -40,6 +40,7 @@ export class AuthService {
 
   static async registerLocal(email, username, password) {
     try {
+      const http = new HttpService();
       await http.post('/auth/register', { email, username, password });
     } catch (error) {
       throw new HttpError(error);
@@ -48,6 +49,7 @@ export class AuthService {
 
   static async registerExternal(authProvider, username, authCode) {
     try {
+      const http = new HttpService();
       await http.post(`/auth/register/${authProvider}`, {
         username,
         authCode: decodeURIComponent(authCode),
@@ -69,13 +71,14 @@ export class AuthService {
   }
 
   static async logout() {
-    const authHttp = new HttpService({ withAuth: true });
-    await authHttp.post('/auth/logout');
+    const http = new HttpService({ withAuth: true });
+    await http.post('/auth/logout');
     AuthStore.resetAuthData();
   }
 
   static async refreshTokens() {
     try {
+      const http = new HttpService();
       const fingerprint = await getFingerprint();
       const response = await http.post(
         '/auth/refresh',
@@ -85,7 +88,6 @@ export class AuthService {
       AuthStore.setAuthData(response.data);
     } catch (error) {
       AuthStore.resetAuthData();
-      throw new HttpError(error);
     }
   }
 
