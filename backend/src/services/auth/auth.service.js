@@ -77,7 +77,7 @@ class AuthService {
     ) {
       throw new Forbidden('Incorrect password');
     }
-    return this.addRefreshSesssion({ userId, fingerprint, userAgent });
+    return this.addRefreshSession({ userId, fingerprint, userAgent });
   }
 
   async loginGithub({ authCode, fingerprint }, userAgent) {
@@ -103,10 +103,10 @@ class AuthService {
       throw new Unauthorized('Token Expired');
     }
     const { userId, userAgent } = session;
-    return this.addRefreshSesssion({ userId, fingerprint, userAgent });
+    return this.addRefreshSession({ userId, fingerprint, userAgent });
   }
 
-  async addRefreshSesssion({ userId, fingerprint, userAgent }) {
+  async addRefreshSession({ userId, fingerprint, userAgent }) {
     const accessToken = await this.jwtService.sign({ userId });
     const refreshToken = uuid();
 
@@ -119,7 +119,7 @@ class AuthService {
       refreshToken,
       userAgent,
       fingerprint,
-      expiresIn: REFRESH_EXPIRES_IN,
+      expiresIn: +REFRESH_EXPIRES_IN,
       createdAt: new Date(),
     });
     return { accessToken, refreshToken };

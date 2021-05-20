@@ -7,9 +7,11 @@ require('dotenv').config();
 const { getRefreshToken, sendTokens } = require('../helpers/tokens');
 const { AuthService } = require('../services/auth/auth.service');
 
-module.exports = async function (fastify) {
+module.exports = async function (fastify, options) {
   fastify.register(Cookie, {
-    secret: process.env.COOKIE_SECRET,
+    secret: options.cookieSecret
+      ? options.cookieSecret
+      : process.env.COOKIE_SECRET,
   });
 
   fastify.decorateRequest('getRefreshToken', function () {

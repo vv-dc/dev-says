@@ -7,13 +7,13 @@ const path = require('path');
 require('dotenv').config();
 const { DOMAIN, FRONTEND_PORT, PROTOCOL } = process.env;
 
-module.exports = async function (fastify, opts) {
+module.exports = async function (fastify, options) {
   fastify.register(Cors, {
     origin: `${PROTOCOL}://${DOMAIN}:${FRONTEND_PORT}`,
     credentials: true,
   });
   fastify.register(AutoLoad, {
     dir: path.join(__dirname, 'routes'),
-    options: Object.assign({}, opts),
+    options: Object.assign({}, options),
   });
 };
