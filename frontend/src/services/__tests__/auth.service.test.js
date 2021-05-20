@@ -5,7 +5,6 @@ import { AuthError } from '../../helpers/auth-error';
 import { getFingerprint } from '../../helpers/get-fingerprint';
 import { HttpError } from '../../helpers/http-error';
 
-jest.mock('../http.service');
 jest.mock('../../stores/auth-store');
 jest.mock('../../helpers/get-fingerprint');
 

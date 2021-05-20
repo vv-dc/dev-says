@@ -18,10 +18,11 @@ const LoginForm = () => {
   const [error, setError] = useState('');
   const history = useHistory();
 
-  const handleExternalLogin = (service, code) =>
+  const handleExternalLogin = (service, code) => {
     AuthService.loginExternal(service, code)
       .then(() => history.push('/'))
       .catch(err => setError(err.message));
+  };
 
   const handleLogin = event => {
     event.preventDefault();
@@ -40,6 +41,7 @@ const LoginForm = () => {
           <label htmlFor="login__login">Username or email address</label>
           <AuthInput
             id="login__login"
+            name="login"
             type="text"
             required
             maxLength="255"
@@ -55,6 +57,7 @@ const LoginForm = () => {
           <AuthInput
             id="login__password"
             type="password"
+            name="password"
             required
             maxLength="30"
             value={password}
