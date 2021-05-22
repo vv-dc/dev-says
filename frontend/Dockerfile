@@ -10,13 +10,13 @@ RUN --mount=type=bind,source=src,target=src \
     --mount=type=bind,source=.prettierrc,target=.prettierrc \
     --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=/usr/src/app/node_modules,target=node_modules,from=base \
-    yarn lint && yarn format:check
+    yarn lint --format=json --output-file=main.lint.json && yarn format:check
 
 FROM base AS test
 RUN --mount=type=bind,source=src,target=src \
     --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=/usr/src/app/node_modules,target=node_modules,from=base \
-    yarn test
+    yarn test --json --outputFile=main.test.json
 
 FROM base AS build
 COPY --from=base /usr/src/app/node_modules node_modules
@@ -26,6 +26,11 @@ RUN --mount=type=bind,source=src,target=src \
     --mount=type=bind,source=.prettierrc,target=.prettierrc \
     --mount=type=bind,source=package.json,target=package.json \
     yarn build
+
+FROM scratch AS ci
+COPY --from=lint /usr/src/app/main.lint.json .
+COPY --from=test /usr/src/app/main.test.json .
+COPY --from=build /usr/src/app/build/index.html .
 
 FROM nginx:1.19-alpine AS production
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
