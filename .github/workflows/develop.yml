@@ -2,9 +2,6 @@ name: Build dockerized Node.js app
 
 on:
   pull_request:
-    branches:
-      - master
-      - develop
       
 env:
   DBMS_USER: ${{ secrets.DBMS_USER }}

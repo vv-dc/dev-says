@@ -9,10 +9,18 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
-    "eslint-plugin-react": "^7.22.0",
+    "axios": "^0.21.1",
+    "fingerprintjs2": "^2.1.4",
+    "mobx": "^6.1.8",
+    "mobx-react": "^7.1.0",
+    "moment": "^2.29.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-markdown": "^6.0.1",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "react-syntax-highlighter": "^15.4.3",
+    "styled-components": "^5.2.3",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
@@ -44,9 +52,11 @@
     ]
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "eslint": "^7.21.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-react": "^7.23.1",
     "prettier": "^2.2.1"
   }
 }

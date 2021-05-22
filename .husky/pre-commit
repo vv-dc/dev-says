@@ -3,5 +3,5 @@
 
 yarn lint-staged
 
-cd frontend && yarn test
-cd ../backend && yarn test
+yarn --cwd frontend test
+yarn --cwd backend test
