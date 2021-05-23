@@ -1,32 +1,29 @@
-version: '3.9'
+version: "3.9"
 
 services:
   reverse-proxy:
     image: traefik:v2.4
-    volumes: 
-    - /var/run/docker.sock:/var/run/docker.sock:ro
-    - letsencrypt:/letsencrypt
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./letsencrypt:/letsencrypt
     ports:
       - 80:80
       - 443:443
     labels:
-      - traefik.docker.network=traefik-public
       - traefik.enable=true
+      - traefik.http.middlewares.auth.basicauth.users=${AUTH_USER}
 
-      - traefik.http.services.dashboard.loadbalancer.server.port=8080
+      - traefik.http.routers.dashboard.rule=Host(`${DASHBOARD_HOST}`)
+      - traefik.http.routers.dashboard.entrypoints=websecure
+      - traefik.http.routers.dashboard.middlewares=auth
       - traefik.http.routers.dashboard.service=api@internal
 
-      - traefik.http.routers.dashboard.rule=Host(`dashboard.localhost`)
-      - traefik.http.routers.dashboard.entrypoints=websecure
       - traefik.http.routers.dashboard.tls=true
       - traefik.http.routers.dashboard.tls.certresolver=le
-
-      - traefik.http.middlewares.auth.basicauth.users=${AUTH_USERNAME}:${AUTH_PASSWORD}
-      - traefik.http.routers.dashboard.middlewares=auth
-    command: 
-      - --providers.docker
+    command:
+      - --providers.docker.network=traefik-public
       - --providers.docker.exposedbydefault=false
-      
+
       - --entrypoints.web.address=:80
       - --entrypoints.web.http.redirections.entrypoint.to=websecure
       - --entrypoints.web.http.redirections.entrypoint.scheme=https
@@ -36,18 +33,10 @@ services:
       - --certificatesresolvers.le.acme.email=${LE_EMAIL}
       - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
 
-      - --api.insecure=true
       - --api.dashboard=true
-      - --log.level=DEBUG
-      - --log.filePath=/var/log/traefik/system.log
-      - --accesslog=true
-      - --accesslog.filePath=/var/log/traefik/access.log
-    networks: 
+    networks:
       - traefik-public
     restart: always
-
-volumes: 
-  letsencrypt:
 
 networks:
   traefik-public:

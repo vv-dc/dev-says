@@ -1,28 +1,28 @@
-version: '3.9'
+version: "3.9"
 
-services: 
+services:
   db:
     image: postgres:13.2-alpine
-    environment: 
+    environment:
       POSTGRES_USER: ${DBMS_USER}
       POSTGRES_PASSWORD: ${DBMS_PASSWORD}
       POSTGRES_DB: ${DBMS_DB}
-    volumes: 
+    volumes:
       - pg_data:/var/lib/postgresql/data
-    networks: 
+    networks:
       - internal
     restart: always
 
   backend:
     build: ./backend
-    environment: 
-      FASTIFY_ADDRESS: ${BACKEND_HOST}
-      FASTIFY_PORT: ${BACKEND_PORT}
-    ports: 
-      - "8080:${BACKEND_PORT}"
-    networks: 
+    environment:
+      FASTIFY_ADDRESS: 0.0.0.0
+      FASTIFY_PORT: 8080
+    ports:
+      - 8080:8080
+    networks:
       - internal
-    depends_on: 
+    depends_on:
       - db
     restart: always
 
@@ -31,17 +31,12 @@ services:
     ports:
       - 3000:80
     labels:
-      - traefik.docker.network=traefik-public
       - traefik.enable=true
-
-      - traefik.http.services.app.loadbalancer.server.port=80
-
-      - traefik.http.routers.app.rule=Host(`localhost`)
-      - traefik.http.routers.app.entrypoints=websecure
-
+      - traefik.http.routers.app.rule=Host(`${APP_HOST}`)
       - traefik.http.routers.app.tls=true
       - traefik.http.routers.app.tls.certresolver=le
-    networks: 
+      - traefik.port=80
+    networks:
       - traefik-public
       - internal
     restart: always
@@ -54,4 +49,3 @@ networks:
     external: true
   internal:
     external: false
-    
