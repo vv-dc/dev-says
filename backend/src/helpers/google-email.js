@@ -4,15 +4,10 @@ const { Forbidden } = require('http-errors');
 const fetch = require('node-fetch');
 
 require('dotenv').config();
-const {
-  GOOGLE_ID,
-  GOOGLE_SECRET,
-  GOOGLE_TOKEN_URL,
-  GOOGLE_API_URL,
-  DOMAIN,
-  FRONTEND_PORT,
-  PROTOCOL,
-} = process.env;
+const { GOOGLE_ID, GOOGLE_SECRET, FRONTEND_DOMAIN, PROTOCOL } = process.env;
+
+const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token';
+const GOOGLE_API_URL = 'https://oauth2.googleapis.com/tokeninfo';
 
 async function getGoogleEmail(authCode) {
   const responseToken = await fetch(GOOGLE_TOKEN_URL, {
@@ -25,7 +20,7 @@ async function getGoogleEmail(authCode) {
       code: authCode,
       client_id: GOOGLE_ID,
       client_secret: GOOGLE_SECRET,
-      redirect_uri: `${PROTOCOL}://${DOMAIN}:${FRONTEND_PORT}`,
+      redirect_uri: `${PROTOCOL}://${FRONTEND_DOMAIN}`,
       grant_type: 'authorization_code',
     }).toString(),
   });

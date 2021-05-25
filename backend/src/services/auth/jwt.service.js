@@ -3,7 +3,8 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-const { ACCESS_EXPIRES_IN, JWT_SECRET } = process.env;
+const { JWT_SECRET } = process.env;
+const { ACCESS_EXPIRES_IN } = require('../../consts').auth;
 
 class JwtService {
   sign(payload) {

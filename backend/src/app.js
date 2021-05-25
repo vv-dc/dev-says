@@ -5,11 +5,13 @@ const Cors = require('fastify-cors');
 const path = require('path');
 
 require('dotenv').config();
-const { DOMAIN, FRONTEND_PORT, PROTOCOL } = process.env;
+const { FRONTEND_DOMAIN, PROTOCOL, FRONTEND_PORT } = process.env;
 
 module.exports = async function (fastify, opts) {
   fastify.register(Cors, {
-    origin: `${PROTOCOL}://${DOMAIN}:${FRONTEND_PORT}`,
+    origin: `${PROTOCOL}://${FRONTEND_DOMAIN}${
+      FRONTEND_PORT ? ':' + FRONTEND_PORT : ''
+    }`,
     credentials: true,
   });
   fastify.register(AutoLoad, {

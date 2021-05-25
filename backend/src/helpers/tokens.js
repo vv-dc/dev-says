@@ -1,9 +1,10 @@
 'use strict';
 
 const { BadRequest } = require('http-errors');
-
 require('dotenv').config();
-const { REFRESH_EXPIRES_IN, DOMAIN, PROTOCOL } = process.env;
+
+const { FRONTEND_DOMAIN, PROTOCOL } = process.env;
+const { REFRESH_EXPIRES_IN } = require('../consts').auth;
 
 function getRefreshToken() {
   let { refreshToken } = this.cookies;
@@ -21,7 +22,7 @@ function sendTokens(accessToken, refreshToken) {
     httpOnly: true,
     signed: true,
     sameSite: true,
-    domain: DOMAIN,
+    domain: FRONTEND_DOMAIN,
     path: '/auth',
     maxAge: Math.floor(expiresIn * 0.001),
     expires: new Date(Date.now() + expiresIn),

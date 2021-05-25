@@ -4,12 +4,10 @@ const { Forbidden } = require('http-errors');
 const fetch = require('node-fetch');
 
 require('dotenv').config();
-const {
-  GITHUB_ID,
-  GITHUB_SECRET,
-  GITHUB_TOKEN_URL,
-  GITHUB_API_URL,
-} = process.env;
+const { GITHUB_ID, GITHUB_SECRET } = process.env;
+
+const GITHUB_TOKEN_URL = 'https://github.com/login/oauth/access_token';
+const GITHUB_API_URL = 'https://api.github.com/user/emails';
 
 async function getGithubEmail(authCode) {
   const responseToken = await fetch(GITHUB_TOKEN_URL, {
