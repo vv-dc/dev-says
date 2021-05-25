@@ -77,10 +77,14 @@ const BaseTriangle = styled.div`
   cursor: pointer;
 `;
 
-const UpTriangle = styled(BaseTriangle)`
+const UpTriangle = styled(BaseTriangle).attrs(() => ({
+  'aria-label': 'Up vote',
+}))`
   border-bottom: 16px solid var(--${p => (p.active ? 'green' : 'gray')});
 `;
 
-const DownTriangle = styled(BaseTriangle)`
+const DownTriangle = styled(BaseTriangle).attrs(() => ({
+  'aria-label': 'Down vote',
+}))`
   border-top: 16px solid var(--${p => (p.active ? 'green' : 'gray')});
 `;
