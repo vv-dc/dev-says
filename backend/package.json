@@ -20,6 +20,12 @@
   ],
   "author": "",
   "license": "GPL-3.0",
+  "jest": {
+    "testEnvironment": "node",
+    "setupFiles": [
+      "./setup-jest"
+    ]
+  },
   "devDependencies": {
     "eslint": "^7.21.0",
     "eslint-config-metarhia": "^7.0.1",
