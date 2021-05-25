@@ -14,7 +14,7 @@ services:
     restart: always
 
   backend:
-    image: ghcr.io/vvkin/devsays_backend
+    image: ghcr.io/dev-says/devsays_backend
     environment:
       - FASTIFY_ADDRESS=0.0.0.0
       - FASTIFY_PORT=8080
@@ -47,7 +47,7 @@ services:
     restart: always
 
   frontend:
-    image: ghcr.io/vvkin/devsays_frontend
+    image: ghcr.io/dev-says/devsays_frontend
     ports:
       - 3000:80
     labels:
