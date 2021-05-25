@@ -1,7 +1,13 @@
-name: Test, lint, and build dockerized Node.js app
+name: Test & lint dockerized app
 
 on:
   pull_request:
+
+env:
+  APP_HOST: ${{ secrets.APP_HOST }}
+  API_HOST: ${{ secrets.API_HOST }}
+  OAUTH_GOOGLE_ID: ${{ secrets.OAUTH_GOOGLE_ID }}
+  OAUTH_GITHUB_ID: ${{ secrets.OAUTH_GITHUB_ID }}
 
 jobs:
   build-backend:
@@ -56,6 +62,11 @@ jobs:
         with:
           context: frontend
           target: ci
+          build-args:
+            REACT_APP_HOST=${{ env.APP_HOST }}
+            REACT_APP_API_HOST=${{ env.API_HOST }}
+            REACT_APP_GOOGLE_ID=${{ env.OAUTH_GOOGLE_ID }}
+            REACT_APP_GITHUB_ID=${{ env.OAUTH_GITHUB_ID }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
       -

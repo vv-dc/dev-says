@@ -19,6 +19,12 @@ RUN --mount=type=bind,source=src,target=src \
     yarn test --json --outputFile=main.test.json
 
 FROM base AS build
+
+ARG REACT_APP_HOST
+ARG REACT_APP_API_HOST
+ARG REACT_APP_GITHUB_ID
+ARG REACT_APP_GOOGLE_ID
+
 COPY --from=base /usr/src/app/node_modules node_modules
 RUN --mount=type=bind,source=src,target=src \
     --mount=type=bind,source=public,target=public \
