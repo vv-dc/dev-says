@@ -4,30 +4,50 @@ services:
   db:
     image: postgres:13.2-alpine
     environment:
-      POSTGRES_USER: ${DBMS_USER}
-      POSTGRES_PASSWORD: ${DBMS_PASSWORD}
-      POSTGRES_DB: ${DBMS_DB}
+      POSTGRES_USER: ${PGUSER}
+      POSTGRES_PASSWORD: ${PGPASSWORD}
+      POSTGRES_DB: ${PGDATABASE}
     volumes:
       - pg_data:/var/lib/postgresql/data
     networks:
-      - internal
+      - backend
     restart: always
 
   backend:
-    build: ./backend
+    image: ghcr.io/vvkin/devsays_backend
     environment:
-      FASTIFY_ADDRESS: 0.0.0.0
-      FASTIFY_PORT: 8080
+      - FASTIFY_ADDRESS=0.0.0.0
+      - FASTIFY_PORT=8080
+      - PGUSER
+      - PGHOST
+      - PGPASSWORD
+      - PGDATABASE
+      - PGPORT
+      - JWT_SECRET
+      - COOKIE_SECRET
+      - PROTOCOL
+      - FRONTEND_DOMAIN
+      - OAUTH_GITHUB_ID
+      - OAUTH_GITHUB_SECRET
+      - OAUTH_GOOGLE_ID
+      - OAUTH_GOOGLE_SECRET
     ports:
       - 8080:8080
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.backend.rule=Host(`${API_HOST}`)
+      - traefik.http.routers.backend.tls=true
+      - traefik.http.routers.backend.tls.certresolver=le
+      - traefik.port=8080
     networks:
-      - internal
+      - backend
+      - traefik-public
     depends_on:
       - db
     restart: always
 
   frontend:
-    build: ./frontend
+    image: ghcr.io/vvkin/devsays_frontend
     ports:
       - 3000:80
     labels:
@@ -38,7 +58,6 @@ services:
       - traefik.port=80
     networks:
       - traefik-public
-      - internal
     restart: always
 
 volumes:
@@ -47,5 +66,5 @@ volumes:
 networks:
   traefik-public:
     external: true
-  internal:
+  backend:
     external: false

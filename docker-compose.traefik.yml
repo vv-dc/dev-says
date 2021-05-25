@@ -5,21 +5,10 @@ services:
     image: traefik:v2.4
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./letsencrypt:/letsencrypt
+      - ${PWD}/acme.json:/acme.json
     ports:
       - 80:80
       - 443:443
-    labels:
-      - traefik.enable=true
-      - traefik.http.middlewares.auth.basicauth.users=${AUTH_USER}
-
-      - traefik.http.routers.dashboard.rule=Host(`${DASHBOARD_HOST}`)
-      - traefik.http.routers.dashboard.entrypoints=websecure
-      - traefik.http.routers.dashboard.middlewares=auth
-      - traefik.http.routers.dashboard.service=api@internal
-
-      - traefik.http.routers.dashboard.tls=true
-      - traefik.http.routers.dashboard.tls.certresolver=le
     command:
       - --providers.docker.network=traefik-public
       - --providers.docker.exposedbydefault=false
@@ -31,9 +20,7 @@ services:
 
       - --certificatesresolvers.le.acme.tlschallenge=true
       - --certificatesresolvers.le.acme.email=${LE_EMAIL}
-      - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
-
-      - --api.dashboard=true
+      - --certificatesresolvers.le.acme.storage=acme.json
     networks:
       - traefik-public
     restart: always
