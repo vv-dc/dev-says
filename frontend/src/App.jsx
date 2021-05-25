@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
-import { observer } from 'mobx-react';
 
 import { AuthService } from './services/auth.service';
 import IndexPage from './pages/index';
@@ -35,7 +34,7 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-const App = observer(() => {
+const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const refreshTokens = async () => {
@@ -59,12 +58,16 @@ const App = observer(() => {
             <Route exact path="/register" component={RegisterPage} />
             <Route exact path="/login" component={LoginPage} />
             <Route exact path="/reset-password" component={ResetPasswordPage} />
-            <Route path="/:username" component={UserPage} />
+            <Route
+              exact
+              path="/:username"
+              component={() => <UserPage key={location.pathname} />}
+            />
           </Switch>
         </BrowserRouter>
       )}
     </>
   );
-});
+};
 
 export default App;

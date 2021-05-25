@@ -14,7 +14,7 @@ export class AuthService {
         { login, password, fingerprint },
         { withCredentials: true }
       );
-      AuthStore.setAuthData(response.data);
+      await AuthStore.setAuthData(response.data);
     } catch (error) {
       throw new HttpError(error);
     }
@@ -32,7 +32,7 @@ export class AuthService {
         },
         { withCredentials: true }
       );
-      AuthStore.setAuthData(response.data);
+      await AuthStore.setAuthData(response.data);
     } catch (error) {
       throw new HttpError(error);
     }
@@ -85,7 +85,7 @@ export class AuthService {
         { fingerprint },
         { withCredentials: true }
       );
-      AuthStore.setAuthData(response.data);
+      await AuthStore.setAuthData(response.data);
     } catch (error) {
       AuthStore.resetAuthData();
     }
