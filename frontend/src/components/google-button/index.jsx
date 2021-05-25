@@ -5,11 +5,8 @@ import { BaseButton } from '../styled/base-button';
 import { ReactComponent as GoogleLogo } from './google-logo.svg';
 
 const GoogleButton = ({ buttonText, onSuccess, onFailure }) => {
-  const {
-    REACT_APP_GOOGLE_URL,
-    REACT_APP_GOOGLE_ID,
-    REACT_APP_HOST,
-  } = process.env;
+  const { REACT_APP_GOOGLE_ID, REACT_APP_HOST } = process.env;
+  const oauthGoogleUrl = 'https://accounts.google.com/o/oauth2/auth';
 
   const googleOauth2Params = {
     client_id: REACT_APP_GOOGLE_ID,
@@ -22,7 +19,7 @@ const GoogleButton = ({ buttonText, onSuccess, onFailure }) => {
   const handleClick = event => {
     event.preventDefault();
     const search = new URLSearchParams(googleOauth2Params).toString();
-    PopupWindow('google-auth', `${REACT_APP_GOOGLE_URL}?${search}`)
+    PopupWindow('google-auth', `${oauthGoogleUrl}?${search}`)
       .then(response => onSuccess(response))
       .catch(error => onFailure(error));
   };

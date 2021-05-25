@@ -12,7 +12,7 @@ const { ProviderService } = require('./provider.service');
 const { getGithubEmail } = require('../../helpers/github-email');
 const { getGoogleEmail } = require('../../helpers/google-email');
 
-const { MAX_SESSIONS, REFRESH_EXPIRES_IN } = process.env;
+const { MAX_SESSIONS, REFRESH_EXPIRES_IN } = require('../../consts').auth;
 
 class AuthService {
   constructor() {

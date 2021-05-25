@@ -5,7 +5,8 @@ import { BaseButton } from '../styled/base-button';
 import { ReactComponent as GithubLogo } from './github-logo.svg';
 
 const GitHubButton = ({ buttonText, onSuccess, onFailure }) => {
-  const { REACT_APP_GITHUB_URL, REACT_APP_GITHUB_ID } = process.env;
+  const { REACT_APP_GITHUB_ID } = process.env;
+  const oauthGitHubUrl = 'https://github.com/login/oauth/authorize';
 
   const githubOauth2Params = {
     client_id: REACT_APP_GITHUB_ID,
@@ -15,7 +16,7 @@ const GitHubButton = ({ buttonText, onSuccess, onFailure }) => {
   const handleClick = event => {
     event.preventDefault();
     const search = new URLSearchParams(githubOauth2Params).toString();
-    PopupWindow('github-auth', `${REACT_APP_GITHUB_URL}?${search}`)
+    PopupWindow('github-auth', `${oauthGitHubUrl}?${search}`)
       .then(response => onSuccess(response))
       .catch(error => onFailure(error));
   };
