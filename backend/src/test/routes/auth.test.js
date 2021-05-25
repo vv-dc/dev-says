@@ -8,7 +8,7 @@ const {
   logoutSpy,
 } = require('../../services/auth/auth.service');
 
-const { REFRESH_EXPIRES_IN, DOMAIN } = process.env;
+const { REFRESH_EXPIRES_IN } = require('../../consts').auth;
 
 jest.mock('../../services/auth/auth.service');
 
@@ -30,8 +30,7 @@ describe('auth routes', () => {
   const expectedCookie = {
     name: 'refreshToken',
     value: tokenPair.refreshToken,
-    maxAge: Math.floor(+REFRESH_EXPIRES_IN * 0.001),
-    domain: DOMAIN,
+    maxAge: Math.floor(REFRESH_EXPIRES_IN * 0.001),
     path: '/auth',
     httpOnly: true,
     sameSite: 'Strict',

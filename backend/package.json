@@ -21,10 +21,7 @@
   "author": "",
   "license": "GPL-3.0",
   "jest": {
-    "testEnvironment": "node",
-    "setupFiles": [
-      "./setup-jest"
-    ]
+    "testEnvironment": "node"
   },
   "devDependencies": {
     "eslint": "^7.21.0",

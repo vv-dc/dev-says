@@ -8,7 +8,7 @@ const { ACCESS_EXPIRES_IN } = require('../../consts').auth;
 
 class JwtService {
   sign(payload) {
-    const options = { expiresIn: +ACCESS_EXPIRES_IN };
+    const options = { expiresIn: ACCESS_EXPIRES_IN };
     return new Promise((resolve, reject) => {
       jwt.sign(payload, JWT_SECRET, options, (error, token) =>
         error ? reject(error) : resolve(token)

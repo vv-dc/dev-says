@@ -119,7 +119,7 @@ class AuthService {
       refreshToken,
       userAgent,
       fingerprint,
-      expiresIn: +REFRESH_EXPIRES_IN,
+      expiresIn: REFRESH_EXPIRES_IN,
       createdAt: new Date(),
     });
     return { accessToken, refreshToken };

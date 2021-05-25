@@ -35,13 +35,21 @@ const {
   findByEmailSpy,
 } = require('../../services/users/user.service');
 
-const REFRESH_EXPIRES_IN = +process.env.REFRESH_EXPIRES_IN;
-
 jest.mock('uuid');
 jest.mock('../../services/auth/refresh.service');
 jest.mock('../../services/auth/password.service');
 jest.mock('../../services/users/user.service');
 jest.mock('../../services/auth/provider.service');
+
+jest.mock('../../consts', () => ({
+  auth: {
+    ...jest.requireActual('../../consts').auth,
+    get MAX_SESSIONS() {
+      return 2;
+    },
+  },
+}));
+const { REFRESH_EXPIRES_IN } = require('../../consts').auth;
 
 describe('auth service', () => {
   const authService = new AuthService();
