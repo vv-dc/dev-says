@@ -9,6 +9,7 @@ import RegisterPage from './pages/register';
 import ResetPasswordPage from './pages/reset-password';
 import UserPage from './pages/user';
 import Spinner from './components/shared/spinner';
+import AuthRoute from './components/shared/auth-route';
 
 const GlobalStyles = createGlobalStyle`
   :root {
@@ -37,13 +38,8 @@ const GlobalStyles = createGlobalStyle`
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 
-  const refreshTokens = async () => {
-    await AuthService.refreshTokens();
-  };
-
   useEffect(() => {
-    refreshTokens();
-    setIsLoading(false);
+    AuthService.refreshTokens().then(() => setIsLoading(false));
   }, []);
 
   return (
@@ -55,9 +51,13 @@ const App = () => {
         <BrowserRouter>
           <Switch>
             <Route exact path="/" component={IndexPage} />
-            <Route exact path="/register" component={RegisterPage} />
-            <Route exact path="/login" component={LoginPage} />
-            <Route exact path="/reset-password" component={ResetPasswordPage} />
+            <AuthRoute exact path="/register" component={RegisterPage} />
+            <AuthRoute exact path="/login" component={LoginPage} />
+            <AuthRoute
+              exact
+              path="/reset-password"
+              component={ResetPasswordPage}
+            />
             <Route
               exact
               path="/:username"

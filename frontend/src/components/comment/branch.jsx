@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router';
+import { observer } from 'mobx-react-lite';
 import styled from 'styled-components';
 
 import { AuthService } from '../../services/auth.service';
@@ -9,7 +10,6 @@ import CommentDropDown from './dropdown';
 import SideBlock from './side';
 import ReplyForm from './edit/reply-form';
 import CommentFooter from './view/footer';
-import { observer } from 'mobx-react';
 
 const CommentBranch = observer(({ comment }) => {
   const { store } = useContext(CommentContext);

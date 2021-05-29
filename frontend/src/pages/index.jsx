@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 import styled from 'styled-components';
-import { observer } from 'mobx-react';
 
 import { AuthService } from '../services/auth.service';
 import Search from '../components/shared/search';
@@ -12,20 +12,18 @@ const IndexPage = observer(() => (
     <IndexHeader>
       {AuthService.isAuthenticated() ? (
         <>
-          <IndexHeaderItem>
-            <h1>Hi, {AuthService.getUser().username}</h1>
-          </IndexHeaderItem>
+          <h1>Hi, {AuthService.getUser().username}</h1>
           <LogoutButton />
         </>
       ) : (
-        <>
+        <ul>
           <IndexHeaderItem>
             <Link to="/login">Sign in</Link>
           </IndexHeaderItem>
           <IndexHeaderItem>
             <Link to="/register">Sign up</Link>
           </IndexHeaderItem>
-        </>
+        </ul>
       )}
     </IndexHeader>
     <IndexBody>
@@ -38,9 +36,6 @@ export default IndexPage;
 
 const IndexWrapper = styled.div`
   padding: 35px 60px;
-  button {
-    margin-left: auto;
-  }
 `;
 
 const IndexBody = styled.div`
@@ -51,18 +46,19 @@ const IndexBody = styled.div`
 
 const IndexHeader = styled.ul`
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
 `;
 
 const IndexHeaderItem = styled.li`
+  display: inline-block;
   list-style: none;
   border: 1px solid var(--border-light);
-  border-bottom: 0;
+  margin-right: 3px;
   padding: 5px 15px;
   &:hover {
     background-color: var(--green);
     color: var(--black);
-  }
-  &:not(:last-of-type) {
-    border-right: 0;
   }
 `;
