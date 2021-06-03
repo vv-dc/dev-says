@@ -1,0 +1,50 @@
+{
+  "name": "backend",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/app.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "fastify start -w src/app.js",
+    "lint": "eslint src/",
+    "lint:write": "eslint --fix src/",
+    "test": "jest",
+    "format:check": "prettier --check src",
+    "format:write": "prettier --write src"
+  },
+  "keywords": [
+    "node",
+    "backend"
+  ],
+  "author": "",
+  "license": "GPL-3.0",
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "devDependencies": {
+    "eslint": "^7.21.0",
+    "eslint-config-metarhia": "^7.0.1",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.3.1",
+    "jest": "^26.6.3",
+    "prettier": "^2.2.1"
+  },
+  "dependencies": {
+    "argon2": "^0.27.2",
+    "dotenv": "^8.2.0",
+    "fastify": "^3.14.1",
+    "fastify-autoload": "^3.6.0",
+    "fastify-cli": "^2.9.1",
+    "fastify-cookie": "^5.3.0",
+    "fastify-cors": "^5.2.0",
+    "fastify-plugin": "^3.0.0",
+    "http-errors": "^1.8.0",
+    "jsonwebtoken": "^8.5.1",
+    "node-fetch": "^2.6.1",
+    "pg": "^8.5.1",
+    "uuid": "^8.3.2"
+  }
+}

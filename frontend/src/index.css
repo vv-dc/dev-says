@@ -1,0 +1,123 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-family: inherit;
+  font-size: 100%;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+@font-face {
+  font-family: 'Bebas Neue';
+  font-style: normal;
+  font-weight: 400;
+  src: url('fonts/bebas-neue-v2-latin-ext_latin-regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 100;
+  src: url('fonts/roboto-v20-latin-ext_latin-100italic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: url('fonts/roboto-v20-latin-ext_latin-regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 400;
+  src: url('fonts/roboto-v20-latin-ext_latin-italic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: url('fonts/roboto-v20-latin-ext_latin-700.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  src: url('fonts/roboto-v20-latin-ext_latin-500.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 100;
+  src: url('fonts/roboto-v20-latin-ext_latin-100.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Font Awesome 5 Free';
+  font-style: normal;
+  font-weight: 900;
+  font-display: block;
+  src: url('fonts/fa-solid-900.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Font Awesome 5 Free';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('fonts/fa-regular-400.woff2') format('woff2');
+}
+
+.fa,
+.fab,
+.fas,
+.far {
+  font-family: 'Font Awesome 5 Free';
+}
+
+.fa,
+.fas {
+  font-weight: 900;
+}
+
+.fab,
+.far {
+  font-weight: 400;
+}
+
+.far.fa-building:before {
+  content: '\f1ad';
+}
+
+.fas.fa-caret-down:before {
+  content: '\f0d7';
+}
+
+.fas.fa-caret-up:before {
+  content: '\f0d8';
+}
+
+.fa-map-marker-alt:before {
+  content: '\f3c5';
+}
+
+.fa-link:before {
+  content: '\f0c1';
+}
+
+.fa-calendar-alt:before {
+  content: '\f073';
+}

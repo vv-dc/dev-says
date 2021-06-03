@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  reverse-proxy:
+    image: traefik:v2.4
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${PWD}/acme.json:/acme.json
+    ports:
+      - 80:80
+      - 443:443
+    command:
+      - --providers.docker.network=traefik-public
+      - --providers.docker.exposedbydefault=false
+
+      - --entrypoints.web.address=:80
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      - --entrypoints.websecure.address=:443
+
+      - --certificatesresolvers.le.acme.tlschallenge=true
+      - --certificatesresolvers.le.acme.email=${LE_EMAIL}
+      - --certificatesresolvers.le.acme.storage=acme.json
+    networks:
+      - traefik-public
+    restart: always
+
+networks:
+  traefik-public:
+    external: true

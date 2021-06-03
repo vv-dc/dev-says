@@ -1,0 +1,70 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:13.2-alpine
+    environment:
+      POSTGRES_USER: ${PGUSER}
+      POSTGRES_PASSWORD: ${PGPASSWORD}
+      POSTGRES_DB: ${PGDATABASE}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - backend
+    restart: always
+
+  backend:
+    image: ghcr.io/dev-says/devsays_backend
+    environment:
+      - FASTIFY_ADDRESS=0.0.0.0
+      - FASTIFY_PORT=8080
+      - PGUSER
+      - PGHOST
+      - PGPASSWORD
+      - PGDATABASE
+      - PGPORT
+      - JWT_SECRET
+      - COOKIE_SECRET
+      - PROTOCOL
+      - FRONTEND_DOMAIN
+      - OAUTH_GITHUB_ID
+      - OAUTH_GITHUB_SECRET
+      - OAUTH_GOOGLE_ID
+      - OAUTH_GOOGLE_SECRET
+    ports:
+      - 8080:8080
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.backend.rule=Host(`${API_HOST}`)
+      - traefik.http.routers.backend.tls=true
+      - traefik.http.routers.backend.tls.certresolver=le
+      - traefik.port=8080
+    networks:
+      - backend
+      - traefik-public
+    depends_on:
+      - db
+    restart: always
+
+  frontend:
+    image: ghcr.io/dev-says/devsays_frontend
+    ports:
+      - 3000:80
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.app.rule=Host(`${APP_HOST}`)
+      - traefik.http.routers.app.tls=true
+      - traefik.http.routers.app.tls.certresolver=le
+      - traefik.port=80
+    networks:
+      - traefik-public
+    restart: always
+
+volumes:
+  pg_data:
+
+networks:
+  traefik-public:
+    external: true
+  backend:
+    external: false

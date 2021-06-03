@@ -1,0 +1,18 @@
+{
+    "root": true,
+    "env": {
+        "node": true,
+        "jest": true
+    },
+    "plugins": [
+        "prettier"
+    ],
+    "extends": [
+        "metarhia",
+        "plugin:prettier/recommended"
+    ],
+    "rules": {
+        "prettier/prettier": "error",
+        "camelcase": 0
+    }
+}

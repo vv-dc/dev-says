@@ -1,0 +1,7 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+yarn lint:frontend && yarn lint:backend
+
+yarn --cwd frontend test
+yarn --cwd backend test
