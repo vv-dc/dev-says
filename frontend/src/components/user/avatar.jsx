@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const UserAvatar = ({ user, size }) => {
   const { imageURL } = user;
-  return <AvatarImg src={imageURL} $size={size} />;
+  return <AvatarImg src={imageURL || 'unknown.png'} $size={size} />;
 };
 
 export default UserAvatar;

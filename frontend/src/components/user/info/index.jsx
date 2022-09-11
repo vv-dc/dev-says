@@ -25,7 +25,7 @@ const UserInfo = ({ user, stats }) => {
       <Background backgroundURL={backgroundURL} />
       <Content>
         <UserClickableInfo>
-          <Avatar src={imageURL} $size={120} />
+          <Avatar src={imageURL || 'unknown.png'} $size={120} />
           <Dots />
         </UserClickableInfo>
         <UserPrimaryInfo fullName={fullName} username={username} status={bio} />
