@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "start": "fastify start -w src/app.js",
+    "start": "fastify start -p 8080 src/app.js",
     "lint": "eslint src/",
     "lint:write": "eslint --fix src/",
     "test": "jest",

@@ -23,7 +23,8 @@ const RegisterForm = () => {
     AuthService.register(state)
       .then(() => history.push('/login'))
       .catch(err => {
-        const message = err.response.data.message;
+        const message =
+          err instanceof Error ? err.message : err?.response?.data?.message;
         setError(message);
         message === 'Email already picked' && updateStep(-1);
       });

@@ -28,7 +28,6 @@ async function getGithubEmail(authCode) {
     headers: { Authorization: `token ${access_token}` },
   });
   const emails = await responseData.json();
-
   const primary = emails.find(email => email.primary);
   if (!primary.verified) {
     throw new Forbidden('Email not verified');
